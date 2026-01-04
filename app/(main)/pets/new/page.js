@@ -49,22 +49,22 @@ export default function NewPetPage() {
     };
 
     return (
-        <div className="relative flex min-h-screen w-full flex-col max-w-md mx-auto bg-[#f6f7f8] dark:bg-[#111a21] text-gray-900 dark:text-white font-sans overflow-hidden">
+        <div className="relative flex min-h-screen w-full flex-col max-w-md mx-auto bg-background text-text-main font-sans overflow-hidden">
             {/* Background Elements */}
             <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[40%] bg-[#2791e7]/10 rounded-full blur-[120px]"></div>
-                <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[50%] bg-[#2791e7]/5 rounded-full blur-[100px]"></div>
+                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[40%] bg-primary/10 rounded-full blur-[120px]"></div>
+                <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[50%] bg-primary/5 rounded-full blur-[100px]"></div>
             </div>
 
             <div className="relative z-10 flex flex-col h-full grow">
                 {/* Top App Bar */}
-                <div className="flex items-center px-4 py-4 pt-6 justify-between sticky top-0 z-50 bg-[#f6f7f8]/80 dark:bg-[#111a21]/80 backdrop-blur-md">
+                <div className="flex items-center px-4 py-4 pt-6 justify-between sticky top-0 z-50 bg-background/80 backdrop-blur-md">
                     <button onClick={() => step > 1 ? setStep(step - 1) : router.back()} className="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
                         <FaArrowLeft />
                     </button>
                     <h2 className="text-lg font-bold leading-tight flex-1 text-center">Nueva Mascota</h2>
                     <button onClick={() => router.push('/dashboard')} className="flex items-center justify-end px-2">
-                        <span className="text-gray-500 dark:text-slate-400 text-sm font-semibold hover:text-gray-900 dark:hover:text-white transition-colors">Cancelar</span>
+                        <span className="text-text-secondary text-sm font-semibold hover:text-text-main transition-colors">Cancelar</span>
                     </button>
                 </div>
 
@@ -72,10 +72,10 @@ export default function NewPetPage() {
                 <div className="px-6 pb-2">
                     <div className="flex w-full items-center gap-2">
                         {[1, 2, 3].map(s => (
-                            <div key={s} className={`h-1.5 flex-1 rounded-full transition-all ${step >= s ? 'bg-[#2791e7] shadow-[0_0_10px_rgba(39,145,231,0.5)]' : 'bg-gray-200 dark:bg-[#2a3441]'}`}></div>
+                            <div key={s} className={`h-1.5 flex-1 rounded-full transition-all ${step >= s ? 'bg-primary shadow-glow' : 'bg-gray-200 dark:bg-slate-700'}`}></div>
                         ))}
                     </div>
-                    <p className="text-xs text-center text-[#2791e7] mt-2 font-medium tracking-wide uppercase">Paso {step}: {step === 1 ? 'Identidad' : step === 2 ? 'Detalles Fisicos' : 'Datos Médicos'}</p>
+                    <p className="text-xs text-center text-primary mt-2 font-medium tracking-wide uppercase">Paso {step}: {step === 1 ? 'Identidad' : step === 2 ? 'Detalles Fisicos' : 'Datos Médicos'}</p>
                 </div>
 
                 {/* Form Content */}
@@ -85,36 +85,36 @@ export default function NewPetPage() {
                             {/* Photo Upload */}
                             <div className="flex flex-col items-center pt-6 pb-8">
                                 <div className="relative group cursor-pointer">
-                                    <div className="absolute inset-0 bg-[#2791e7]/30 rounded-full blur-xl animate-pulse group-hover:bg-[#2791e7]/50 transition-all duration-500"></div>
-                                    <div className="relative z-10 w-32 h-32 rounded-full border-4 border-white dark:border-[#111a21] bg-[#1c252e] overflow-hidden flex items-center justify-center shadow-lg transition-transform hover:scale-105">
+                                    <div className="absolute inset-0 bg-primary/30 rounded-full blur-xl animate-pulse group-hover:bg-primary/50 transition-all duration-500"></div>
+                                    <div className="relative z-10 w-32 h-32 rounded-full border-4 border-surface dark:border-background-dark bg-surface-dark overflow-hidden flex items-center justify-center shadow-lg transition-transform hover:scale-105">
                                         <FaCamera className="text-white text-4xl drop-shadow-md z-20" />
                                     </div>
-                                    <div className="absolute bottom-1 right-1 z-20 bg-[#2791e7] text-white p-1.5 rounded-full border-4 border-[#f6f7f8] dark:border-[#111a21] flex items-center justify-center shadow-md">
+                                    <div className="absolute bottom-1 right-1 z-20 bg-primary text-white p-1.5 rounded-full border-4 border-background flex items-center justify-center shadow-md">
                                         <FaCamera size={12} />
                                     </div>
                                 </div>
                                 <div className="mt-4 text-center">
                                     <h3 className="text-2xl font-bold tracking-tight">¿A quién agregamos?</h3>
-                                    <p className="text-gray-500 dark:text-slate-400 text-sm mt-1">Sube una foto para empezar</p>
+                                    <p className="text-text-secondary text-sm mt-1">Sube una foto para empezar</p>
                                 </div>
                             </div>
 
                             <div className="space-y-6">
                                 {/* Name */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ml-1">Nombre</label>
+                                    <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Nombre</label>
                                     <input
                                         name="petName"
                                         value={formData.petName}
                                         onChange={handleChange}
-                                        className="w-full bg-white dark:bg-[#1c252e] border border-gray-200 dark:border-[#2a3441] rounded-xl px-4 py-4 text-base focus:outline-none focus:border-[#2791e7] focus:ring-1 focus:ring-[#2791e7] transition-all shadow-sm"
+                                        className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                         placeholder="Ej. Max, Luna, Thor"
                                     />
                                 </div>
 
                                 {/* Species */}
                                 <div>
-                                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 ml-1 block">Especie</label>
+                                    <label className="text-sm font-medium text-text-secondary mb-3 ml-1 block">Especie</label>
                                     <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
                                         {[
                                             { id: 'Perro', icon: <FaDog size={24} /> },
@@ -127,8 +127,8 @@ export default function NewPetPage() {
                                                 key={s.id}
                                                 onClick={() => handleSpeciesSelect(s.id)}
                                                 className={`flex flex-col items-center justify-center min-w-[5.5rem] h-20 rounded-2xl border transition-all ${formData.species === s.id
-                                                        ? 'bg-[#2791e7] text-white border-[#2791e7] shadow-lg shadow-[#2791e7]/20 scale-[1.02]'
-                                                        : 'bg-white dark:bg-[#1c252e] border-gray-200 dark:border-[#2a3441] text-gray-500 dark:text-gray-400 hover:border-[#2791e7]/50'
+                                                    ? 'bg-primary text-white border-primary shadow-glow scale-[1.02]'
+                                                    : 'bg-surface dark:bg-surface-dark border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:border-primary/50'
                                                     }`}
                                             >
                                                 <span className="mb-1">{s.icon}</span>
@@ -140,13 +140,13 @@ export default function NewPetPage() {
 
                                 {/* Breed */}
                                 <div className="relative">
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ml-1">Raza</label>
+                                    <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Raza</label>
                                     <div className="relative">
                                         <input
                                             name="breed"
                                             value={formData.breed}
                                             onChange={handleChange}
-                                            className="w-full bg-white dark:bg-[#1c252e] border border-gray-200 dark:border-[#2a3441] rounded-xl px-4 py-4 text-base focus:outline-none focus:border-[#2791e7] focus:ring-1 focus:ring-[#2791e7] transition-all shadow-sm"
+                                            className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                             placeholder="Buscar raza..."
                                         />
                                         <FaSearch className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -160,15 +160,15 @@ export default function NewPetPage() {
                         <div className="animate-fade-in-up space-y-6 pt-4">
                             {/* Sex */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ml-1">Género</label>
-                                <div className="flex bg-white dark:bg-[#1c252e] p-1 rounded-xl border border-gray-200 dark:border-[#2a3441]">
+                                <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Género</label>
+                                <div className="flex bg-surface dark:bg-surface-dark p-1 rounded-xl border border-gray-200 dark:border-white/10">
                                     {['Macho', 'Hembra'].map(sex => (
                                         <button
                                             key={sex}
                                             onClick={() => setFormData({ ...formData, sex })}
                                             className={`flex-1 py-3 rounded-lg text-sm font-medium transition-all ${formData.sex === sex
-                                                    ? 'bg-[#2791e7]/10 text-[#2791e7] dark:bg-white/10 dark:text-white shadow-sm'
-                                                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                                                ? 'bg-primary/10 text-primary dark:bg-white/10 dark:text-white shadow-sm'
+                                                : 'text-gray-500 dark:text-gray-400 hover:text-text-main'
                                                 }`}
                                         >
                                             {sex}
@@ -179,46 +179,46 @@ export default function NewPetPage() {
 
                             {/* Color */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ml-1">Color Principal</label>
+                                <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Color Principal</label>
                                 <input
                                     name="color"
                                     value={formData.color}
                                     onChange={handleChange}
                                     placeholder="Ej. Café, Blanco, Negro"
-                                    className="w-full bg-white dark:bg-[#1c252e] border border-gray-200 dark:border-[#2a3441] rounded-xl px-4 py-4 text-base focus:outline-none focus:border-[#2791e7] focus:ring-1 focus:ring-[#2791e7] transition-all shadow-sm"
+                                    className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                 />
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ml-1">Fecha Nac.</label>
+                                    <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Fecha Nac.</label>
                                     <input
                                         type="date"
                                         name="birthDate"
                                         value={formData.birthDate}
                                         onChange={handleChange}
-                                        className="w-full bg-white dark:bg-[#1c252e] border border-gray-200 dark:border-[#2a3441] rounded-xl px-4 py-4 text-base focus:outline-none focus:border-[#2791e7] focus:ring-1 focus:ring-[#2791e7] transition-all shadow-sm"
+                                        className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ml-1">Peso (kg)</label>
+                                    <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Peso (kg)</label>
                                     <input
                                         type="number"
                                         step="0.1"
                                         name="weight"
                                         value={formData.weight}
                                         onChange={handleChange}
-                                        className="w-full bg-white dark:bg-[#1c252e] border border-gray-200 dark:border-[#2a3441] rounded-xl px-4 py-4 text-base focus:outline-none focus:border-[#2791e7] focus:ring-1 focus:ring-[#2791e7] transition-all shadow-sm"
+                                        className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                     />
                                 </div>
                             </div>
 
                             {/* Spayed Toggle */}
-                            <div className="bg-white dark:bg-[#1c252e] rounded-xl p-4 border border-gray-200 dark:border-[#2a3441] flex items-center justify-between">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">¿Está esterilizado?</span>
+                            <div className="bg-surface dark:bg-surface-dark rounded-xl p-4 border border-gray-200 dark:border-white/10 flex items-center justify-between">
+                                <span className="text-sm font-medium text-text-main">¿Está esterilizado?</span>
                                 <button
                                     onClick={() => setFormData({ ...formData, isSpayed: !formData.isSpayed })}
-                                    className={`w-12 h-6 rounded-full relative transition-colors ${formData.isSpayed ? 'bg-[#2791e7]' : 'bg-gray-300 dark:bg-gray-600'}`}
+                                    className={`w-12 h-6 rounded-full relative transition-colors ${formData.isSpayed ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
                                 >
                                     <span className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform ${formData.isSpayed ? 'translate-x-6' : 'translate-x-0'}`}></span>
                                 </button>
@@ -229,21 +229,21 @@ export default function NewPetPage() {
                     {step === 3 && (
                         <div className="animate-fade-in-up space-y-6 pt-4">
                             {/* Microchip */}
-                            <div className="bg-[#2791e7]/5 dark:bg-[#2791e7]/5 border border-[#2791e7]/20 rounded-2xl p-4">
+                            <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
                                 <div className="flex items-center justify-between mb-3">
                                     <div className="flex items-center gap-2">
-                                        <FaQrcode className="text-[#2791e7]" />
-                                        <label className="text-sm font-bold text-gray-900 dark:text-white">Datos Oficiales</label>
+                                        <FaQrcode className="text-primary" />
+                                        <label className="text-sm font-bold text-text-main">Datos Oficiales</label>
                                     </div>
-                                    <span className="text-xs text-[#2791e7] bg-[#2791e7]/10 px-2 py-0.5 rounded-md font-medium">Recomendado</span>
+                                    <span className="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-md font-medium">Recomendado</span>
                                 </div>
                                 <div className="relative">
-                                    <label className="text-xs text-gray-500 dark:text-slate-400 mb-1 block ml-1">Número de Microchip</label>
+                                    <label className="text-xs text-text-secondary mb-1 block ml-1">Número de Microchip</label>
                                     <input
                                         name="microchipNumber"
                                         value={formData.microchipNumber}
                                         onChange={handleChange}
-                                        className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-[#2a3441] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#2791e7] focus:ring-1 focus:ring-[#2791e7] transition-all"
+                                        className="w-full bg-surface dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                         placeholder="Escanea o escribe el número"
                                     />
                                 </div>
@@ -251,26 +251,26 @@ export default function NewPetPage() {
 
                             {/* Allergies */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ml-1">Alergias</label>
+                                <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Alergias</label>
                                 <textarea
                                     name="allergies"
                                     value={formData.allergies}
                                     onChange={handleChange}
                                     rows={2}
-                                    className="w-full bg-white dark:bg-[#1c252e] border border-gray-200 dark:border-[#2a3441] rounded-xl px-4 py-3 text-base focus:outline-none focus:border-[#2791e7] focus:ring-1 focus:ring-[#2791e7] transition-all shadow-sm"
+                                    className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                     placeholder="Opcional"
                                 ></textarea>
                             </div>
 
                             {/* Medical Notes */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ml-1">Notas Médicas</label>
+                                <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Notas Médicas</label>
                                 <textarea
                                     name="medicalNotes"
                                     value={formData.medicalNotes}
                                     onChange={handleChange}
                                     rows={2}
-                                    className="w-full bg-white dark:bg-[#1c252e] border border-gray-200 dark:border-[#2a3441] rounded-xl px-4 py-3 text-base focus:outline-none focus:border-[#2791e7] focus:ring-1 focus:ring-[#2791e7] transition-all shadow-sm"
+                                    className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                     placeholder="Opcional"
                                 ></textarea>
                             </div>
@@ -279,11 +279,11 @@ export default function NewPetPage() {
                 </div>
 
                 {/* Sticky Footer */}
-                <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#f6f7f8] via-[#f6f7f8] to-transparent dark:from-[#111a21] dark:via-[#111a21] dark:to-transparent z-40">
+                <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-background via-background to-transparent z-40">
                     <button
                         onClick={step === 3 ? handleSubmit : handleNext}
                         disabled={loading}
-                        className="w-full h-14 bg-[#2791e7] hover:bg-blue-600 text-white font-bold rounded-xl shadow-lg shadow-[#2791e7]/30 flex items-center justify-center gap-2 transition-all transform active:scale-[0.98]"
+                        className="w-full h-14 bg-primary hover:bg-primary-hover text-white font-bold rounded-xl shadow-glow flex items-center justify-center gap-2 transition-all transform active:scale-[0.98]"
                     >
                         <span>{step === 3 ? (loading ? 'Guardando...' : 'Finalizar') : 'Continuar'}</span>
                         <FaArrowRight />
