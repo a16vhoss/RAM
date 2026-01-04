@@ -15,7 +15,7 @@ export async function POST(request) {
         }
 
         // Check if exists
-        const check = db.prepare('SELECT user_id FROM users WHERE email = ?').get(email);
+        const check = await db.getOne('SELECT user_id FROM users WHERE email = $1', [email]);
         if (check) {
             return NextResponse.json({ error: 'Email already exists' }, { status: 409 });
         }
@@ -24,12 +24,10 @@ export async function POST(request) {
         const hashedPassword = await bcrypt.hash(password, 10);
         const userRole = role === 'provider' ? 'provider' : 'tutor'; // Default to tutor
 
-        const insert = db.prepare(`
+        await db.run(`
       INSERT INTO users (user_id, email, password_hash, first_name, last_name, role, phone, city, state)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
-        insert.run(userId, email, hashedPassword, firstName, lastName, userRole, phone || null, city || null, state || null);
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    `, [userId, email, hashedPassword, firstName, lastName, userRole, phone || null, city || null, state || null]);
 
         const user = {
             user_id: userId,

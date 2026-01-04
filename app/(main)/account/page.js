@@ -1,5 +1,6 @@
 import { getSession } from '@/lib/auth';
 import LogoutButton from '@/components/auth/LogoutButton';
+import Link from 'next/link';
 import { FaUserCircle, FaCrown } from 'react-icons/fa';
 import { redirect } from 'next/navigation';
 
@@ -37,19 +38,19 @@ export default async function AccountPage() {
                         <span style={{ fontWeight: 'bold' }}>$149/mes</span>
                     </div>
                     <p style={{ fontSize: '13px', opacity: 0.9, marginBottom: '16px' }}>Actas ilimitadas, citas médicas y más beneficios.</p>
-                    <button style={{ width: '100%', padding: '10px', borderRadius: '8px', border: 'none', background: 'white', color: 'var(--primary)', fontWeight: 'bold', cursor: 'pointer' }}>
+                    <Link href="/pricing" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: 'none', background: 'white', color: 'var(--primary)', fontWeight: 'bold', cursor: 'pointer', display: 'block', textAlign: 'center', textDecoration: 'none' }}>
                         Ver Planes
-                    </button>
+                    </Link>
                 </div>
             </section>
 
             <section style={{ marginBottom: '32px' }}>
                 <h3 style={{ fontSize: '16px', marginBottom: '16px', color: '#666' }}>Configuración</h3>
                 <div style={{ background: 'white', borderRadius: '12px', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
-                    <div style={{ padding: '16px', borderBottom: '1px solid #eee' }}>Editar Perfil</div>
-                    <div style={{ padding: '16px', borderBottom: '1px solid #eee' }}>Cambiar Contraseña</div>
-                    <div style={{ padding: '16px', borderBottom: '1px solid #eee' }}>Notificaciones</div>
-                    <div style={{ padding: '16px', borderBottom: '1px solid #eee' }}>Privacidad</div>
+                    <Link href="/account/edit" style={{ padding: '16px', borderBottom: '1px solid #eee', display: 'block', textDecoration: 'none', color: 'inherit' }}>Editar Perfil</Link>
+                    <Link href="/account/password" style={{ padding: '16px', borderBottom: '1px solid #eee', display: 'block', textDecoration: 'none', color: 'inherit' }}>Cambiar Contraseña</Link>
+                    <Link href="/account/notifications" style={{ padding: '16px', borderBottom: '1px solid #eee', display: 'block', textDecoration: 'none', color: 'inherit' }}>Notificaciones</Link>
+                    <Link href="/account/privacy" style={{ padding: '16px', borderBottom: '1px solid #eee', display: 'block', textDecoration: 'none', color: 'inherit' }}>Privacidad</Link>
                 </div>
             </section>
 

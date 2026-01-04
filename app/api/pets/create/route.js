@@ -22,20 +22,16 @@ export async function POST(request) {
         const userId = session.user.user_id;
 
         // Insert Pet
-        const insert = db.prepare(`
-      INSERT INTO pets (
-        pet_id, user_id, pet_name, species, breed, color, sex, 
-        birth_date, weight, microchip_number, spayed_neutered, pet_photo, status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
         // TODO: Handle photo upload properly. Using placeholder for now.
         const photoUrl = `/api/placeholder?name=${petName}`;
 
-        insert.run(
-            petId, userId, petName, species, breed, color, sex,
-            birthDate, weight || null, microchipNumber || null, isSpayed ? 1 : 0, photoUrl, 'Activo'
-        );
+        await db.run(`
+      INSERT INTO pets (
+        pet_id, user_id, pet_name, species, breed, color, sex, 
+        birth_date, weight, microchip_number, spayed_neutered, pet_photo, status
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+    `, [petId, userId, petName, species, breed, color, sex,
+            birthDate, weight || null, microchipNumber || null, isSpayed ? 1 : 0, photoUrl, 'Activo']);
 
         // Auto-generate Document entry (Active ownership)
         const docId = uuidv4();
@@ -43,12 +39,10 @@ export async function POST(request) {
         // Using simple mock for now: 
         const regNum = `014-${new Date().getFullYear().toString().slice(-1)}-${Math.floor(Math.random() * 1000000).toString().padStart(7, '0')}-A`;
 
-        const insertDoc = db.prepare(`
+        await db.run(`
       INSERT INTO documents (document_id, pet_id, user_id, document_type, unique_registration_number, pdf_url)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `);
-
-        insertDoc.run(docId, petId, userId, 'Acta de Propiedad', regNum, null);
+      VALUES ($1, $2, $3, $4, $5, $6)
+    `, [docId, petId, userId, 'Acta de Propiedad', regNum, null]);
 
         return NextResponse.json({ success: true, petId });
     } catch (err) {

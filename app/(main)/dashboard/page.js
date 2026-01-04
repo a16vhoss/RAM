@@ -12,7 +12,7 @@ export default async function DashboardPage() {
     const user = session.user;
 
     // Fetch Pets
-    const pets = db.prepare('SELECT * FROM pets WHERE user_id = ?').all(user.user_id);
+    const pets = await db.getAll('SELECT * FROM pets WHERE user_id = $1', [user.user_id]);
 
     return (
         <div style={{ padding: '20px' }}>
@@ -36,19 +36,18 @@ export default async function DashboardPage() {
                         </div>
                         <span>Buscar</span>
                     </Link>
-                    {/* Mock actions */}
-                    <div style={{ ...quickActionStyle, opacity: 0.5 }}>
+                    <Link href="/documents" style={quickActionStyle}>
                         <div style={{ background: '#FFF3E0', padding: '12px', borderRadius: '50%', marginBottom: '8px' }}>
                             <FaQrcode color="#FB8C00" size={20} />
                         </div>
                         <span>Documentos</span>
-                    </div>
-                    <div style={{ ...quickActionStyle, opacity: 0.5 }}>
+                    </Link>
+                    <Link href="/appointments" style={quickActionStyle}>
                         <div style={{ background: '#F3E5F5', padding: '12px', borderRadius: '50%', marginBottom: '8px' }}>
                             <FaCalendarAlt color="#8E24AA" size={20} />
                         </div>
                         <span>Citas</span>
-                    </div>
+                    </Link>
                 </div>
             </section>
 

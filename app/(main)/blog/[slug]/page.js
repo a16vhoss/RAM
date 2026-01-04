@@ -6,14 +6,14 @@ import { FaArrowLeft, FaCalendarAlt, FaEye } from 'react-icons/fa';
 export default async function BlogPostPage({ params }) {
     const { slug } = await params;
 
-    const post = db.prepare('SELECT * FROM blog_posts WHERE slug = ?').get(slug);
+    const post = await db.getOne('SELECT * FROM blog_posts WHERE slug = $1', [slug]);
 
     if (!post) {
         notFound();
     }
 
     // Increment view count (not ideal for strict React Server Components without actions, but okay for demo)
-    db.prepare('UPDATE blog_posts SET views_count = views_count + 1 WHERE slug = ?').run(slug);
+    await db.run('UPDATE blog_posts SET views_count = views_count + 1 WHERE slug = $1', [slug]);
 
     return (
         <div style={{ padding: '0 0 80px 0' }}>

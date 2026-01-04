@@ -2,8 +2,8 @@ import db from '@/lib/db';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function BlogPage() {
-    const posts = db.prepare("SELECT * FROM blog_posts WHERE status = 'Publicado' ORDER BY published_at DESC").all();
+export default async function BlogPage() {
+    const posts = await db.getAll("SELECT * FROM blog_posts WHERE status = 'Publicado' ORDER BY published_at DESC");
 
     return (
         <div style={{ padding: '20px' }}>

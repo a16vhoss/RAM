@@ -6,7 +6,7 @@ import { FaArrowLeft, FaMapMarkerAlt, FaStar, FaPhone, FaWhatsapp, FaClock, FaCh
 export default async function ProviderPage({ params }) {
     const { id } = await params;
 
-    const provider = db.prepare('SELECT * FROM providers WHERE provider_id = ?').get(id);
+    const provider = await db.getOne('SELECT * FROM providers WHERE provider_id = $1', [id]);
 
     if (!provider) {
         notFound();

@@ -1,8 +1,9 @@
 import db from '@/lib/db';
 import Link from 'next/link';
 import { FaMapMarkerAlt, FaStar, FaPhone, FaWhatsapp, FaFilter } from 'react-icons/fa';
+import DirectoryMap from '@/components/directory/DirectoryMap';
 
-export default function DirectoryPage({ searchParams }) {
+export default async function DirectoryPage({ searchParams }) {
     const query = searchParams?.q || '';
     const type = searchParams?.type || 'Todos';
 
@@ -10,19 +11,19 @@ export default function DirectoryPage({ searchParams }) {
     const params = [];
 
     if (type !== 'Todos') {
-        sql += ' AND provider_type = ?';
         params.push(type);
+        sql += ` AND provider_type = $${params.length}`;
     }
 
     if (query) {
-        sql += ' AND (business_name LIKE ? OR description LIKE ?)';
         params.push(`%${query}%`, `%${query}%`);
+        sql += ` AND (business_name ILIKE $${params.length - 1} OR description ILIKE $${params.length})`;
     }
 
     // Order by premium first
     sql += ' ORDER BY is_premium DESC, rating_average DESC';
 
-    const providers = db.prepare(sql).all(...params);
+    const providers = await db.getAll(sql, params);
 
     const filters = ['Todos', 'Veterinario', 'Clínica 24h', 'Estética', 'Refugio', 'Paseador'];
 
@@ -64,6 +65,11 @@ export default function DirectoryPage({ searchParams }) {
                         </Link>
                     ))}
                 </div>
+            </div>
+
+            {/* Map/List Toggle */}
+            <div style={{ padding: '16px' }}>
+                <DirectoryMap providers={providers} />
             </div>
 
             {/* Results */}
