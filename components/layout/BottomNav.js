@@ -13,26 +13,28 @@ export default function BottomNav() {
     return (
         <nav className={styles.nav}>
             <Link href="/dashboard" className={`${styles.link} ${isActive('/dashboard') || isActive('/') ? styles.active : ''}`}>
-                <FaHome size={24} />
+                <FaHome size={24} style={{ marginBottom: '2px' }} />
                 <span>Inicio</span>
             </Link>
 
             <Link href="/directory" className={`${styles.link} ${isActive('/directory') ? styles.active : ''}`}>
-                <FaSearch size={24} />
-                <span>Directorio</span>
+                <FaSearch size={22} style={{ marginBottom: '2px' }} />
+                <span>Buscar</span>
             </Link>
 
-            <Link href="/pets/new" className={`${styles.link} ${styles.mainAction}`}>
-                <FaPlusCircle size={48} color="var(--success)" />
-            </Link>
+            <div className={styles.fabContainer}>
+                <Link href="/pets/new" className={styles.fab}>
+                    <FaPlusCircle size={28} />
+                </Link>
+            </div>
 
             <Link href="/blog" className={`${styles.link} ${isActive('/blog') ? styles.active : ''}`}>
-                <FaNewspaper size={24} />
+                <FaNewspaper size={22} style={{ marginBottom: '2px' }} />
                 <span>Blog</span>
             </Link>
 
             <Link href="/account" className={`${styles.link} ${isActive('/account') ? styles.active : ''}`}>
-                <FaUser size={24} />
+                <FaUser size={22} style={{ marginBottom: '2px' }} />
                 <span>Cuenta</span>
             </Link>
         </nav>

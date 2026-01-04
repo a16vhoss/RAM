@@ -1,30 +1,30 @@
-import { Poppins, Open_Sans } from "next/font/google";
+import { Spline_Sans, Noto_Sans } from "next/font/google";
 import "./globals.css";
 
-const poppins = Poppins({
+const splineSans = Spline_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-heading",
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-spline'
 });
 
-const openSans = Open_Sans({
+const notoSans = Noto_Sans({
   subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-body",
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-noto'
 });
 
 export const metadata = {
-  title: "Registro Animal Mundial",
-  description: "El centro digital de protección, vínculo y cuidado animal",
+  title: "RAM - Registro Animal Municipal",
+  description: "Plataforma de bienestar animal",
   manifest: "/manifest.json",
-  themeColor: "#1C77C3",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0", // Optimization for mobile-app feel
+  themeColor: "#2791e7", // Updated to new primary
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <body className={`${poppins.variable} ${openSans.variable}`}>
+      <body className={`${splineSans.variable} ${notoSans.variable} antialiased`}>
         <div className="container">
           {children}
         </div>
