@@ -108,7 +108,7 @@ export default function RegisterPage() {
                             </div>
 
                             {/* Inputs Step 1 */}
-                            <div className="bg-white/50 dark:bg-white/5 backdrop-blur-sm border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-[#2791e7] focus-within:border-transparent transition-all">
+                            <div className="bg-white dark:bg-white/5 backdrop-blur-md border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-[#2791e7] focus-within:border-[#2791e7] transition-all shadow-sm">
                                 <label className="block text-xs font-medium text-slate-500 dark:text-[#9dacb8] mb-1">Nombre</label>
                                 <input
                                     name="firstName"
@@ -141,7 +141,7 @@ export default function RegisterPage() {
                                     value={formData.email}
                                     onChange={handleChange}
                                     required
-                                    className="w-full bg-transparent border-none p-0 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-0 text-lg font-medium"
+                                    className="w-full bg-transparent border-none p-0 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-0 text-base font-medium"
                                     placeholder="hola@ejemplo.com"
                                 />
                                 <FaEnvelope className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
@@ -195,8 +195,8 @@ export default function RegisterPage() {
                                 <div
                                     onClick={() => setRole('tutor')}
                                     className={`relative p-3 rounded-xl border-2 cursor-pointer transition-all ${role === 'tutor'
-                                            ? 'bg-white dark:bg-[#1c262e] border-[#2791e7] shadow-lg shadow-blue-500/10'
-                                            : 'bg-white/50 dark:bg-[#1c262e]/50 border-transparent hover:border-[#2791e7]/50'
+                                        ? 'bg-white dark:bg-[#1c262e] border-[#2791e7] shadow-lg shadow-blue-500/10'
+                                        : 'bg-white/50 dark:bg-[#1c262e]/50 border-transparent hover:border-[#2791e7]/50'
                                         }`}
                                 >
                                     {role === 'tutor' && (
@@ -213,8 +213,8 @@ export default function RegisterPage() {
                                 <div
                                     onClick={() => setRole('provider')}
                                     className={`relative p-3 rounded-xl border-2 cursor-pointer transition-all ${role === 'provider'
-                                            ? 'bg-white dark:bg-[#1c262e] border-[#2791e7] shadow-lg shadow-blue-500/10'
-                                            : 'bg-white/50 dark:bg-[#1c262e]/50 border-transparent hover:border-[#2791e7]/50'
+                                        ? 'bg-white dark:bg-[#1c262e] border-[#2791e7] shadow-lg shadow-blue-500/10'
+                                        : 'bg-white/50 dark:bg-[#1c262e]/50 border-transparent hover:border-[#2791e7]/50'
                                         }`}
                                 >
                                     {role === 'provider' && (

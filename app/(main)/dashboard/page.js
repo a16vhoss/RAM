@@ -26,7 +26,7 @@ export default async function DashboardPage() {
                         <div style={{ position: 'relative', cursor: 'pointer' }}>
                             <div style={{
                                 width: '48px', height: '48px', borderRadius: '50%',
-                                backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDPJOd-fvZayzMmEdoGwMBQbozXwZbxzUjwIt_O9y8GEDmadvKGVePlI18zSrYCrnSdgZstE8Z1AclimH_nuN-BvutkUY6VS_0bZOicbkjdcabAu2Wep7wbR9HkfVrWzolJO6l4IQlgmgD-N4MRrtNg36BkBWETwtfq7sBj4JMG7rl2lDDJ3OYlFNdkSVpILS75pyjJ7O1o9sQGacGkzwVtOj0WHZufrw44BwF-5ZoPcEwtxoEO885U8e_mIAJYjze6CCFGcMs12lV4")',
+                                backgroundImage: `url("https://ui-avatars.com/api/?name=${encodeURIComponent(user.first_name || 'User')}&background=random")`,
                                 backgroundSize: 'cover', backgroundPosition: 'center',
                                 border: '2px solid rgba(255,255,255,0.1)'
                             }}></div>
@@ -54,7 +54,7 @@ export default async function DashboardPage() {
                 <p style={{ fontSize: '24px', fontWeight: '700', color: 'var(--text-main)', lineHeight: '1.2', marginTop: '8px' }}>
                     Tus peludos están <br /><span style={{ color: 'var(--primary)' }}>protegidos y seguros.</span>
                 </p>
-            </header>
+            </header >
 
             <main style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
                 {/* Search Bar */}
@@ -264,7 +264,7 @@ export default async function DashboardPage() {
 
                 <div style={{ height: '20px' }}></div>
             </main>
-        </div>
+        </div >
     );
 }
 

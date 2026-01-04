@@ -18,8 +18,14 @@ export const metadata = {
   title: "RAM - Registro Animal Municipal",
   description: "Plataforma de bienestar animal",
   manifest: "/manifest.json",
-  themeColor: "#2791e7", // Updated to new primary
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0",
+};
+
+export const viewport = {
+  themeColor: "#2791e7",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({ children }) {

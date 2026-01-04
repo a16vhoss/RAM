@@ -7,11 +7,19 @@ import { login } from '@/lib/auth';
 export async function POST(request) {
     try {
         const body = await request.json();
-        const { email, password, firstName, lastName, role, phone, city, state } = body;
+        console.log('Register API Body:', body); // Debugging
+
+        // Extract variables with fallbacks if mix names are used
+        const { email, password, firstName, lastName, role, phone, city, state, businessName, providerType } = body;
+
+        // Also support 'nombre' / 'apellido' if sent by mismatch version
+        const finalFirstName = firstName || body.nombre;
+        const finalLastName = lastName || body.apellido;
 
         // Basic validation
-        if (!email || !password || !firstName || !lastName) {
-            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+        if (!email || !password || !finalFirstName || !finalLastName) {
+            console.error('Missing fields:', { email, hasPassword: !!password, finalFirstName, finalLastName });
+            return NextResponse.json({ error: 'Faltan campos obligatorios' }, { status: 400 });
         }
 
         // Check if exists
@@ -27,13 +35,13 @@ export async function POST(request) {
         await db.run(`
       INSERT INTO users (user_id, email, password_hash, first_name, last_name, role, phone, city, state)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-    `, [userId, email, hashedPassword, firstName, lastName, userRole, phone || null, city || null, state || null]);
+    `, [userId, email, hashedPassword, finalFirstName, finalLastName, userRole, phone || null, city || null, state || null]);
 
         const user = {
             user_id: userId,
             email,
-            first_name: firstName,
-            last_name: lastName,
+            first_name: finalFirstName,
+            last_name: finalLastName,
             role: userRole,
             city,
             state
