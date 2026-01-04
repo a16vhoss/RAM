@@ -1,4 +1,5 @@
 import { Poppins, Open_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
         <div className="container">
           {children}
         </div>
+        <Analytics />
       </body>
     </html>
   );
