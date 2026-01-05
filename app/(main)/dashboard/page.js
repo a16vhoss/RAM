@@ -136,38 +136,48 @@ export default async function DashboardPage() {
                         </div>
 
                         {/* Cartilla */}
-                        <Link href="/documents" style={{
+                        <Link href="/documents" className="group" style={{
                             position: 'relative', overflow: 'hidden', borderRadius: '24px', height: '144px',
-                            background: 'white', padding: '16px', border: '1px solid var(--border)',
-                            display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer'
+                            background: 'linear-gradient(135deg, #8b5cf6, #6366f1)', padding: '16px',
+                            display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+                            boxShadow: '0 10px 15px -3px rgba(139, 92, 246, 0.2)', cursor: 'pointer'
                         }}>
+                            <div style={{ position: 'absolute', top: 0, right: 0, padding: '12px', opacity: 0.2 }}>
+                                <FaSyringe size={80} color="white" />
+                            </div>
                             <div style={{
                                 width: '40px', height: '40px', borderRadius: '50%',
-                                background: 'rgba(39, 145, 231, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center'
                             }}>
-                                <FaSyringe color="var(--primary)" />
+                                <FaSyringe color="white" />
                             </div>
                             <div>
-                                <p style={{ color: 'var(--text-main)', fontWeight: '700', fontSize: '16px', lineHeight: 1.2 }}>Cartilla Digital</p>
-                                <p style={{ color: 'var(--text-secondary)', fontSize: '11px', marginTop: '4px' }}>Vacunas y citas</p>
+                                <p style={{ color: 'white', fontWeight: '700', fontSize: '16px', lineHeight: 1.2 }}>Cartilla Digital</p>
+                                <p style={{ color: '#e9d5ff', fontSize: '11px', marginTop: '4px' }}>Vacunas y citas</p>
                             </div>
                         </Link>
 
                         {/* Amber Alert */}
-                        <div style={{
+                        <div className="group" style={{
                             position: 'relative', overflow: 'hidden', borderRadius: '24px', height: '144px',
-                            background: 'white', padding: '16px', border: '1px solid var(--border)',
-                            display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer'
+                            background: 'linear-gradient(135deg, #f59e0b, #ea580c)', padding: '16px',
+                            display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+                            boxShadow: '0 10px 15px -3px rgba(245, 158, 11, 0.2)', cursor: 'pointer'
                         }}>
+                            <div style={{ position: 'absolute', top: 0, right: 0, padding: '12px', opacity: 0.2 }}>
+                                <FaExclamationTriangle size={80} color="white" />
+                            </div>
                             <div style={{
                                 width: '40px', height: '40px', borderRadius: '50%',
-                                background: 'rgba(249, 115, 22, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center'
                             }}>
-                                <FaExclamationTriangle color="var(--accent-orange)" />
+                                <FaExclamationTriangle color="white" />
                             </div>
                             <div>
-                                <p style={{ color: 'var(--text-main)', fontWeight: '700', fontSize: '16px', lineHeight: 1.2 }}>Alerta Amber</p>
-                                <p style={{ color: 'var(--text-secondary)', fontSize: '11px', marginTop: '4px' }}>Reportar extravío</p>
+                                <p style={{ color: 'white', fontWeight: '700', fontSize: '16px', lineHeight: 1.2 }}>Alerta Amber</p>
+                                <p style={{ color: '#fed7aa', fontSize: '11px', marginTop: '4px' }}>Reportar extravío</p>
                             </div>
                         </div>
                     </div>
