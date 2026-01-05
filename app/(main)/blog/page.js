@@ -1,35 +1,60 @@
 import db from '@/lib/db';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default async function BlogPage() {
     const posts = await db.getAll("SELECT * FROM blog_posts WHERE status = 'Publicado' ORDER BY published_at DESC");
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h1 style={{ marginBottom: '20px' }}>Blog & Tips</h1>
+        <div className="min-h-screen bg-background text-text-main px-4 py-6 max-w-2xl mx-auto">
+            {/* Header */}
+            <div className="mb-8">
+                <h1 className="text-3xl font-bold mb-2">Blog & Tips</h1>
+                <p className="text-text-secondary text-sm">Descubre todo lo que necesitas saber para recibir a tu nuevo mejor amigo en casa.</p>
+            </div>
 
-            <div style={{ display: 'grid', gap: '20px' }}>
+            {/* Posts Grid */}
+            <div className="space-y-4">
                 {posts.map(post => (
-                    <Link href={`/blog/${post.slug}`} key={post.post_id} style={{ display: 'block', textDecoration: 'none' }}>
-                        <div style={{ background: 'white', borderRadius: '16px', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
-                            <div style={{ height: '160px', background: '#eee', position: 'relative' }}>
-                                {/* <Image ... /> Placeholder */}
-                                <div style={{ width: '100%', height: '100%', background: 'linear-gradient(45deg, var(--primary), var(--secondary))' }}></div>
-                                <span style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(0,0,0,0.6)', color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '10px' }}>{post.category}</span>
+                    <Link
+                        href={`/blog/${post.slug}`}
+                        key={post.post_id}
+                        className="block group"
+                    >
+                        <article className="bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:scale-[1.01]">
+                            {/* Image Header */}
+                            <div className="h-40 bg-gradient-to-br from-primary/20 to-primary/5 relative overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-hover to-secondary opacity-80"></div>
+
+                                {/* Category Badge */}
+                                <span className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium">
+                                    {post.category || 'General'}
+                                </span>
                             </div>
-                            <div style={{ padding: '16px' }}>
-                                <h3 style={{ fontSize: '16px', marginBottom: '8px', lineHeight: '1.4' }}>{post.title}</h3>
-                                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+
+                            {/* Content */}
+                            <div className="p-4">
+                                <h3 className="text-base font-bold mb-2 leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                                    {post.title}
+                                </h3>
+                                <p className="text-sm text-text-secondary line-clamp-2 mb-3">
                                     {post.excerpt}
                                 </p>
-                                <div style={{ marginTop: '12px', fontSize: '12px', color: '#888' }}>
-                                    {new Date(post.published_at).toLocaleDateString()} • {post.views_count} vistas
+
+                                {/* Meta */}
+                                <div className="flex items-center justify-between text-xs text-text-secondary">
+                                    <span>{new Date(post.published_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                                    <span>{post.views_count || 0} vistas</span>
                                 </div>
                             </div>
-                        </div>
+                        </article>
                     </Link>
                 ))}
+
+                {posts.length === 0 && (
+                    <div className="text-center py-12">
+                        <p className="text-text-secondary">No hay publicaciones disponibles en este momento.</p>
+                    </div>
+                )}
             </div>
         </div>
     );
