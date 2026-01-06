@@ -84,7 +84,7 @@ export default function DocumentsClient({ documents = [], pets = [], session }) 
                         <div>
                             <p className="text-slate-400 text-sm font-medium mb-1">Registros</p>
                             <p className="text-2xl font-bold text-white">{isRuacVerified ? 'Activo' : 'Pendiente'}</p>
-                            <p className="text-emerald-400 text-xs font-medium mt-1">{isRuacVerified ? 'Verificado ✓' : 'Subir RUAC'}</p>
+                            <p className="text-emerald-400 text-xs font-medium mt-1 cursor-pointer hover:text-emerald-300 transition-colors" onClick={() => router.push('/pets/new')}>{isRuacVerified ? 'Verificado ✓' : 'Subir RUAC →'}</p>
                         </div>
                     </div>
                     {/* Card 3: Total Docs */}
@@ -123,8 +123,8 @@ export default function DocumentsClient({ documents = [], pets = [], session }) 
                             key={type}
                             onClick={() => setFilterType(type)}
                             className={`flex h-9 px-5 shrink-0 items-center justify-center rounded-full font-medium text-sm transition-colors ${filterType === type
-                                    ? 'bg-white text-background-dark font-semibold shadow-glow'
-                                    : 'bg-surface-dark border border-slate-700 text-slate-300 hover:bg-slate-800'
+                                ? 'bg-white text-background-dark font-semibold shadow-glow'
+                                : 'bg-surface-dark border border-slate-700 text-slate-300 hover:bg-slate-800'
                                 }`}
                         >
                             {type}
@@ -139,8 +139,8 @@ export default function DocumentsClient({ documents = [], pets = [], session }) 
                 {filteredDocs.length > 0 ? filteredDocs.map((doc, idx) => (
                     <div key={doc.document_id || idx} className="group relative flex items-center gap-4 p-4 rounded-2xl bg-surface-dark border border-slate-800/50 hover:bg-slate-800 hover:border-slate-700 transition-all active:scale-[0.99] cursor-pointer">
                         <div className={`flex size-12 shrink-0 items-center justify-center rounded-xl bg-opacity-10 ${doc.document_type.includes('Vacuna') ? 'bg-red-500 text-red-400' :
-                                doc.document_type.includes('Certificado') ? 'bg-orange-500 text-orange-400' :
-                                    'bg-blue-500 text-blue-400'
+                            doc.document_type.includes('Certificado') ? 'bg-orange-500 text-orange-400' :
+                                'bg-blue-500 text-blue-400'
                             }`}>
                             {doc.document_type.includes('Vacuna') ? <FaStethoscope size={20} /> :
                                 doc.document_type.includes('ID') ? <FaIdCard size={20} /> :

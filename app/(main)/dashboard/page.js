@@ -87,11 +87,11 @@ export default async function DashboardPage() {
                 <section style={{ padding: '0 20px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                         <h2 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)' }}>Acciones Rápidas</h2>
-                        <button style={{ fontSize: '12px', fontWeight: '600', color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer' }}>Ver todo</button>
+                        <Link href="/documents" style={{ fontSize: '12px', fontWeight: '600', color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer' }}>Ver todo</Link>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                         {/* RUAC */}
-                        <div className="group" style={{
+                        <Link href="/documents" className="group" style={{
                             position: 'relative', overflow: 'hidden', borderRadius: '24px', height: '144px',
                             background: 'linear-gradient(135deg, #2563eb, #1e40af)', padding: '16px',
                             display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
@@ -111,10 +111,10 @@ export default async function DashboardPage() {
                                 <p style={{ color: 'white', fontWeight: '700', fontSize: '16px', lineHeight: 1.2 }}>Registro RUAC</p>
                                 <p style={{ color: '#dbeafe', fontSize: '11px', marginTop: '4px' }}>Identificación oficial</p>
                             </div>
-                        </div>
+                        </Link>
 
                         {/* Vets */}
-                        <div className="group" style={{
+                        <Link href="/directory" className="group" style={{
                             position: 'relative', overflow: 'hidden', borderRadius: '24px', height: '144px',
                             background: 'linear-gradient(135deg, #10b981, #0f766e)', padding: '16px',
                             display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
@@ -134,7 +134,7 @@ export default async function DashboardPage() {
                                 <p style={{ color: 'white', fontWeight: '700', fontSize: '16px', lineHeight: 1.2 }}>Veterinarios</p>
                                 <p style={{ color: '#d1fae5', fontSize: '11px', marginTop: '4px' }}>Directorio cercano</p>
                             </div>
-                        </div>
+                        </Link>
 
                         {/* Cartilla */}
                         <Link href="/documents" className="group" style={{
@@ -160,7 +160,7 @@ export default async function DashboardPage() {
                         </Link>
 
                         {/* Amber Alert */}
-                        <div className="group" style={{
+                        <Link href="/documents" className="group" style={{
                             position: 'relative', overflow: 'hidden', borderRadius: '24px', height: '144px',
                             background: 'linear-gradient(135deg, #f59e0b, #ea580c)', padding: '16px',
                             display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
@@ -180,7 +180,7 @@ export default async function DashboardPage() {
                                 <p style={{ color: 'white', fontWeight: '700', fontSize: '16px', lineHeight: 1.2 }}>Alerta Amber</p>
                                 <p style={{ color: '#fed7aa', fontSize: '11px', marginTop: '4px' }}>Reportar extravío</p>
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 </section>
 
