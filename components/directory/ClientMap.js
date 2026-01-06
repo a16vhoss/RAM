@@ -100,18 +100,6 @@ export default function ClientMap({ onPlacesFound, onLocationDetected }) {
                     };
                 }).sort((a, b) => a.distance - b.distance);
 
-                setPlaces(processedPlaces);
-
-                // --- FIX: Auto-zoom to show all markers ---
-                // Create bounds object
-                const bounds = new window.google.maps.LatLngBounds();
-                // Extend bounds with user location
-                bounds.extend(location);
-                // Extend bounds with all found places
-                processedPlaces.forEach(place => {
-                    bounds.extend({ lat: place.latitude, lng: place.longitude });
-                });
-                setPlaces(processedPlaces);
 
                 // --- FIX: Auto-zoom to show all markers ---
                 // Create bounds object

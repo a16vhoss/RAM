@@ -16,6 +16,7 @@ En Google Cloud Console, habilita las siguientes APIs:
 
 - **Maps JavaScript API**
 - **Places API**
+- **Geocoding API**
 
 Busca cada una en "APIs & Services" → "Library" y haz clic en "Enable".
 
@@ -33,6 +34,7 @@ Para proteger tu API key:
    - Selecciona "Restrict key"
    - Marca: Maps JavaScript API
    - Marca: Places API
+   - Marca: Geocoding API
 4. Guarda los cambios
 
 ## Paso 4: Configurar la Variable de Entorno
