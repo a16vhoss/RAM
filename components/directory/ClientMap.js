@@ -111,9 +111,42 @@ export default function ClientMap({ onPlacesFound, onLocationDetected }) {
                 processedPlaces.forEach(place => {
                     bounds.extend({ lat: place.latitude, lng: place.longitude });
                 });
+                setPlaces(processedPlaces);
+
+                // --- FIX: Auto-zoom to show all markers ---
+                // Create bounds object
+                const bounds = new window.google.maps.LatLngBounds();
+                // Extend bounds with user location
+                bounds.extend(location);
+                // Extend bounds with all found places
+                processedPlaces.forEach(place => {
+                    bounds.extend({ lat: place.latitude, lng: place.longitude });
+                });
                 // Fit map to these bounds
                 map.fitBounds(bounds);
                 // ------------------------------------------
+
+                // --- Fallback: Infer location name from first result ---
+                // If Geocoding API fails, this ensures we at least show "Zapopan" or similar
+                if (processedPlaces.length > 0 && onLocationDetected) {
+                    const bestGuess = processedPlaces[0];
+                    if (bestGuess && bestGuess.address) {
+                        try {
+                            // Extract last part of address (often city/municipality)
+                            const parts = bestGuess.address.split(',');
+                            const cityLike = parts[parts.length - 1].trim();
+                            // If it's too short (like a zip code), try the second to last
+                            const finalName = (cityLike.length < 3 && parts.length > 1)
+                                ? parts[parts.length - 2].trim()
+                                : cityLike;
+
+                            // We pass this. If Geocoder succeeds later/parallel, it will overwrite with precise City, State.
+                            // If Geocoder fails (REQUEST_DENIED), this persists.
+                            onLocationDetected(finalName, location.lat, location.lng);
+                        } catch (e) { console.warn('Fallback location parsing failed', e); }
+                    }
+                }
+                // -----------------------------------------------------
 
                 if (onPlacesFound) {
                     onPlacesFound(processedPlaces);
@@ -124,7 +157,7 @@ export default function ClientMap({ onPlacesFound, onLocationDetected }) {
                 setLoadingPlaces(false);
             }
         });
-    }, [map, onPlacesFound]);
+    }, [map, onPlacesFound, onLocationDetected]);
 
     // Get user location and search for nearby vets
     useEffect(() => {
@@ -168,15 +201,29 @@ export default function ClientMap({ onPlacesFound, onLocationDetected }) {
                                 const zoneName = (city && state) ? `${city}, ${state}` :
                                     (city || state || results[0].formatted_address.split(',')[0]);
 
-                                // Notify parent
                                 if (onLocationDetected) {
                                     onLocationDetected(zoneName, location.lat, location.lng);
                                 }
                             } else {
                                 console.warn('Geocoder failed:', status);
+                                // Fallback: Try to infer location from the first place result
+                                fallbackToPlaceLocation(location);
                             }
+                        }).catch(e => {
+                            console.error('Geocoder error:', e);
+                            fallbackToPlaceLocation(location);
                         });
+                    } else {
+                        fallbackToPlaceLocation(location);
                     }
+
+                    // Helper for fallback location
+                    const fallbackToPlaceLocation = (loc) => {
+                        // We rely on searchNearbyVets to eventually populate places
+                        // But since searchNearbyVets is async, we might need to hook into the results there.
+                        // Actually, let's just trigger a one-off logic inside searchNearbyVets to notify if Geocoder hasn't run yet.
+                        // For now, if Geocoder fails, we accept we might need to wait for search results.
+                    };
                     // ----------------------------------------------
                 },
                 (error) => {
