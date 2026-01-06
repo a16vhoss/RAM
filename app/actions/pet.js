@@ -8,9 +8,18 @@ import { revalidatePath } from 'next/cache';
 
 // Initialize Supabase Client
 // We use the Service Role Key if available for bypassing RLS, otherwise Anon Key
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Initialize Supabase Client dynamically to avoid top-level crashes
+function getSupabaseClient() {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+        console.error('Missing Supabase environment variables');
+        return null;
+    }
+    return createClient(supabaseUrl, supabaseKey);
+}
+// const supabase = createClient(supabaseUrl, supabaseKey); // Removed top-level init
 
 export async function createPet(formData) {
     console.log('Server Action createPet STARTED');
@@ -48,26 +57,31 @@ export async function createPet(formData) {
         let photoUrl = `/api/placeholder?name=${encodeURIComponent(petName)}`;
 
         // Handle File Upload
+        // Handle File Upload
         if (photoFile && photoFile.size > 0) {
-            const fileExt = photoFile.name.split('.').pop();
-            const fileName = `${uuidv4()}.${fileExt}`;
-            const filePath = `${session.user.user_id}/${fileName}`;
+            const supabase = getSupabaseClient();
+            if (supabase) {
+                const fileExt = photoFile.name.split('.').pop();
+                const fileName = `${uuidv4()}.${fileExt}`;
+                const filePath = `${session.user.user_id}/${fileName}`;
 
-            const { data, error: uploadError } = await supabase.storage
-                .from('pet-photos')
-                .upload(filePath, photoFile, {
-                    contentType: photoFile.type,
-                    upsert: false
-                });
-
-            if (uploadError) {
-                console.error('Storage upload error:', uploadError);
-                // Continue without photo or return error? Continue is safer for UX.
-            } else {
-                const { data: { publicUrl } } = supabase.storage
+                const { data, error: uploadError } = await supabase.storage
                     .from('pet-photos')
-                    .getPublicUrl(filePath);
-                photoUrl = publicUrl;
+                    .upload(filePath, photoFile, {
+                        contentType: photoFile.type,
+                        upsert: false
+                    });
+
+                if (uploadError) {
+                    console.error('Storage upload error:', uploadError);
+                } else {
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('pet-photos')
+                        .getPublicUrl(filePath);
+                    photoUrl = publicUrl;
+                }
+            } else {
+                console.warn('Skipping photo upload: Supabase not configured');
             }
         }
 
