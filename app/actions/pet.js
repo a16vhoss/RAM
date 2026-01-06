@@ -13,7 +13,15 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PU
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function createPet(formData) {
-    const session = await getSession();
+    console.log('Server Action createPet STARTED');
+    let session;
+    try {
+        session = await getSession();
+        console.log('Session retrieved:', session?.user?.email);
+    } catch (e) {
+        console.error('getSession failed:', e);
+        return { success: false, error: 'Auth failed' };
+    }
     if (!session) {
         return { success: false, error: 'No autorizado' };
     }
