@@ -95,6 +95,16 @@ export default function PetProfilePage() {
         return date.toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
     };
 
+    const downloadQR = () => {
+        if (!qrCodeUrl) return;
+        const link = document.createElement('a');
+        link.href = qrCodeUrl;
+        link.download = `RAM-${pet.pet_name}-QR.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <div style={{ minHeight: '100vh', background: 'var(--background-dark)', color: 'white', paddingBottom: '100px', overflowX: 'hidden' }}>
             {/* Background Ambient Glows */}
@@ -198,26 +208,43 @@ export default function PetProfilePage() {
                         <div style={{ position: 'absolute', top: 0, right: 0, width: '128px', height: '128px', background: 'rgba(255,255,255,0.1)', borderRadius: '50%', filter: 'blur(24px)', transform: 'translate(40px, -40px)' }}></div>
                         <div style={{ position: 'absolute', bottom: 0, left: 0, width: '128px', height: '128px', background: 'rgba(0,0,0,0.1)', borderRadius: '50%', filter: 'blur(24px)', transform: 'translate(-40px, 40px)' }}></div>
 
-                        <div style={{ position: 'relative', padding: '24px', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', flex: 1 }}>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                        <div style={{ position: 'relative', padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.8)' }}>
                                         <FaIdCard size={20} />
                                         <span style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.1em' }}>ID Digital Oficial</span>
                                     </div>
-                                    <h3 style={{ color: 'white', fontSize: '18px', fontWeight: '700' }}>MX-{pet.pet_id ? pet.pet_id.substring(0, 5).toUpperCase() : '00000'}</h3>
-                                </div>
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase' }}>Propietario</span>
-                                    <span style={{ fontSize: '14px', color: 'white', fontWeight: '500' }}>Admin Usuario</span>
+                                    <h3 style={{ color: 'white', fontSize: '24px', fontWeight: '700' }}>MX-{pet.pet_id ? pet.pet_id.substring(0, 5).toUpperCase() : '00000'}</h3>
                                 </div>
                             </div>
-                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '12px', background: 'rgba(255,255,255,0.1)', padding: '16px', borderRadius: '16px' }}>
                                 <div style={{ background: 'white', padding: '8px', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}>
-                                    {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '80px', height: '80px' }} />}
+                                    {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '150px', height: '150px' }} />}
                                 </div>
-                                <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.8)', fontWeight: '500' }}>Escanear</span>
+                                <button
+                                    onClick={downloadQR}
+                                    style={{
+                                        color: 'white', fontSize: '12px', fontWeight: '700',
+                                        display: 'flex', alignItems: 'center', gap: '6px',
+                                        background: 'rgba(0,0,0,0.3)', padding: '6px 12px', borderRadius: '999px'
+                                    }}
+                                >
+                                    Descargar QR
+                                </button>
                             </div>
+                        </div>
+
+                        {/* Card Footer Action */}
+                        <div onClick={() => router.push('/documents')} style={{
+                            position: 'relative', background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(4px)', padding: '12px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+                            transition: 'background 0.2s'
+                        }}>
+                            <span style={{ color: 'white', fontSize: '12px', fontWeight: '700', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                VER DOCUMENTOS COMPLETOS <FaArrowRight size={14} />
+                            </span>
                         </div>
                     </div>
                 </div>
