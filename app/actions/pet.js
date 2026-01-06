@@ -153,14 +153,11 @@ export async function deletePet(petId) {
             return { success: false, error: 'Unauthorized to delete this pet' };
         }
 
-        // Delete associated documents first (FK constraint usually handles this if ON DELETE CASCADE, but to be safe)
+        // Delete associated documents first
         await db.run('DELETE FROM documents WHERE pet_id = $1', [petId]);
 
         // Delete pet
         await db.run('DELETE FROM pets WHERE pet_id = $1', [petId]);
-
-        // Note: In a real app, we should also delete the photo from storage, 
-        // but we'll skip that complex logic for speed for now as it doesn't break anything.
 
         revalidatePath('/dashboard');
         revalidatePath(`/pets/${petId}`);
@@ -169,5 +166,25 @@ export async function deletePet(petId) {
     } catch (error) {
         console.error('Delete pet error:', error);
         return { success: false, error: error.message };
+    }
+}
+
+export async function toggleLostPetStatus(petId, isLost) {
+    const session = await getSession();
+    if (!session) return { error: 'Unauthorized' };
+
+    try {
+        const newStatus = isLost ? 'lost' : 'active';
+
+        // Update status
+        await db.query('UPDATE pets SET status = $1 WHERE pet_id = $2', [newStatus, petId]);
+
+        revalidatePath(`/pets/${petId}`);
+        revalidatePath('/dashboard');
+
+        return { success: true, status: newStatus };
+    } catch (error) {
+        console.error('Error toggling lost status:', error);
+        return { error: 'Failed to update status' };
     }
 }
