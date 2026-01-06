@@ -1,8 +1,9 @@
 import { getSession } from '@/lib/auth';
 import db from '@/lib/db';
 import Link from 'next/link';
-import { FaPlus, FaSearch, FaSlidersH, FaIdCard, FaStethoscope, FaSyringe, FaExclamationTriangle, FaBell } from 'react-icons/fa';
+import { FaPlus, FaBell, FaIdCard, FaStethoscope, FaSyringe, FaExclamationTriangle } from 'react-icons/fa';
 import { redirect } from 'next/navigation';
+import DashboardSearch from './DashboardSearch';
 
 export default async function DashboardPage() {
     const session = await getSession();
@@ -60,27 +61,7 @@ export default async function DashboardPage() {
             <main style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
                 {/* Search Bar */}
                 <div style={{ padding: '0 20px' }}>
-                    <div style={{
-                        position: 'relative', width: '100%', height: '56px', background: 'white',
-                        borderRadius: '16px', display: 'flex', alignItems: 'center', padding: '0 16px',
-                        boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border)'
-                    }}>
-                        <FaSearch color="#94a3b8" />
-                        <input
-                            type="text"
-                            placeholder="Buscar veterinaria, servicio..."
-                            style={{
-                                width: '100%', background: 'transparent', border: 'none',
-                                paddingLeft: '12px', fontSize: '14px', color: 'var(--text-main)', outline: 'none'
-                            }}
-                        />
-                        <button style={{
-                            padding: '6px', background: 'rgba(39, 145, 231, 0.1)',
-                            borderRadius: '8px', marginLeft: '8px', border: 'none', cursor: 'pointer'
-                        }}>
-                            <FaSlidersH color="var(--primary)" />
-                        </button>
-                    </div>
+                    <DashboardSearch />
                 </div>
 
                 {/* Quick Actions Grid */}
