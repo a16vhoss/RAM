@@ -197,7 +197,7 @@ export default function PetProfilePage() {
                                         <FaIdCard size={20} />
                                         <span style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.1em' }}>ID Digital Oficial</span>
                                     </div>
-                                    <h3 style={{ color: 'white', fontSize: '18px', fontWeight: '700' }}>MX-{pet.id.toString().padStart(5, '0')}</h3>
+                                    <h3 style={{ color: 'white', fontSize: '18px', fontWeight: '700' }}>MX-{pet.pet_id ? pet.pet_id.substring(0, 5).toUpperCase() : '00000'}</h3>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                                     <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase' }}>Propietario</span>
