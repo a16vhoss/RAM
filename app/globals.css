@@ -15,10 +15,15 @@
 
 @layer base {
   body {
-    @apply bg-background-light dark:bg-background-dark text-text-main-DEFAULT dark:text-text-main-dark min-h-screen font-body antialiased;
+    @apply bg-background-light dark:bg-background-dark text-text-main dark:text-text-main-dark min-h-screen font-body antialiased;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-display font-bold;
   }
 }
@@ -35,28 +40,28 @@
   }
 
   .btn-secondary {
-    @apply bg-surface-light dark:bg-surface-dark text-text-main-DEFAULT dark:text-text-main-dark border border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5;
+    @apply bg-surface-light dark:bg-surface-dark text-text-main dark:text-text-main-dark border border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5;
   }
-  
+
   .btn-ghost {
-    @apply bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-text-secondary-DEFAULT dark:text-text-secondary-dark;
+    @apply bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-text-secondary dark:text-text-secondary-dark;
   }
 
   .card {
-     @apply bg-white dark:bg-surface-dark rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-white/5;
+    @apply bg-white dark:bg-surface-dark rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-white/5;
   }
 
   .input {
-    @apply w-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-text-main-DEFAULT dark:text-text-main-dark outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all;
+    @apply w-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-text-main dark:text-text-main-dark outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all;
   }
 
   /* Glassmorphism Utilities */
   .glass {
     @apply bg-white/70 dark:bg-surface-dark/70 backdrop-blur-xl border-t border-white/20 dark:border-white/10;
   }
-  
+
   .glass-panel {
-      @apply bg-slate-900/60 backdrop-blur-xl border border-white/10;
+    @apply bg-slate-900/60 backdrop-blur-xl border border-white/10;
   }
 }
 
@@ -64,6 +69,7 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
