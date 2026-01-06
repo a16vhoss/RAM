@@ -1,7 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* Build: 2026-01-04 15:24 */
+/* Build: 2026-01-05 18:48 */
+/* Note: Leaflet CSS is imported in ClientMap.js component */
 
 :root {
   /* Look Increíble Palette */
