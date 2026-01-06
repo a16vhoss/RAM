@@ -4,10 +4,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaSearch, FaFileAlt, FaIdCard, FaStethoscope, FaFilter, FaPlus, FaCheckCircle, FaExclamationTriangle, FaChevronRight } from 'react-icons/fa';
 
+import DocumentViewerModal from './DocumentViewerModal';
+
 export default function DocumentsClient({ documents = [], pets = [], session }) {
     const router = useRouter();
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState('Todos');
+    const [selectedDoc, setSelectedDoc] = useState(null);
 
     // Filter documents
     const filteredDocs = documents.filter(doc => {
@@ -137,7 +140,11 @@ export default function DocumentsClient({ documents = [], pets = [], session }) 
             <section className="relative z-10 px-6 mt-4 flex flex-col gap-3">
                 <h3 className="text-lg font-bold text-white mb-1">Recientes</h3>
                 {filteredDocs.length > 0 ? filteredDocs.map((doc, idx) => (
-                    <div key={doc.document_id || idx} className="group relative flex items-center gap-4 p-4 rounded-2xl bg-surface-dark border border-slate-800/50 hover:bg-slate-800 hover:border-slate-700 transition-all active:scale-[0.99] cursor-pointer">
+                    <div
+                        key={doc.document_id || idx}
+                        onClick={() => setSelectedDoc(doc)}
+                        className="group relative flex items-center gap-4 p-4 rounded-2xl bg-surface-dark border border-slate-800/50 hover:bg-slate-800 hover:border-slate-700 transition-all active:scale-[0.99] cursor-pointer"
+                    >
                         <div className={`flex size-12 shrink-0 items-center justify-center rounded-xl bg-opacity-10 ${doc.document_type.includes('Vacuna') ? 'bg-red-500 text-red-400' :
                             doc.document_type.includes('Certificado') || doc.document_type.includes('Acta') ? 'bg-orange-500 text-orange-400' :
                                 'bg-blue-500 text-blue-400'
@@ -174,6 +181,9 @@ export default function DocumentsClient({ documents = [], pets = [], session }) 
 
                 <div className="h-10"></div>
             </section>
+
+            {/* Document Viewer Modal */}
+            <DocumentViewerModal document={selectedDoc} onClose={() => setSelectedDoc(null)} />
         </div>
     );
 }
