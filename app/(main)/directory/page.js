@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { FaMapMarkerAlt, FaStar, FaFilter, FaChevronRight, FaSearch, FaBell, FaSlidersH, FaThLarge, FaStethoscope, FaCut, FaAmbulance, FaStore, FaRegHeart, FaMap, FaList } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaStar, FaFilter, FaChevronRight, FaSearch, FaBell, FaSlidersH, FaThLarge, FaStethoscope, FaCut, FaAmbulance, FaStore, FaRegHeart, FaMap, FaList, FaTimes, FaPhone, FaGlobe, FaClock, FaDirections } from 'react-icons/fa';
 
 import { updateUserLocation } from '@/app/actions/user';
 
@@ -31,9 +31,10 @@ export default function DirectoryPage() {
     const [mapProviders, setMapProviders] = useState([]); // Google Maps results
     const [loading, setLoading] = useState(true);
     const [userAddress, setUserAddress] = useState('Detectando...'); // Location text state
+    const [selectedVet, setSelectedVet] = useState(null); // State for selected vet for modal
 
     // Callback when map detects precise location/address
-    const handleLocationDetected = async (address, lat, lng) => {
+    const handleLocationDetected = useCallback(async (address, lat, lng) => {
         if (address) {
             setUserAddress(address); // Update UI immediately
 
@@ -44,7 +45,12 @@ export default function DirectoryPage() {
                 console.error('Failed to save location to DB:', err);
             }
         }
-    };
+    }, []);
+
+    // Callback when map finds places (e.g., from Google Places API)
+    const handlePlacesFound = useCallback((places) => {
+        setMapProviders(places);
+    }, []);
 
     // Fake data for fallback
     const mockProviders = [
@@ -55,7 +61,10 @@ export default function DirectoryPage() {
             total_reviews: 124,
             is_open: true,
             photo: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80",
-            types: ["veterinary_care"]
+            types: ["veterinary_care"],
+            phone: "+525512345678",
+            website: "https://huellitas.com",
+            opening_hours: ["Lunes-Viernes: 9 AM - 7 PM", "Sábado: 10 AM - 2 PM", "Domingo: Cerrado"]
         },
         {
             business_name: "Clínica PetLife",
@@ -64,7 +73,10 @@ export default function DirectoryPage() {
             total_reviews: 89,
             is_open: true,
             photo: "https://images.unsplash.com/photo-1599443015574-be5fe8a05783?auto=format&fit=crop&q=80",
-            types: ["veterinary_care"]
+            types: ["veterinary_care"],
+            phone: "+525587654321",
+            website: "https://petlife.mx",
+            opening_hours: ["Lunes-Sábado: 8 AM - 8 PM", "Domingo: 10 AM - 4 PM"]
         },
         {
             business_name: "Hospital Veterinario 24h",
@@ -73,7 +85,10 @@ export default function DirectoryPage() {
             total_reviews: 312,
             is_open: true,
             photo: "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&q=80",
-            types: ["veterinary_care", "hospital"]
+            types: ["veterinary_care", "hospital"],
+            phone: "+525599887766",
+            website: "https://hospitalvet24h.com",
+            opening_hours: ["Abierto 24 horas, 7 días a la semana"]
         },
         {
             business_name: "Estética Canina Peludos",
@@ -82,7 +97,10 @@ export default function DirectoryPage() {
             total_reviews: 45,
             is_open: false,
             photo: "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80",
-            types: ["pet_store"]
+            types: ["pet_store"],
+            phone: "+525511223344",
+            website: "https://peludos.com",
+            opening_hours: ["Lunes-Viernes: 10 AM - 6 PM", "Sábado: 10 AM - 1 PM", "Domingo: Cerrado"]
         }
     ];
 
@@ -113,6 +131,96 @@ export default function DirectoryPage() {
 
     // Prioritize map results if available (real-time nearby), otherwise fallback to mock/db
     const displayProviders = mapProviders.length > 0 ? mapProviders : dbProviders;
+
+    const VetDetailsModal = ({ vet, onClose }) => {
+        if (!vet) return null;
+
+        return (
+            <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm p-4 sm:items-center">
+                <div className="bg-[#1c252e] rounded-t-3xl sm:rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl relative">
+                    <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white z-10 p-2 bg-black/50 rounded-full">
+                        <FaTimes size={20} />
+                    </button>
+
+                    <div className="h-48 bg-gray-700 relative">
+                        <div
+                            className="absolute inset-0 bg-cover bg-center"
+                            style={{ backgroundImage: `url(${vet.photo || 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80'})` }}
+                        ></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#1c252e] to-transparent"></div>
+                    </div>
+
+                    <div className="p-6 -mt-12 relative">
+                        <h2 className="text-3xl font-bold text-white mb-2">{vet.business_name}</h2>
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="flex items-center gap-1 bg-yellow-500/10 px-2 py-1 rounded-lg border border-yellow-500/20">
+                                <FaStar className="text-yellow-500 text-xs" />
+                                <span className="text-yellow-500 text-sm font-bold">{vet.rating_average || 4.5}</span>
+                            </div>
+                            <span className="text-gray-400 text-sm">({vet.total_reviews || 0} reseñas)</span>
+                        </div>
+
+                        <p className="text-gray-300 flex items-center gap-2 mb-3">
+                            <FaMapMarkerAlt className="text-primary" /> {vet.address || 'Ubicación desconocida'}
+                        </p>
+
+                        {vet.phone && (
+                            <a href={`tel:${vet.phone}`} className="text-gray-300 flex items-center gap-2 mb-3 hover:text-primary transition-colors">
+                                <FaPhone className="text-primary" /> {vet.phone}
+                            </a>
+                        )}
+
+                        {vet.website && (
+                            <a href={vet.website} target="_blank" rel="noopener noreferrer" className="text-gray-300 flex items-center gap-2 mb-3 hover:text-primary transition-colors">
+                                <FaGlobe className="text-primary" /> {vet.website.replace(/(^\w+:|^)\/\//, '')}
+                            </a>
+                        )}
+
+                        {vet.opening_hours && (
+                            <div className="text-gray-300 flex items-start gap-2 mb-4">
+                                <FaClock className="text-primary mt-1" />
+                                <div>
+                                    {vet.opening_hours.map((hour, i) => (
+                                        <p key={i}>{hour}</p>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="flex items-center gap-2 mb-4">
+                            <span className={`px-3 py-1 rounded-lg text-xs font-medium ${vet.is_open ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+                                {vet.is_open ? 'Abierto' : 'Cerrado'}
+                            </span>
+                            {vet.types && vet.types.map((type, i) => (
+                                <span key={i} className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 text-gray-400 capitalize">
+                                    {type.replace('_', ' ')}
+                                </span>
+                            ))}
+                        </div>
+
+                        <div className="mt-6 flex gap-3">
+                            <a
+                                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(vet.address)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary-dark transition-colors"
+                            >
+                                <FaDirections /> Cómo llegar
+                            </a>
+                            {vet.phone && (
+                                <a
+                                    href={`tel:${vet.phone}`}
+                                    className="flex-1 flex items-center justify-center gap-2 border border-white/10 text-white py-3 rounded-xl font-semibold hover:bg-white/10 transition-colors"
+                                >
+                                    <FaPhone /> Llamar
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
 
     return (
         <div style={{ minHeight: '100vh', padding: '0 0 100px 0', background: 'var(--background-dark)', color: 'white' }}>
@@ -198,7 +306,7 @@ export default function DirectoryPage() {
                         <div className="absolute top-4 left-4 z-10 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
                             <span className="text-xs font-bold text-white">Mostrando resultados en tiempo real</span>
                         </div>
-                        <ClientMap onPlacesFound={setMapProviders} onLocationDetected={handleLocationDetected} />
+                        <ClientMap onPlacesFound={handlePlacesFound} onLocationDetected={handleLocationDetected} />
                     </div>
 
                     {/* List View */}
@@ -228,7 +336,7 @@ export default function DirectoryPage() {
                                 </div>
                             ) : (
                                 displayProviders.map((p, index) => (
-                                    <Link href={`#`} key={index} className="block group">
+                                    <button onClick={() => setSelectedVet(p)} key={index} className="block group text-left w-full">
                                         <div className="bg-[#1c252e] rounded-3xl overflow-hidden border border-white/5 shadow-xl transition-all group-hover:scale-[1.02]">
                                             <div className="h-40 bg-gray-700 relative">
                                                 {/* Image */}
@@ -269,14 +377,15 @@ export default function DirectoryPage() {
                                                 </div>
                                             </div>
                                         </div>
-                                    </Link>
+                                    </button>
                                 ))
                             )}
                         </div>
                     </div>
                 </div>
             </main>
+
+            <VetDetailsModal vet={selectedVet} onClose={() => setSelectedVet(null)} />
         </div>
     );
 }
-

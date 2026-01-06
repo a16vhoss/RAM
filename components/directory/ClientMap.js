@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow, Circle } from '@react-google-maps/api';
 import { FaLocationArrow, FaStar, FaPhone, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 
@@ -39,6 +39,8 @@ export default function ClientMap({ onPlacesFound, onLocationDetected }) {
     const [selectedPlace, setSelectedPlace] = useState(null);
     const [loadingPlaces, setLoadingPlaces] = useState(false);
     const [locationError, setLocationError] = useState(null);
+
+    const locationLockedRef = useRef(false);
 
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
@@ -116,7 +118,7 @@ export default function ClientMap({ onPlacesFound, onLocationDetected }) {
 
                 // --- Fallback: Infer location name from first result ---
                 // If Geocoding API fails, this ensures we at least show "Zapopan" or similar
-                if (processedPlaces.length > 0 && onLocationDetected) {
+                if (processedPlaces.length > 0 && onLocationDetected && !locationLockedRef.current) {
                     const bestGuess = processedPlaces[0];
                     if (bestGuess && bestGuess.address) {
                         try {
@@ -145,7 +147,7 @@ export default function ClientMap({ onPlacesFound, onLocationDetected }) {
                 setLoadingPlaces(false);
             }
         });
-    }, [map, onPlacesFound, onLocationDetected]);
+    }, [map, onPlacesFound, onLocationDetected, locationLockedRef]);
 
     // Get user location and search for nearby vets
     useEffect(() => {
@@ -191,27 +193,15 @@ export default function ClientMap({ onPlacesFound, onLocationDetected }) {
 
                                 if (onLocationDetected) {
                                     onLocationDetected(zoneName, location.lat, location.lng);
+                                    locationLockedRef.current = true;
                                 }
                             } else {
                                 console.warn('Geocoder failed:', status);
-                                // Fallback: Try to infer location from the first place result
-                                fallbackToPlaceLocation(location);
                             }
                         }).catch(e => {
                             console.error('Geocoder error:', e);
-                            fallbackToPlaceLocation(location);
                         });
-                    } else {
-                        fallbackToPlaceLocation(location);
                     }
-
-                    // Helper for fallback location
-                    const fallbackToPlaceLocation = (loc) => {
-                        // We rely on searchNearbyVets to eventually populate places
-                        // But since searchNearbyVets is async, we might need to hook into the results there.
-                        // Actually, let's just trigger a one-off logic inside searchNearbyVets to notify if Geocoder hasn't run yet.
-                        // For now, if Geocoder fails, we accept we might need to wait for search results.
-                    };
                     // ----------------------------------------------
                 },
                 (error) => {
