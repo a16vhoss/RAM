@@ -101,6 +101,20 @@ export default function ClientMap({ onPlacesFound }) {
                 }).sort((a, b) => a.distance - b.distance);
 
                 setPlaces(processedPlaces);
+
+                // --- FIX: Auto-zoom to show all markers ---
+                // Create bounds object
+                const bounds = new window.google.maps.LatLngBounds();
+                // Extend bounds with user location
+                bounds.extend(location);
+                // Extend bounds with all found places
+                processedPlaces.forEach(place => {
+                    bounds.extend({ lat: place.latitude, lng: place.longitude });
+                });
+                // Fit map to these bounds
+                map.fitBounds(bounds);
+                // ------------------------------------------
+
                 if (onPlacesFound) {
                     onPlacesFound(processedPlaces);
                 }
@@ -124,8 +138,8 @@ export default function ClientMap({ onPlacesFound }) {
                         lng: position.coords.longitude
                     };
                     setUserLocation(location);
+                    // Initial pan, search will re-fit bounds shortly
                     map.panTo(location);
-                    map.setZoom(14);
                     searchNearbyVets(location);
                 },
                 (error) => {
@@ -206,6 +220,7 @@ export default function ClientMap({ onPlacesFound }) {
                                 strokeWeight: 3,
                             }}
                             title="Tu ubicación"
+                            zIndex={999} // Always on top
                         />
                         <Circle
                             center={userLocation}
@@ -221,22 +236,14 @@ export default function ClientMap({ onPlacesFound }) {
                     </>
                 )}
 
-                {/* Veterinary markers */}
+                {/* Veterinary markers - USING DEFAULT RED PINS FOR VISIBILITY STABILITY */}
                 {places.map((place) => (
                     <Marker
                         key={place.place_id}
                         position={{ lat: place.latitude, lng: place.longitude }}
                         onClick={() => setSelectedPlace(place)}
-                        icon={{
-                            url: 'data:image/svg+xml;base64,' + btoa(`
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40">
-                                    <path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 24 16 24s16-12 16-24c0-8.837-7.163-16-16-16z" fill="#10b981"/>
-                                    <circle cx="16" cy="16" r="6" fill="white"/>
-                                </svg>
-                            `),
-                            scaledSize: new window.google.maps.Size(32, 40),
-                            anchor: new window.google.maps.Point(16, 40)
-                        }}
+                        title={place.business_name}
+                    // icon property removed to use default red pin
                     />
                 ))}
 
@@ -273,8 +280,8 @@ export default function ClientMap({ onPlacesFound }) {
                             {selectedPlace.is_open !== undefined && (
                                 <div className="mt-2">
                                     <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${selectedPlace.is_open
-                                            ? 'bg-green-100 text-green-800'
-                                            : 'bg-red-100 text-red-800'
+                                        ? 'bg-green-100 text-green-800'
+                                        : 'bg-red-100 text-red-800'
                                         }`}>
                                         {selectedPlace.is_open ? 'Abierto ahora' : 'Cerrado'}
                                     </span>
