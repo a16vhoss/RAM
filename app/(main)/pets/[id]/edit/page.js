@@ -7,10 +7,23 @@ export default async function EditPetPage({ params }) {
     const session = await getSession();
     if (!session) redirect("/login");
 
-    const [pet] = await db.getAll('SELECT * FROM pets WHERE pet_id = $1', [params.id]);
+    const resolvedParams = await params;
+    const petId = resolvedParams.id;
 
-    if (!pet) redirect("/dashboard");
-    if (pet.user_id !== session.user.user_id) redirect("/dashboard");
+    console.log('[EditPetPage] ID:', petId);
 
-    return <EditPetClient params={params} pet={pet} />;
+    const [pet] = await db.getAll('SELECT * FROM pets WHERE pet_id = $1', [petId]);
+
+    console.log('[EditPetPage] Pet Found:', !!pet);
+
+    if (!pet) {
+        console.log('[EditPetPage] Redirecting: Pet not found');
+        redirect("/dashboard");
+    }
+    if (pet.user_id !== session.user.user_id) {
+        console.log('[EditPetPage] Redirecting: Unauthorized');
+        redirect("/dashboard");
+    }
+
+    return <EditPetClient params={resolvedParams} pet={pet} />;
 }
