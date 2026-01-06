@@ -17,7 +17,7 @@ export default function EditPetPage({ params, pet }) {
         breed: pet.breed || '',
         color: pet.color || '',
         sex: pet.sex || 'Macho',
-        birthDate: pet.birth_date ? pet.birth_date.split('T')[0] : '', // Format for date input
+        birthDate: pet.birth_date ? new Date(pet.birth_date).toISOString().split('T')[0] : '', // Format for date input
         weight: pet.weight || '',
         microchipNumber: pet.microchip_number || '',
         isSpayed: pet.spayed_neutered === 1,
