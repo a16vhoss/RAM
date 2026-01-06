@@ -74,10 +74,9 @@ export default function DirectoryPage() {
         const fetchProviders = async () => {
             try {
                 // Simulate fetch delay
-                setTimeout(() => {
-                    setDbProviders(mockProviders);
-                    setLoading(false);
-                }, 500);
+                // Only use mock if we really have nothing else or as instant fallback
+                setDbProviders(mockProviders);
+                setLoading(false);
             } catch (e) {
                 console.error(e);
                 setLoading(false);
@@ -95,7 +94,8 @@ export default function DirectoryPage() {
     ];
 
 
-    const displayProviders = viewMode === 'map' && mapProviders.length > 0 ? mapProviders : dbProviders;
+    // Prioritize map results if available (real-time nearby), otherwise fallback to mock/db
+    const displayProviders = mapProviders.length > 0 ? mapProviders : dbProviders;
 
     return (
         <div style={{ minHeight: '100vh', padding: '0 0 100px 0', background: 'var(--background-dark)', color: 'white' }}>
@@ -173,18 +173,21 @@ export default function DirectoryPage() {
                 </div>
 
                 {/* Content Area */}
-                <div style={{ height: viewMode === 'map' ? '500px' : 'auto', transition: 'height 0.3s' }}>
-                    {viewMode === 'map' ? (
-                        <div className="w-full h-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl relative">
-                            {/* Map Overlay Info */}
-                            <div className="absolute top-4 left-4 z-10 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-                                <span className="text-xs font-bold text-white">Mostrando resultados en tiempo real</span>
-                            </div>
-                            <ClientMap onPlacesFound={setMapProviders} />
+                <div style={{ position: 'relative', minHeight: '500px' }}>
+
+                    {/* Map View (Always mounted to keep state/location, hidden via CSS) */}
+                    <div className={`w-full h-[500px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl relative ${viewMode === 'list' ? 'hidden' : 'block'}`}>
+                        {/* Map Overlay Info */}
+                        <div className="absolute top-4 left-4 z-10 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+                            <span className="text-xs font-bold text-white">Mostrando resultados en tiempo real</span>
                         </div>
-                    ) : (
+                        <ClientMap onPlacesFound={setMapProviders} />
+                    </div>
+
+                    {/* List View */}
+                    <div className={`${viewMode === 'map' ? 'hidden' : 'block'}`}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                            {/* Filter Chips (Only show in list for now or both?) */}
+                            {/* Filter Chips */}
                             <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
                                 {filters.map(f => (
                                     <button
@@ -203,7 +206,8 @@ export default function DirectoryPage() {
                             {/* List Results */}
                             {displayProviders.length === 0 ? (
                                 <div className="text-center py-20 opacity-50">
-                                    <p>No se encontraron resultados. Intenta cambiar a la vista de Mapa.</p>
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                                    <p>Buscando veterinarias cerca de tu ubicación...</p>
                                 </div>
                             ) : (
                                 displayProviders.map((p, index) => (
@@ -213,12 +217,17 @@ export default function DirectoryPage() {
                                                 {/* Image */}
                                                 <div
                                                     className="absolute inset-0 bg-cover bg-center"
-                                                    style={{ backgroundImage: `url(${p.photo || 'https://lh3.googleusercontent.com/aida-public/AB6AXuCij_BIYrl-l0jSpnWiTQTgbi4gpEPBgfG0VEYmUH18lqC8CO1lAzOjZyV8FJ-5PXZIqL8a8nw9OIszODyvPNsHxMSgPGNX6mYLxQCyaAHrkDzKpSVeZ7luaRsYmxIa3Jd9cxm24v-tMa7JGyEwJ1DcIBQBpaj6YQSwZ2OpBmmK2a2Wvr4u5ymUbkjMdFOLqj-ZdfYaPl3vm-UMp-ReC6jloy96gmygy-_5DAvFUrZur8LN27W4qniYkfeBDKKtzh6hfAVWARWF2V0E'})` }}
+                                                    style={{ backgroundImage: `url(${p.photo || 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80'})` }}
                                                 ></div>
                                                 <div className="absolute inset-0 bg-gradient-to-t from-[#1c252e] to-transparent"></div>
                                                 <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md p-2 rounded-full text-white">
                                                     <FaRegHeart />
                                                 </div>
+                                                {p.distance && (
+                                                    <div className="absolute top-4 left-4 bg-emerald-500/90 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-bold shadow-lg">
+                                                        📍 {p.distance.toFixed(1)} km
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="p-5 relative -mt-6">
                                                 <div className="flex justify-between items-start mb-2">
@@ -235,9 +244,11 @@ export default function DirectoryPage() {
                                                     <span className={`px-3 py-1 rounded-lg text-xs font-medium ${p.is_open ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
                                                         {p.is_open ? 'Abierto' : 'Cerrado'}
                                                     </span>
-                                                    <span className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 text-gray-400">
-                                                        Veterinaria
-                                                    </span>
+                                                    {p.types && p.types.map((type, i) => i < 2 && (
+                                                        <span key={i} className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 text-gray-400 capitalize">
+                                                            {type.replace('_', ' ')}
+                                                        </span>
+                                                    ))}
                                                 </div>
                                             </div>
                                         </div>
@@ -245,7 +256,7 @@ export default function DirectoryPage() {
                                 ))
                             )}
                         </div>
-                    )}
+                    </div>
                 </div>
             </main>
         </div>
