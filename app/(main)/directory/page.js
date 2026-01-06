@@ -29,16 +29,55 @@ export default function DirectoryPage() {
     const [mapProviders, setMapProviders] = useState([]); // Google Maps results
     const [loading, setLoading] = useState(true);
 
+    // Fake data for fallback
+    const mockProviders = [
+        {
+            business_name: "Veterinaria Huellitas",
+            address: "Av. Insurgentes Sur 123, CDMX",
+            rating_average: 4.8,
+            total_reviews: 124,
+            is_open: true,
+            photo: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80",
+            types: ["veterinary_care"]
+        },
+        {
+            business_name: "Clínica PetLife",
+            address: "Calle Reforma 442, CDMX",
+            rating_average: 4.5,
+            total_reviews: 89,
+            is_open: true,
+            photo: "https://images.unsplash.com/photo-1599443015574-be5fe8a05783?auto=format&fit=crop&q=80",
+            types: ["veterinary_care"]
+        },
+        {
+            business_name: "Hospital Veterinario 24h",
+            address: "Colonia Roma Norte 55, CDMX",
+            rating_average: 4.9,
+            total_reviews: 312,
+            is_open: true,
+            photo: "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&q=80",
+            types: ["veterinary_care", "hospital"]
+        },
+        {
+            business_name: "Estética Canina Peludos",
+            address: "Polanco V Sección, CDMX",
+            rating_average: 4.2,
+            total_reviews: 45,
+            is_open: false,
+            photo: "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80",
+            types: ["pet_store"]
+        }
+    ];
+
     // Fetch initial DB data
     useEffect(() => {
         const fetchProviders = async () => {
             try {
-                // In a real app we'd call an API route here, for now simulating or fetching if API exists
-                // We'll trust the map for real-time mostly, but let's fetch static as backup/list base
-                // For this demo, we'll start empty or fetch from our API if we converted it.
-                // Since this page was async server component, we need an API endpoint to fetch DB providers now.
-                // Assuming we have one or will create one. For now, let's use map data as primary if in map mode.
-                setLoading(false);
+                // Simulate fetch delay
+                setTimeout(() => {
+                    setDbProviders(mockProviders);
+                    setLoading(false);
+                }, 500);
             } catch (e) {
                 console.error(e);
                 setLoading(false);
