@@ -2,8 +2,24 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { FaMapMarkerAlt, FaStar, FaFilter, FaChevronRight, FaSearch, FaBell, FaSlidersH, FaThLarge, FaStethoscope, FaCut, FaAmbulance, FaStore, FaRegHeart, FaMap, FaList } from 'react-icons/fa';
-import ClientMap from '@/components/directory/ClientMap';
+
+// Dynamically import ClientMap with SSR disabled to prevent Leaflet errors during build
+const ClientMap = dynamic(
+    () => import('@/components/directory/ClientMap'),
+    {
+        ssr: false,
+        loading: () => (
+            <div className="w-full h-full flex items-center justify-center bg-[#1c252e] rounded-3xl">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2791e7] mx-auto mb-4"></div>
+                    <p className="text-gray-400">Cargando mapa...</p>
+                </div>
+            </div>
+        )
+    }
+);
 
 export default function DirectoryPage() {
     const [viewMode, setViewMode] = useState('list'); // 'list' or 'map'
