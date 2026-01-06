@@ -5,6 +5,8 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { FaMapMarkerAlt, FaStar, FaFilter, FaChevronRight, FaSearch, FaBell, FaSlidersH, FaThLarge, FaStethoscope, FaCut, FaAmbulance, FaStore, FaRegHeart, FaMap, FaList } from 'react-icons/fa';
 
+import { updateUserLocation } from '@/app/actions/user';
+
 // Dynamically import ClientMap with SSR disabled to prevent Leaflet errors during build
 const ClientMap = dynamic(
     () => import('@/components/directory/ClientMap'),
@@ -28,6 +30,21 @@ export default function DirectoryPage() {
     const [dbProviders, setDbProviders] = useState([]); // Initial DB results
     const [mapProviders, setMapProviders] = useState([]); // Google Maps results
     const [loading, setLoading] = useState(true);
+    const [userAddress, setUserAddress] = useState('Detectando...'); // Location text state
+
+    // Callback when map detects precise location/address
+    const handleLocationDetected = async (address, lat, lng) => {
+        if (address) {
+            setUserAddress(address); // Update UI immediately
+
+            // Persist to DB
+            try {
+                await updateUserLocation(address, lat, lng);
+            } catch (err) {
+                console.error('Failed to save location to DB:', err);
+            }
+        }
+    };
 
     // Fake data for fallback
     const mockProviders = [
@@ -115,7 +132,7 @@ export default function DirectoryPage() {
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: '500' }}>Ubicación</span>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                <span style={{ fontSize: '14px', fontWeight: '700', color: 'white' }}>Detectando...</span>
+                                <span style={{ fontSize: '14px', fontWeight: '700', color: 'white' }}>{userAddress}</span>
                             </div>
                         </div>
                     </div>
@@ -181,7 +198,7 @@ export default function DirectoryPage() {
                         <div className="absolute top-4 left-4 z-10 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
                             <span className="text-xs font-bold text-white">Mostrando resultados en tiempo real</span>
                         </div>
-                        <ClientMap onPlacesFound={setMapProviders} />
+                        <ClientMap onPlacesFound={setMapProviders} onLocationDetected={handleLocationDetected} />
                     </div>
 
                     {/* List View */}

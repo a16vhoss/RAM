@@ -32,7 +32,7 @@ const mapOptions = {
     ]
 };
 
-export default function ClientMap({ onPlacesFound }) {
+export default function ClientMap({ onPlacesFound, onLocationDetected }) {
     const [map, setMap] = useState(null);
     const [userLocation, setUserLocation] = useState(null);
     const [places, setPlaces] = useState([]);
@@ -140,7 +140,44 @@ export default function ClientMap({ onPlacesFound }) {
                     setUserLocation(location);
                     // Initial pan, search will re-fit bounds shortly
                     map.panTo(location);
+
                     searchNearbyVets(location);
+
+                    // --- Inverse Geocoding to get "City, State" ---
+                    if (window.google?.maps?.Geocoder) {
+                        const geocoder = new window.google.maps.Geocoder();
+                        geocoder.geocode({ location }, (results, status) => {
+                            if (status === 'OK' && results?.[0]) {
+                                // Find locality (City) and admin_area_level_1 (State)
+                                let city = '';
+                                let state = '';
+
+                                // Iterate address components to find meaningful names
+                                // We prefer "locality" or "sublocality" for city
+                                // We prefer "administrative_area_level_1" for state
+                                const addressComponents = results[0].address_components;
+
+                                const localityComp = addressComponents.find(c => c.types.includes('locality')) ||
+                                    addressComponents.find(c => c.types.includes('sublocality'));
+                                const stateComp = addressComponents.find(c => c.types.includes('administrative_area_level_1'));
+
+                                if (localityComp) city = localityComp.short_name;
+                                if (stateComp) state = stateComp.short_name;
+
+                                // Fallback to formatted address if specific components missing
+                                const zoneName = (city && state) ? `${city}, ${state}` :
+                                    (city || state || results[0].formatted_address.split(',')[0]);
+
+                                // Notify parent
+                                if (onLocationDetected) {
+                                    onLocationDetected(zoneName, location.lat, location.lng);
+                                }
+                            } else {
+                                console.warn('Geocoder failed:', status);
+                            }
+                        });
+                    }
+                    // ----------------------------------------------
                 },
                 (error) => {
                     console.error('Geolocation error:', error);
