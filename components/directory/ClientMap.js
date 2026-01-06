@@ -138,6 +138,8 @@ export default function ClientMap({ onPlacesFound, onLocationDetected }) {
                 }
                 // -----------------------------------------------------
 
+
+                setPlaces(processedPlaces);
                 if (onPlacesFound) {
                     onPlacesFound(processedPlaces);
                 }
