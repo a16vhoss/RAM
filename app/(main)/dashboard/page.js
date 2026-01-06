@@ -15,259 +15,174 @@ export default async function DashboardPage() {
     const pets = await db.getAll('SELECT * FROM pets WHERE user_id = $1', [user.user_id]);
 
     return (
-        <div style={{ paddingBottom: '100px', maxWidth: '100%', overflowX: 'hidden' }}>
+        <div className="min-h-screen bg-background-light dark:bg-background-dark pb-28 overflow-x-hidden">
             {/* Header Section */}
-            <header style={{
-                position: 'sticky', top: 0, zIndex: 20,
-                background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
-                padding: '24px 20px 12px 20px', transition: 'background 0.3s',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
-            }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <div style={{ position: 'relative', cursor: 'pointer' }}>
-                            <div style={{
-                                width: '48px', height: '48px', borderRadius: '50%',
-                                backgroundImage: `url("https://ui-avatars.com/api/?name=${encodeURIComponent(user.first_name || 'User')}&background=random")`,
-                                backgroundSize: 'cover', backgroundPosition: 'center',
-                                border: '2px solid rgba(255,255,255,0.1)'
-                            }}></div>
-                            <div style={{
-                                position: 'absolute', bottom: 0, right: 0, width: '12px', height: '12px',
-                                background: '#22c55e', borderRadius: '50%', border: '2px solid var(--background)'
-                            }}></div>
+            <header className="sticky top-0 z-20 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 shadow-lg pt-6 pb-4 px-6 animate-slide-up">
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                        <div className="relative group cursor-pointer">
+                            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-colors">
+                                <img
+                                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.first_name || 'User')}&background=random`}
+                                    alt="Profile"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <div className="absolute bottom-0 right-0 w-3 h-3 bg-success rounded-full border-2 border-slate-900"></div>
                         </div>
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Bienvenido</span>
-                            <h1 style={{ fontSize: '20px', fontWeight: '700', lineHeight: 1, color: 'var(--text-main)' }}>{user.first_name || 'Usuario'}</h1>
+                        <div className="flex flex-col">
+                            <span className="text-xs text-text-secondary uppercase tracking-wider font-semibold">Bienvenido</span>
+                            <h1 className="text-xl font-display font-bold text-white leading-tight">{user.first_name || 'Usuario'}</h1>
                         </div>
                     </div>
-                    <button style={{
-                        position: 'relative', padding: '8px', borderRadius: '50%',
-                        background: 'transparent', border: 'none', cursor: 'pointer'
-                    }}>
-                        <FaBell size={24} color="var(--text-secondary)" />
-                        <span style={{
-                            position: 'absolute', top: '8px', right: '8px', width: '10px', height: '10px',
-                            background: '#ef4444', borderRadius: '50%', border: '2px solid var(--background)'
-                        }}></span>
+                    <button className="relative p-2 rounded-full hover:bg-white/5 transition-colors">
+                        <FaBell size={24} className="text-text-secondary hover:text-white transition-colors" />
+                        <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-error rounded-full border-2 border-slate-900 animate-pulse"></span>
                     </button>
                 </div>
-                <p style={{ fontSize: '24px', fontWeight: '700', color: 'var(--text-main)', lineHeight: '1.2', marginTop: '8px' }}>
-                    Tus peludos están <br /><span style={{ color: 'var(--primary)' }}>protegidos y seguros.</span>
+                <p className="text-2xl font-bold text-white leading-tight mt-2">
+                    Tus peludos están <br />
+                    <span className="text-primary bg-clip-text">protegidos y seguros.</span>
                 </p>
-            </header >
+            </header>
 
-            <main style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
+            <main className="flex flex-col gap-8 w-full mt-6">
                 {/* Search Bar */}
-                <div style={{ padding: '0 20px' }}>
+                <div className="px-5 animate-fade-in" style={{ animationDelay: '0.1s' }}>
                     <DashboardSearch />
                 </div>
 
                 {/* Quick Actions Grid */}
-                <section style={{ padding: '0 20px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                        <h2 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)' }}>Acciones Rápidas</h2>
-                        <Link href="/documents" style={{ fontSize: '12px', fontWeight: '600', color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer' }}>Ver todo</Link>
+                <section className="px-5 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-lg font-bold text-text-main dark:text-white">Acciones Rápidas</h2>
+                        <Link href="/documents" className="text-xs font-semibold text-primary hover:text-primary-hover transition-colors">Ver todo</Link>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+
+                    <div className="grid grid-cols-2 gap-4">
                         {/* RUAC */}
-                        <Link href="/documents" className="group" style={{
-                            position: 'relative', overflow: 'hidden', borderRadius: '24px', height: '144px',
-                            background: 'linear-gradient(135deg, #2563eb, #1e40af)', padding: '16px',
-                            display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-                            boxShadow: '0 10px 15px -3px rgba(30, 64, 175, 0.2)', cursor: 'pointer'
-                        }}>
-                            <div style={{ position: 'absolute', top: 0, right: 0, padding: '12px', opacity: 0.2 }}>
-                                <FaIdCard size={80} color="white" />
+                        <Link href="/documents" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
+                            <div className="absolute top-0 right-0 p-3 opacity-20 transform translate-x-2 -translate-y-2 group-hover:rotate-12 transition-transform">
+                                <FaIdCard size={90} className="text-white" />
                             </div>
-                            <div style={{
-                                width: '40px', height: '40px', borderRadius: '50%',
-                                background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center'
-                            }}>
-                                <FaIdCard color="white" />
+                            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
+                                <FaIdCard className="text-white text-xl" />
                             </div>
-                            <div>
-                                <p style={{ color: 'white', fontWeight: '700', fontSize: '16px', lineHeight: 1.2 }}>Registro RUAC</p>
-                                <p style={{ color: '#dbeafe', fontSize: '11px', marginTop: '4px' }}>Identificación oficial</p>
+                            <div className="relative z-10">
+                                <p className="text-white font-bold text-lg leading-tight">Registro RUAC</p>
+                                <p className="text-blue-200 text-xs mt-1 font-medium">Identificación oficial</p>
                             </div>
                         </Link>
 
                         {/* Vets */}
-                        <Link href="/directory" className="group" style={{
-                            position: 'relative', overflow: 'hidden', borderRadius: '24px', height: '144px',
-                            background: 'linear-gradient(135deg, #10b981, #0f766e)', padding: '16px',
-                            display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-                            boxShadow: '0 10px 15px -3px rgba(13, 148, 136, 0.2)', cursor: 'pointer'
-                        }}>
-                            <div style={{ position: 'absolute', top: 0, right: 0, padding: '12px', opacity: 0.2 }}>
-                                <FaStethoscope size={80} color="white" />
+                        <Link href="/directory" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-700 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
+                            <div className="absolute top-0 right-0 p-3 opacity-20 transform translate-x-2 -translate-y-2 group-hover:rotate-12 transition-transform">
+                                <FaStethoscope size={90} className="text-white" />
                             </div>
-                            <div style={{
-                                width: '40px', height: '40px', borderRadius: '50%',
-                                background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center'
-                            }}>
-                                <FaStethoscope color="white" />
+                            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
+                                <FaStethoscope className="text-white text-xl" />
                             </div>
-                            <div>
-                                <p style={{ color: 'white', fontWeight: '700', fontSize: '16px', lineHeight: 1.2 }}>Veterinarios</p>
-                                <p style={{ color: '#d1fae5', fontSize: '11px', marginTop: '4px' }}>Directorio cercano</p>
+                            <div className="relative z-10">
+                                <p className="text-white font-bold text-lg leading-tight">Veterinarios</p>
+                                <p className="text-emerald-100 text-xs mt-1 font-medium">Directorio cercano</p>
                             </div>
                         </Link>
 
                         {/* Cartilla */}
-                        <Link href="/documents" className="group" style={{
-                            position: 'relative', overflow: 'hidden', borderRadius: '24px', height: '144px',
-                            background: 'linear-gradient(135deg, #8b5cf6, #6366f1)', padding: '16px',
-                            display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-                            boxShadow: '0 10px 15px -3px rgba(139, 92, 246, 0.2)', cursor: 'pointer'
-                        }}>
-                            <div style={{ position: 'absolute', top: 0, right: 0, padding: '12px', opacity: 0.2 }}>
-                                <FaSyringe size={80} color="white" />
+                        <Link href="/documents" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-violet-500 to-indigo-600 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
+                            <div className="absolute top-0 right-0 p-3 opacity-20 transform translate-x-2 -translate-y-2 group-hover:rotate-12 transition-transform">
+                                <FaSyringe size={90} className="text-white" />
                             </div>
-                            <div style={{
-                                width: '40px', height: '40px', borderRadius: '50%',
-                                background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center'
-                            }}>
-                                <FaSyringe color="white" />
+                            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
+                                <FaSyringe className="text-white text-xl" />
                             </div>
-                            <div>
-                                <p style={{ color: 'white', fontWeight: '700', fontSize: '16px', lineHeight: 1.2 }}>Cartilla Digital</p>
-                                <p style={{ color: '#e9d5ff', fontSize: '11px', marginTop: '4px' }}>Vacunas y citas</p>
+                            <div className="relative z-10">
+                                <p className="text-white font-bold text-lg leading-tight">Cartilla Digital</p>
+                                <p className="text-violet-200 text-xs mt-1 font-medium">Vacunas y citas</p>
                             </div>
                         </Link>
 
                         {/* Amber Alert */}
-                        <Link href="/documents" className="group" style={{
-                            position: 'relative', overflow: 'hidden', borderRadius: '24px', height: '144px',
-                            background: 'linear-gradient(135deg, #f59e0b, #ea580c)', padding: '16px',
-                            display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-                            boxShadow: '0 10px 15px -3px rgba(245, 158, 11, 0.2)', cursor: 'pointer'
-                        }}>
-                            <div style={{ position: 'absolute', top: 0, right: 0, padding: '12px', opacity: 0.2 }}>
-                                <FaExclamationTriangle size={80} color="white" />
+                        <Link href="/documents" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
+                            <div className="absolute top-0 right-0 p-3 opacity-20 transform translate-x-2 -translate-y-2 group-hover:rotate-12 transition-transform">
+                                <FaExclamationTriangle size={90} className="text-white" />
                             </div>
-                            <div style={{
-                                width: '40px', height: '40px', borderRadius: '50%',
-                                background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center'
-                            }}>
-                                <FaExclamationTriangle color="white" />
+                            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
+                                <FaExclamationTriangle className="text-white text-xl" />
                             </div>
-                            <div>
-                                <p style={{ color: 'white', fontWeight: '700', fontSize: '16px', lineHeight: 1.2 }}>Alerta Amber</p>
-                                <p style={{ color: '#fed7aa', fontSize: '11px', marginTop: '4px' }}>Reportar extravío</p>
+                            <div className="relative z-10">
+                                <p className="text-white font-bold text-lg leading-tight">Alerta Amber</p>
+                                <p className="text-amber-100 text-xs mt-1 font-medium">Reportar extravío</p>
                             </div>
                         </Link>
                     </div>
                 </section>
 
                 {/* Tip Banner */}
-                <section style={{ padding: '0 20px' }}>
-                    <div style={{
-                        position: 'relative', width: '100%', borderRadius: '24px', overflow: 'hidden',
-                        height: '128px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px',
-                        background: '#1c262e'
-                    }}>
-                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #9333ea, #db2777)', opacity: 0.9, zIndex: 0 }}></div>
-                        <div style={{ position: 'relative', zIndex: 10, maxWidth: '60%' }}>
-                            <span style={{
-                                display: 'inline-block', padding: '4px 8px', borderRadius: '6px',
-                                background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(4px)',
-                                fontSize: '10px', fontWeight: '700', color: 'white', marginBottom: '8px',
-                                textTransform: 'uppercase'
-                            }}>Tip del día</span>
-                            <p style={{ color: 'white', fontWeight: '700', fontSize: '14px', lineHeight: 1.4 }}>La hidratación es clave. Cambia el agua de Max 3 veces al día.</p>
+                <section className="px-5 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+                    <div className="relative w-full rounded-3xl overflow-hidden h-32 flex items-center justify-between p-6 bg-surface-dark border border-white/5 shadow-lg group">
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-500 opacity-90 transition-opacity group-hover:opacity-100"></div>
+                        <div className="relative z-10 max-w-[65%]">
+                            <span className="inline-block px-2 py-1 rounded-md bg-white/20 backdrop-blur-sm text-[10px] font-bold text-white mb-2 uppercase tracking-wide border border-white/10">
+                                Tip del día
+                            </span>
+                            <p className="text-white font-bold text-sm leading-snug">La hidratación es clave. Cambia el agua de Max 3 veces al día.</p>
                         </div>
-                        <div style={{
-                            position: 'relative', zIndex: 10, width: '80px', height: '80px',
-                            borderRadius: '50%', border: '4px solid rgba(255,255,255,0.2)',
-                            overflow: 'hidden', flexShrink: 0, background: 'white'
-                        }}>
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8C8auowYV8uJJuZgzvEXrnh8b4hBUpQJb3yn_J4u6ZVhM_loZU7UemBwnuxwFW12hyCE1iKnIbHu1bRVgxENNo5Ia7MyepghWmOabsDyY5NigXOVzQI2G9_eFTsU9X0FaR9JWyDwfHcBiXy3YmWc4hh7Ox-u7mp0FRNOFXQ78nqggVGVX6nRqRdYQljAnsETQQfUJrjphHqHZxgQmibIsQ5mkIy_aElAF3FgPx-BGDTtELL5XMnzg8Gvv8zaKNpmt3YOaNPOH9CTU" alt="Tip" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <div className="relative z-10 w-20 h-20 rounded-full border-4 border-white/20 overflow-hidden shadow-xl flex-shrink-0 group-hover:scale-105 transition-transform">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8C8auowYV8uJJuZgzvEXrnh8b4hBUpQJb3yn_J4u6ZVhM_loZU7UemBwnuxwFW12hyCE1iKnIbHu1bRVgxENNo5Ia7MyepghWmOabsDyY5NigXOVzQI2G9_eFTsU9X0FaR9JWyDwfHcBiXy3YmWc4hh7Ox-u7mp0FRNOFXQ78nqggVGVX6nRqRdYQljAnsETQQfUJrjphHqHZxgQmibIsQ5mkIy_aElAF3FgPx-BGDTtELL5XMnzg8Gvv8zaKNpmt3YOaNPOH9CTU" alt="Tip" className="w-full h-full object-cover" />
                         </div>
                     </div>
                 </section>
 
                 {/* Pets Carousel */}
-                <section style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 20px' }}>
-                        <h2 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)' }}>Tus Mascotas</h2>
-                        <Link href="/pets/new" style={{
-                            width: '32px', height: '32px', borderRadius: '50%',
-                            background: 'var(--surface-dark)', display: 'flex', alignItems: 'center',
-                            justifyContent: 'center', color: 'white', cursor: 'pointer'
-                        }}>
-                            <FaPlus size={14} />
+                <section className="flex flex-col gap-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                    <div className="flex justify-between items-center px-5">
+                        <h2 className="text-lg font-bold text-text-main dark:text-white">Tus Mascotas</h2>
+                        <Link href="/pets/new" className="w-8 h-8 rounded-full bg-surface-dark hover:bg-primary transition-colors flex items-center justify-center text-white border border-white/10">
+                            <FaPlus size={12} />
                         </Link>
                     </div>
 
-                    {/* Scroll Container */}
-                    <div className="no-scrollbar snap-x" style={{
-                        display: 'flex', overflowX: 'auto', gap: '16px', padding: '0 20px 16px 20px'
-                    }}>
+                    <div className="no-scrollbar flex overflow-x-auto gap-4 px-5 pb-4 snap-x snap-mandatory">
                         {pets.length === 0 ? (
-                            <div style={{
-                                minWidth: '160px', height: '220px', borderRadius: '24px',
-                                background: 'var(--surface)', display: 'flex', flexDirection: 'column',
-                                alignItems: 'center', justifyContent: 'center', border: '2px dashed var(--border)'
-                            }}>
-                                <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Sin mascotas</p>
+                            <div className="min-w-[160px] h-[220px] rounded-3xl bg-surface-light dark:bg-surface-dark flex flex-col items-center justify-center border-2 border-dashed border-gray-300 dark:border-white/10 text-text-secondary">
+                                <p className="text-sm font-medium">Sin mascotas</p>
                             </div>
                         ) : (
                             pets.map(pet => (
                                 <Link
                                     href={`/pets/${pet.pet_id}`}
                                     key={pet.pet_id}
-                                    className="snap-center group"
-                                    style={{
-                                        minWidth: '160px', height: '220px', borderRadius: '24px', overflow: 'hidden',
-                                        position: 'relative', cursor: 'pointer', boxShadow: 'var(--shadow-md)', flexShrink: 0
-                                    }}
+                                    className="snap-center group min-w-[160px] h-[220px] rounded-3xl overflow-hidden relative shadow-lg hover:shadow-glow transition-all hover:-translate-y-1"
                                 >
-                                    <div style={{
-                                        position: 'absolute', inset: 0,
-                                        backgroundImage: `url('${pet.pet_photo || "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80"}')`,
-                                        backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.5s'
-                                    }}></div>
-                                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2), transparent)' }}></div>
-                                    <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', padding: '16px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '4px' }}>
-                                        <div style={{
-                                            display: 'flex', alignItems: 'center', gap: '4px',
-                                            background: 'rgba(34, 197, 94, 0.2)', backdropFilter: 'blur(4px)',
-                                            padding: '2px 8px', borderRadius: '999px', border: '1px solid rgba(34, 197, 94, 0.3)'
-                                        }}>
-                                            <span style={{ width: '6px', height: '6px', background: '#4ade80', borderRadius: '50%' }}></span>
-                                            <span style={{ fontSize: '10px', fontWeight: '700', color: '#dcfce7' }}>Al día</span>
+                                    <div className="absolute inset-0">
+                                        <img
+                                            src={pet.pet_photo || "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80"}
+                                            alt={pet.pet_name}
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                    </div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+
+                                    <div className="absolute bottom-0 left-0 w-full p-4 flex flex-col items-start gap-1">
+                                        <div className="flex items-center gap-1.5 bg-green-500/20 backdrop-blur-md px-2 py-0.5 rounded-full border border-green-500/30 mb-1">
+                                            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+                                            <span className="text-[10px] font-bold text-green-100 uppercase tracking-wide">Al día</span>
                                         </div>
-                                        <p style={{ color: 'white', fontWeight: '700', fontSize: '20px' }}>{pet.pet_name}</p>
-                                        <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px' }}>{pet.breed || pet.species}</p>
+                                        <p className="text-white font-bold text-xl leading-none">{pet.pet_name}</p>
+                                        <p className="text-gray-300 text-xs font-medium">{pet.breed || pet.species}</p>
                                     </div>
                                 </Link>
                             ))
                         )}
-                        {/* Fake Card for Preview of Scroll */}
-                        <div className="snap-center" style={{ minWidth: '20px' }}></div>
+                        {/* Spacer */}
+                        <div className="min-w-[20px] snap-center"></div>
                     </div>
                 </section>
 
-                <div style={{ height: '20px' }}></div>
+                {/* Space for Bottom Nav */}
+                <div className="h-8"></div>
             </main>
         </div >
     );
-}
-
-function calculateAge(birthDateString) {
-    if (!birthDateString) return '';
-    const today = new Date();
-    const birthDate = new Date(birthDateString);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-    }
-    return age + ' años';
 }

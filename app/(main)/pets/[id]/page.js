@@ -4,11 +4,9 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import QRCode from 'qrcode';
 import {
-    FaArrowLeft, FaShareAlt, FaCheckCircle, FaShieldAlt, FaMicrochip, FaPaw, FaWeight,
-    FaVenusMars, FaBirthdayCake, FaIdCard, FaSyringe, FaCut, FaArrowRight, FaTrash,
-    FaFileAlt, FaChevronRight
+    FaArrowLeft, FaCheckCircle, FaShieldAlt, FaMicrochip, FaPaw, FaWeight,
+    FaVenusMars, FaBirthdayCake, FaIdCard, FaTrash, FaFileAlt, FaChevronRight, FaArrowRight
 } from 'react-icons/fa';
-import Link from 'next/link';
 import { deletePet } from '@/app/actions/pet';
 import DocumentViewerModal from '@/app/(main)/documents/DocumentViewerModal';
 
@@ -67,10 +65,20 @@ export default function PetProfilePage() {
         }
     };
 
+    const downloadQR = () => {
+        if (!qrCodeUrl) return;
+        const link = document.createElement('a');
+        link.href = qrCodeUrl;
+        link.download = `RAM-${pet.pet_name}-QR.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     if (loading) {
         return (
-            <div style={{ minHeight: '100vh', background: 'var(--background-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div className="spinner" style={{ borderTopColor: 'var(--primary)' }}></div>
+            <div className="min-h-screen bg-background-dark flex items-center justify-center">
+                <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
             </div>
         );
     }
@@ -95,100 +103,71 @@ export default function PetProfilePage() {
         return date.toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
     };
 
-    const downloadQR = () => {
-        if (!qrCodeUrl) return;
-        const link = document.createElement('a');
-        link.href = qrCodeUrl;
-        link.download = `RAM-${pet.pet_name}-QR.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
     return (
-        <div style={{ minHeight: '100vh', background: 'var(--background-dark)', color: 'white', paddingBottom: '100px', overflowX: 'hidden' }}>
+        <div className="min-h-screen bg-background-dark text-white pb-28 overflow-x-hidden relative">
             {/* Background Ambient Glows */}
-            <div style={{ position: 'fixed', top: '-20%', left: '-10%', width: '300px', height: '300px', background: 'rgba(39, 145, 231, 0.2)', borderRadius: '50%', filter: 'blur(120px)', pointerEvents: 'none', zIndex: 0 }}></div>
-            <div style={{ position: 'fixed', bottom: '10%', right: '-10%', width: '250px', height: '250px', background: 'rgba(168, 85, 247, 0.1)', borderRadius: '50%', filter: 'blur(100px)', pointerEvents: 'none', zIndex: 0 }}></div>
+            <div className="fixed -top-[20%] -left-[10%] w-[300px] h-[300px] bg-blue-500/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+            <div className="fixed bottom-[10%] -right-[10%] w-[250px] h-[250px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
 
             {/* Top Navigation */}
-            <div style={{
-                position: 'sticky', top: 0, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '16px', background: 'rgba(17, 26, 33, 0.8)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(255,255,255,0.05)'
-            }}>
-                <button onClick={() => router.back()} style={{
-                    width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', border: 'none', cursor: 'pointer'
-                }}>
+            <div className="sticky top-0 z-50 flex items-center justify-between px-4 py-4 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 animate-slide-up">
+                <button onClick={() => router.back()} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
                     <FaArrowLeft size={20} />
                 </button>
-                <h2 style={{ fontSize: '14px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.8 }}>Perfil de Mascota</h2>
-                <div style={{ width: '40px' }}></div> {/* Spacer for alignment */}
+                <h2 className="text-sm font-semibold uppercase tracking-widest text-gray-300">Perfil de Mascota</h2>
+                <div className="w-10"></div>
             </div>
 
             {/* Scrollable Content */}
-            <div style={{ position: 'relative', zIndex: 10, display: 'flex', flexDirection: 'column' }}>
+            <div className="relative z-10 flex flex-col gap-6">
 
                 {/* Hero Section */}
-                <div style={{ padding: '24px 16px 8px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <div style={{ position: 'relative', width: '100%', aspectRatio: '4/5', maxHeight: '420px', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
-                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, var(--background-dark), transparent, transparent)', opacity: 0.6, zIndex: 10 }}></div>
-                        <div style={{
-                            width: '100%', height: '100%', backgroundImage: `url(${pet.pet_photo || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=1000'})`,
-                            backgroundSize: 'cover', backgroundPosition: 'center', transform: 'scale(1.0)', transition: 'transform 0.7s'
-                        }}></div>
+                <div className="px-4 pt-6 flex flex-col items-center">
+                    <div className="relative w-full aspect-[4/5] max-h-[420px] rounded-3xl overflow-hidden shadow-2xl animate-fade-in">
+                        <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent opacity-80 z-10"></div>
+                        <img
+                            src={pet.pet_photo || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=1000'}
+                            alt={pet.pet_name}
+                            className="w-full h-full object-cover transform scale-100 transition-transform duration-700 hover:scale-105"
+                        />
 
                         {/* Floating Info Overlay */}
-                        <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', padding: '24px', zIndex: 20, display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                                <span style={{
-                                    padding: '4px 12px', borderRadius: '999px', background: 'rgba(39, 145, 231, 0.9)',
-                                    backdropFilter: 'blur(4px)', fontSize: '10px', fontWeight: '700', color: 'white',
-                                    textTransform: 'uppercase', letterSpacing: '0.05em', boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-                                }}>Verificado</span>
+                        <div className="absolute bottom-0 left-0 w-full p-6 z-20 flex flex-col gap-1 mb-2">
+                            <div className="flex items-center gap-2 mb-2">
+                                <span className="px-3 py-1 rounded-full bg-primary/90 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider shadow-lg">
+                                    Verificado
+                                </span>
                             </div>
-                            <h1 style={{ fontSize: '36px', fontWeight: '700', lineHeight: '1.1', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>{pet.pet_name}</h1>
-                            <p style={{ fontSize: '18px', fontWeight: '500', color: '#e2e8f0', textShadow: '0 1px 2px rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                {pet.breed} <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'white' }}></span> {calculateAge(pet.birth_date)}
+                            <h1 className="text-4xl font-bold leading-none drop-shadow-lg">{pet.pet_name}</h1>
+                            <p className="text-lg font-medium text-gray-200 drop-shadow-md flex items-center gap-2">
+                                {pet.breed} <span className="w-1 h-1 rounded-full bg-white"></span> {calculateAge(pet.birth_date)}
                             </p>
                         </div>
                     </div>
                 </div>
 
                 {/* Status Chips */}
-                <div className="no-scrollbar" style={{ display: 'flex', width: '100%', overflowX: 'auto', gap: '12px', padding: '16px', margin: '0 -16px' }}>
-                    <div style={{ paddingLeft: '16px' }}></div>
-                    <div style={{
-                        display: 'flex', height: '36px', flexShrink: 0, alignItems: 'center', gap: '8px',
-                        borderRadius: '999px', background: 'rgba(26, 34, 43, 0.6)', border: '1px solid rgba(255,255,255,0.08)',
-                        paddingLeft: '12px', paddingRight: '16px', borderLeft: '4px solid #22c55e'
-                    }}>
-                        <FaCheckCircle color="#4ade80" size={16} />
-                        <span style={{ fontSize: '14px', fontWeight: '500' }}>Vacunado</span>
+                <div className="no-scrollbar flex w-full overflow-x-auto gap-3 px-4 -my-2 snap-x">
+                    <div className="pl-1"></div>
+                    <div className="snap-center h-9 flex-shrink-0 flex items-center gap-2 rounded-full bg-slate-800/60 border border-white/5 pl-3 pr-4 border-l-4 border-l-green-500">
+                        <FaCheckCircle className="text-green-400" size={16} />
+                        <span className="text-sm font-medium">Vacunado</span>
                     </div>
-                    <div style={{
-                        display: 'flex', height: '36px', flexShrink: 0, alignItems: 'center', gap: '8px',
-                        borderRadius: '999px', background: 'rgba(26, 34, 43, 0.6)', border: '1px solid rgba(255,255,255,0.08)',
-                        paddingLeft: '12px', paddingRight: '16px', borderLeft: '4px solid var(--primary)'
-                    }}>
-                        <FaShieldAlt color="var(--primary)" size={16} />
-                        <span style={{ fontSize: '14px', fontWeight: '500' }}>Registrado</span>
+                    <div className="snap-center h-9 flex-shrink-0 flex items-center gap-2 rounded-full bg-slate-800/60 border border-white/5 pl-3 pr-4 border-l-4 border-l-primary">
+                        <FaShieldAlt className="text-primary" size={16} />
+                        <span className="text-sm font-medium">Registrado</span>
                     </div>
                     {pet.microchip_number && (
-                        <div style={{
-                            display: 'flex', height: '36px', flexShrink: 0, alignItems: 'center', gap: '8px',
-                            borderRadius: '999px', background: 'rgba(26, 34, 43, 0.6)', border: '1px solid rgba(255,255,255,0.08)',
-                            paddingLeft: '12px', paddingRight: '16px', borderLeft: '4px solid #a855f7'
-                        }}>
-                            <FaMicrochip color="#c084fc" size={16} />
-                            <span style={{ fontSize: '14px', fontWeight: '500' }}>Chip Activo</span>
+                        <div className="snap-center h-9 flex-shrink-0 flex items-center gap-2 rounded-full bg-slate-800/60 border border-white/5 pl-3 pr-4 border-l-4 border-l-purple-500">
+                            <FaMicrochip className="text-purple-400" size={16} />
+                            <span className="text-sm font-medium">Chip Activo</span>
                         </div>
                     )}
                 </div>
 
                 {/* Stats Grid */}
-                <div style={{ padding: '8px 16px' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div className="px-4">
+                    <div className="grid grid-cols-2 gap-3">
                         <StatCard icon={<FaPaw size={20} />} color="blue" label="Especie" value={pet.species} />
                         <StatCard icon={<FaWeight size={20} />} color="orange" label="Peso" value={pet.weight ? `${pet.weight}kg` : 'N/A'} />
                         <StatCard icon={<FaVenusMars size={20} />} color="pink" label="Sexo" value={pet.sex} />
@@ -197,39 +176,32 @@ export default function PetProfilePage() {
                 </div>
 
                 {/* Digital ID Card Section */}
-                <div style={{ padding: '16px', marginTop: '8px' }}>
-                    <div style={{
-                        position: 'relative', width: '100%', borderRadius: '24px', overflow: 'hidden',
-                        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-                        border: '1px solid rgba(255,255,255,0.1)'
-                    }}>
-                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #2791e7 0%, #144a75 100%)' }}></div>
-                        {/* Decorative Patterns */}
-                        <div style={{ position: 'absolute', top: 0, right: 0, width: '128px', height: '128px', background: 'rgba(255,255,255,0.1)', borderRadius: '50%', filter: 'blur(24px)', transform: 'translate(40px, -40px)' }}></div>
-                        <div style={{ position: 'absolute', bottom: 0, left: 0, width: '128px', height: '128px', background: 'rgba(0,0,0,0.1)', borderRadius: '50%', filter: 'blur(24px)', transform: 'translate(-40px, 40px)' }}></div>
+                <div className="px-4 mt-2">
+                    <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 group">
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary to-blue-900"></div>
 
-                        <div style={{ position: 'relative', padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.8)' }}>
+                        {/* Decorative Patterns */}
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl translate-x-10 -translate-y-10 pointer-events-none"></div>
+                        <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/10 rounded-full blur-2xl -translate-x-10 translate-y-10 pointer-events-none"></div>
+
+                        <div className="relative p-6 flex flex-col gap-6">
+                            <div className="flex justify-between items-start">
+                                <div className="flex flex-col gap-4">
+                                    <div className="flex items-center gap-2 text-white/80">
                                         <FaIdCard size={20} />
-                                        <span style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.1em' }}>ID Digital Oficial</span>
+                                        <span className="text-xs font-bold uppercase tracking-widest">ID Digital Oficial</span>
                                     </div>
-                                    <h3 style={{ color: 'white', fontSize: '24px', fontWeight: '700' }}>MX-{pet.pet_id ? pet.pet_id.substring(0, 5).toUpperCase() : '00000'}</h3>
+                                    <h3 className="text-white text-3xl font-bold tracking-tight">MX-{pet.pet_id ? pet.pet_id.substring(0, 5).toUpperCase() : '00000'}</h3>
                                 </div>
                             </div>
 
-                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '12px', background: 'rgba(255,255,255,0.1)', padding: '16px', borderRadius: '16px' }}>
-                                <div style={{ background: 'white', padding: '8px', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}>
-                                    {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '150px', height: '150px' }} />}
+                            <div className="bg-white/10 backdrop-blur-sm p-4 rounded-2xl flex flex-col items-center justify-center gap-4 border border-white/5">
+                                <div className="bg-white p-2 rounded-xl shadow-lg transform transition-transform group-hover:scale-105">
+                                    {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" className="w-32 h-32" />}
                                 </div>
                                 <button
                                     onClick={downloadQR}
-                                    style={{
-                                        color: 'white', fontSize: '12px', fontWeight: '700',
-                                        display: 'flex', alignItems: 'center', gap: '6px',
-                                        background: 'rgba(0,0,0,0.3)', padding: '6px 12px', borderRadius: '999px'
-                                    }}
+                                    className="px-4 py-2 bg-black/30 hover:bg-black/50 rounded-full text-xs font-bold text-white flex items-center gap-2 transition-colors uppercase tracking-wide backdrop-blur-md"
                                 >
                                     Descargar QR
                                 </button>
@@ -237,68 +209,55 @@ export default function PetProfilePage() {
                         </div>
 
                         {/* Card Footer Action */}
-                        <div onClick={() => router.push('/documents')} style={{
-                            position: 'relative', background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(4px)', padding: '12px',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
-                            transition: 'background 0.2s'
-                        }}>
-                            <span style={{ color: 'white', fontSize: '12px', fontWeight: '700', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                VER DOCUMENTOS COMPLETOS <FaArrowRight size={14} />
+                        <div
+                            onClick={() => router.push('/documents')}
+                            className="relative bg-black/20 backdrop-blur-sm p-3 flex items-center justify-center cursor-pointer hover:bg-black/30 transition-colors"
+                        >
+                            <span className="text-white text-xs font-bold tracking-wider flex items-center gap-2">
+                                VER DOCS COMPLETOS <FaArrowRight size={12} />
                             </span>
                         </div>
                     </div>
                 </div>
 
                 {/* Documents List Section */}
-                <div style={{ padding: '16px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', padding: '0 4px' }}>
-                        <h3 style={{ color: 'white', fontSize: '18px', fontWeight: '700' }}>Documentos de {pet.pet_name.split(' ')[0]}</h3>
-                    </div>
+                <div className="px-4">
+                    <h3 className="text-lg font-bold text-white mb-4 px-1">Documentos de {pet.pet_name.split(' ')[0]}</h3>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div className="flex flex-col gap-3">
                         {pet.documents && pet.documents.length > 0 ? pet.documents.map((doc) => (
                             <div
                                 key={doc.document_id}
-                                onClick={() => setSelectedDoc({ ...doc, pet_name: pet.pet_name })} // Inject pet name for modal
-                                style={{
-                                    background: 'rgba(26, 34, 43, 0.6)', backdropFilter: 'blur(12px)', padding: '16px',
-                                    borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '16px',
-                                    border: '1px solid rgba(255,255,255,0.08)', cursor: 'pointer',
-                                    transition: 'background 0.2s'
-                                }}
+                                onClick={() => setSelectedDoc({ ...doc, pet_name: pet.pet_name })}
+                                className="group bg-slate-800/60 backdrop-blur-md p-4 rounded-2xl flex items-center gap-4 border border-white/5 cursor-pointer hover:bg-slate-800 transition-colors shadow-sm"
                             >
-                                <div style={{
-                                    width: '40px', height: '40px', borderRadius: '12px',
-                                    background: doc.document_type.includes('Acta') ? 'rgba(249, 115, 22, 0.2)' : 'rgba(59, 130, 246, 0.2)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    color: doc.document_type.includes('Acta') ? '#fb923c' : '#60a5fa', flexShrink: 0
-                                }}>
-                                    <FaFileAlt size={18} />
+                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${doc.document_type.includes('Acta') ? 'bg-orange-500/20 text-orange-400' : 'bg-blue-500/20 text-blue-400'}`}>
+                                    <FaFileAlt size={20} />
                                 </div>
-                                <div style={{ flex: 1 }}>
-                                    <p style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>{doc.document_type}</p>
-                                    <p style={{ color: '#94a3b8', fontSize: '14px' }}>Emitido: {formatDateShort(doc.issued_at || doc.created_at)}</p>
+                                <div className="flex-1">
+                                    <p className="text-white font-semibold text-base group-hover:text-primary transition-colors">{doc.document_type}</p>
+                                    <p className="text-slate-400 text-sm">Emitido: {formatDateShort(doc.issued_at || doc.created_at)}</p>
                                 </div>
-                                <FaChevronRight color="#64748b" size={12} />
+                                <FaChevronRight className="text-slate-600 group-hover:text-white transition-colors" size={12} />
                             </div>
                         )) : (
-                            <div className="text-center p-8 border border-dashed border-white/10 rounded-2xl">
-                                <p className="text-gray-500">No hay documentos registrados.</p>
+                            <div className="text-center p-8 border-2 border-dashed border-white/10 rounded-2xl">
+                                <p className="text-slate-500 text-sm">No hay documentos registrados.</p>
                             </div>
                         )}
                     </div>
                 </div>
 
                 {/* Delete Area */}
-                <div className="mt-8 px-4 mb-8">
+                <div className="mt-4 px-4 mb-4">
                     <button
                         onClick={handleDelete}
                         disabled={deleting}
-                        className="w-full py-4 rounded-xl border border-red-500/30 text-red-500 font-bold hover:bg-red-500/10 transition-colors flex items-center justify-center gap-2"
+                        className="w-full py-4 rounded-xl border border-red-500/30 text-red-500 font-bold hover:bg-red-500/10 transition-colors flex items-center justify-center gap-2 active:scale-[0.98]"
                     >
                         {deleting ? 'Eliminando...' : <><FaTrash /> Eliminar Mascota</>}
                     </button>
-                    <p className="text-center text-xs text-gray-600 mt-2">Esta acción eliminará todos los datos y documentos de la mascota.</p>
+                    <p className="text-center text-xs text-slate-500 mt-2">Esta acción eliminará todos los datos y documentos.</p>
                 </div>
 
             </div>
@@ -311,27 +270,23 @@ export default function PetProfilePage() {
 
 function StatCard({ icon, color, label, value }) {
     const colorMap = {
-        blue: { bg: 'rgba(59, 130, 246, 0.2)', text: '#60a5fa' },
-        orange: { bg: 'rgba(249, 115, 22, 0.2)', text: '#fb923c' },
-        pink: { bg: 'rgba(236, 72, 153, 0.2)', text: '#f472b6' },
-        yellow: { bg: 'rgba(234, 179, 8, 0.2)', text: '#facc15' }
+        blue: { bg: 'bg-blue-500/20', text: 'text-blue-400' },
+        orange: { bg: 'bg-orange-500/20', text: 'text-orange-400' },
+        pink: { bg: 'bg-pink-500/20', text: 'text-pink-400' },
+        yellow: { bg: 'bg-yellow-500/20', text: 'text-yellow-400' }
     };
 
     const theme = colorMap[color] || colorMap.blue;
 
     return (
-        <div style={{
-            background: 'rgba(26, 34, 43, 0.6)', backdropFilter: 'blur(12px)', padding: '16px',
-            borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '12px',
-            border: '1px solid rgba(255,255,255,0.08)', transition: 'background 0.2s'
-        }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div style={{ padding: '8px', borderRadius: '12px', background: theme.bg, color: theme.text }}>
+        <div className="bg-slate-800/60 backdrop-blur-md p-4 rounded-2xl flex flex-col gap-3 border border-white/5 hover:bg-slate-800 transition-colors group">
+            <div className="flex justify-between items-start">
+                <div className={`p-2.5 rounded-xl ${theme.bg} ${theme.text}`}>
                     {icon}
                 </div>
-                <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: '500' }}>{label}</span>
+                <span className="text-xs text-slate-400 font-medium">{label}</span>
             </div>
-            <p style={{ color: 'white', fontSize: '20px', fontWeight: '700' }}>{value}</p>
+            <p className="text-white text-xl font-bold group-hover:scale-105 transition-transform origin-left">{value}</p>
         </div>
     );
 }

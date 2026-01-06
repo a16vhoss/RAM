@@ -1,178 +1,70 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* Build: 2026-01-05 18:48 */
-/* Note: Leaflet CSS is imported in ClientMap.js component */
+
+/* Fonts handled by Next.js layout but referenced here for variables if needed */
 
 :root {
-  /* Look Increíble Palette */
+  /* Legacy Variable Mapping to maintain compatibility during migration */
   --primary: #2791e7;
-  --primary-rgb: 39, 145, 231;
-  --primary-hover: #1e70b3;
-  --primary-light: rgba(39, 145, 231, 0.1);
-
+  --background-dark: #0f172a;
   --background-light: #f6f7f8;
-  --background-dark: #111a21;
-  --surface-dark: #1c262e;
-
-  /* Usage mappings */
-  --background: var(--background-light);
-  --foreground: #111a21;
-  --surface: #ffffff;
-  --text-main: #111a21;
-  --text-secondary: #64748b;
-  --border: #e2e8f0;
-
-  --success: #10b981;
-  /* Emerald 500 */
-  --error: #ef4444;
-  /* Red 500 */
-  --accent-orange: #f97316;
-  /* Orange 500 */
-
-  --font-display: var(--font-spline), sans-serif;
-  --font-body: var(--font-noto), sans-serif;
-
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-2xl: 32px;
-
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-  --shadow-glow: 0 0 20px rgba(39, 145, 231, 0.3);
+  --text-main-light: #1e293b;
+  --text-main-dark: #f8fafc;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: var(--background-dark);
-    --foreground: #ffffff;
-    --surface: var(--surface-dark);
-    --text-main: #ffffff;
-    --text-secondary: #94a3b8;
-    --border: rgba(255, 255, 255, 0.1);
+@layer base {
+  body {
+    @apply bg-background-light dark:bg-background-dark text-text-main-DEFAULT dark:text-text-main-dark min-h-screen font-body antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold;
   }
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+@layer components {
+  /* Utility Components extracted for consistency */
+
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-2xl font-display font-semibold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply bg-primary hover:bg-primary-hover text-white shadow-glow hover:shadow-glow-strong;
+  }
+
+  .btn-secondary {
+    @apply bg-surface-light dark:bg-surface-dark text-text-main-DEFAULT dark:text-text-main-dark border border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5;
+  }
+  
+  .btn-ghost {
+    @apply bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-text-secondary-DEFAULT dark:text-text-secondary-dark;
+  }
+
+  .card {
+     @apply bg-white dark:bg-surface-dark rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-white/5;
+  }
+
+  .input {
+    @apply w-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-text-main-DEFAULT dark:text-text-main-dark outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all;
+  }
+
+  /* Glassmorphism Utilities */
+  .glass {
+    @apply bg-white/70 dark:bg-surface-dark/70 backdrop-blur-xl border-t border-white/20 dark:border-white/10;
+  }
+  
+  .glass-panel {
+      @apply bg-slate-900/60 backdrop-blur-xl border border-white/10;
+  }
 }
 
-body {
-  background-color: var(--background);
-  color: var(--text-main);
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  color: var(--text-main);
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Utilities */
-.glass-panel {
-  background: rgba(17, 26, 33, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.glass-nav {
-  background: rgba(17, 26, 33, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
+/* Scrollbar Hide Utility */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
-
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-.snap-x {
-  scroll-snap-type: x mandatory;
-}
-
-.snap-center {
-  scroll-snap-align: center;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 24px;
-  border-radius: var(--radius-xl);
-  font-weight: 600;
-  transition: all 0.2s;
-  cursor: pointer;
-  border: none;
-  font-family: var(--font-display);
-}
-
-.btn-primary {
-  background: var(--primary);
-  color: white;
-  box-shadow: var(--shadow-glow);
-}
-
-.btn-primary:active {
-  transform: scale(0.98);
-}
-
-.input-group {
-  margin-bottom: 20px;
-}
-
-.input-label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-secondary);
-}
-
-.input-control {
-  width: 100%;
-  background: var(--surface-dark);
-  border: 1px solid transparent;
-  border-radius: var(--radius-lg);
-  padding: 16px;
-  color: white;
-  outline: none;
-  transition: all 0.2s;
-}
-
-.input-control:focus {
-  border-color: rgba(39, 145, 231, 0.5);
-  box-shadow: 0 0 0 4px rgba(39, 145, 231, 0.1);
-}
-
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  min-height: 100vh;
-  position: relative;
-  background-color: var(--background);
 }
