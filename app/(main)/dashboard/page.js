@@ -18,9 +18,9 @@ export default async function DashboardPage() {
             {/* Header Section */}
             <header style={{
                 position: 'sticky', top: 0, zIndex: 20,
-                background: 'linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%)',
+                background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
                 padding: '24px 20px 12px 20px', transition: 'background 0.3s',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)'
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
