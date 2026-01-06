@@ -79,13 +79,22 @@ export async function createPet(formData) {
         ]);
 
         // Auto-generate Document (Acta)
-        const docId = uuidv4();
-        const regNum = `014-${new Date().getFullYear().toString().slice(-1)}-${Math.floor(Math.random() * 1000000).toString().padStart(7, '0')}-A`;
+        // Auto-generate Documents
+        const regNum = `RAM-${new Date().getFullYear().toString().slice(-1)}-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
 
+        // 1. Acta de Registro Animal
+        const docId1 = uuidv4();
         await db.run(`
-            INSERT INTO documents (document_id, pet_id, user_id, document_type, unique_registration_number, created_at)
-            VALUES ($1, $2, $3, $4, $5, NOW())
-        `, [docId, petId, userId, 'Acta de Propiedad', regNum]);
+            INSERT INTO documents (document_id, pet_id, user_id, document_type, unique_registration_number, created_at, issued_at)
+            VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
+        `, [docId1, petId, userId, 'Acta de Registro Animal', regNum]);
+
+        // 2. Credencial de Identificación
+        const docId2 = uuidv4();
+        await db.run(`
+            INSERT INTO documents (document_id, pet_id, user_id, document_type, unique_registration_number, created_at, issued_at)
+            VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
+        `, [docId2, petId, userId, 'Credencial de Identificación', regNum]);
 
         revalidatePath('/dashboard');
         return { success: true, petId };
