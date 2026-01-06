@@ -22,8 +22,9 @@ export async function createPet(formData) {
         console.error('getSession failed:', e);
         return { success: false, error: 'Auth failed' };
     }
-    if (!session) {
-        return { success: false, error: 'No autorizado' };
+    if (!session || !session.user || !session.user.user_id) {
+        console.error('Invalid session structure:', session);
+        return { success: false, error: 'Sesión no válida o usuario no identificado' };
     }
 
     try {

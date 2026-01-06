@@ -61,7 +61,7 @@ export default function NewPetPage() {
             }
         } catch (error) {
             console.error(error);
-            alert('Error al enviar el formulario');
+            alert('Error al enviar el formulario: ' + (error.message || error.toString()));
         } finally {
             setLoading(false);
         }
