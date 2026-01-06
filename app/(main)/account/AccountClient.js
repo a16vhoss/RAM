@@ -41,37 +41,39 @@ function ProfileView({ user, pets, documents, onOpenSettings }) {
 
             {/* Header & User Info */}
             <div className="relative px-6 pt-8 pb-6 bg-gradient-to-b from-surface/50 to-transparent">
-                <div className="flex justify-between items-start mb-6">
-                    <h1 className="text-2xl font-bold">Mi Perfil</h1>
-                    <button
-                        onClick={onOpenSettings}
-                        className="p-2 rounded-full bg-surface-dark border border-white/10 hover:bg-white/10 transition-colors"
-                    >
-                        <FaCog size={20} className="text-gray-400" />
-                    </button>
-                </div>
-
-                <div className="flex flex-col items-center">
-                    <div className="relative mb-4">
-                        <div className="w-24 h-24 rounded-full bg-surface-dark border-4 border-surface flex items-center justify-center overflow-hidden shadow-xl">
-                            {user.photo ? (
-                                <img src={user.photo} alt="Profile" className="w-full h-full object-cover" />
-                            ) : (
-                                <FaUserCircle size={64} className="text-gray-500" />
-                            )}
-                        </div>
-                        <div className="absolute bottom-0 right-0 bg-green-500 w-5 h-5 rounded-full border-2 border-background"></div>
+                <div className="max-w-7xl mx-auto w-full">
+                    <div className="flex justify-between items-start mb-6">
+                        <h1 className="text-2xl font-bold">Mi Perfil</h1>
+                        <button
+                            onClick={onOpenSettings}
+                            className="p-2 rounded-full bg-surface-dark border border-white/10 hover:bg-white/10 transition-colors"
+                        >
+                            <FaCog size={20} className="text-gray-400" />
+                        </button>
                     </div>
-                    <h2 className="text-xl font-bold text-white mb-1">{user.first_name} {user.last_name}</h2>
-                    <p className="text-sm text-gray-400 mb-2">{user.email}</p>
-                    <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary">
-                        Usuario Verificado
+
+                    <div className="flex flex-col items-center">
+                        <div className="relative mb-4">
+                            <div className="w-24 h-24 rounded-full bg-surface-dark border-4 border-surface flex items-center justify-center overflow-hidden shadow-xl">
+                                {user.photo ? (
+                                    <img src={user.photo} alt="Profile" className="w-full h-full object-cover" />
+                                ) : (
+                                    <FaUserCircle size={64} className="text-gray-500" />
+                                )}
+                            </div>
+                            <div className="absolute bottom-0 right-0 bg-green-500 w-5 h-5 rounded-full border-2 border-background"></div>
+                        </div>
+                        <h2 className="text-xl font-bold text-white mb-1">{user.first_name} {user.last_name}</h2>
+                        <p className="text-sm text-gray-400 mb-2">{user.email}</p>
+                        <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary">
+                            Usuario Verificado
+                        </div>
                     </div>
                 </div>
             </div>
 
             {/* Main Content */}
-            <div className="px-5 space-y-8">
+            <div className="px-5 space-y-8 max-w-7xl mx-auto w-full">
 
                 {/* Pets Section */}
                 <section>
@@ -132,7 +134,7 @@ function ProfileView({ user, pets, documents, onOpenSettings }) {
                         </Link>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                         <div
                             onClick={() => router.push('/documents')}
                             className="bg-gradient-to-br from-surface-dark to-surface border border-white/5 rounded-2xl p-4 cursor-pointer hover:border-primary/30 transition-colors"

@@ -149,7 +149,7 @@ export default function PetProfilePage() {
 
             {/* Top Navigation */}
             <div className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 animate-slide-up">
-                <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+                <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
                     <button onClick={() => router.back()} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
                         <FaArrowLeft size={20} />
                     </button>
@@ -180,7 +180,7 @@ export default function PetProfilePage() {
             )}
 
             {/* Scrollable Content */}
-            <div className="relative z-10 flex flex-col gap-6 max-w-5xl mx-auto w-full">
+            <div className="relative z-10 flex flex-col gap-6 max-w-7xl mx-auto w-full">
 
                 {activeTab === 'overview' && (
                     <>
@@ -236,7 +236,7 @@ export default function PetProfilePage() {
 
                         {/* Stats Grid */}
                         <div className="px-4 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                            <div className="grid grid-cols-2 gap-3">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                 <StatCard icon={<FaPaw size={20} />} color="blue" label="Especie" value={pet.species} />
                                 <StatCard icon={<FaWeight size={20} />} color="orange" label="Peso" value={pet.weight ? `${pet.weight}kg` : 'N/A'} />
                                 <StatCard icon={<FaVenusMars size={20} />} color="pink" label="Sexo" value={pet.sex} />

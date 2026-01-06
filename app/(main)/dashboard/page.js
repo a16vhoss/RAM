@@ -18,7 +18,7 @@ export default async function DashboardPage() {
         <div className="min-h-screen bg-background-light dark:bg-background-dark pb-28 overflow-x-hidden">
             {/* Header Section */}
             <header className="sticky top-0 z-20 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 shadow-lg pt-6 pb-4 px-6 animate-slide-up">
-                <div className="max-w-5xl mx-auto w-full">
+                <div className="max-w-7xl mx-auto w-full">
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
                             <div className="relative group cursor-pointer">
@@ -48,7 +48,7 @@ export default async function DashboardPage() {
                 </div>
             </header>
 
-            <main className="flex flex-col gap-8 w-full mt-6 max-w-5xl mx-auto">
+            <main className="flex flex-col gap-8 w-full mt-6 max-w-7xl mx-auto">
                 {/* Search Bar */}
                 <div className="px-5 animate-fade-in" style={{ animationDelay: '0.1s' }}>
                     <DashboardSearch />
@@ -61,7 +61,7 @@ export default async function DashboardPage() {
                         <Link href="/documents" className="text-xs font-semibold text-primary hover:text-primary-hover transition-colors">Ver todo</Link>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                         {/* RUAC */}
                         <Link href="/documents" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
                             <div className="absolute top-0 right-0 p-3 opacity-20 transform translate-x-2 -translate-y-2 group-hover:rotate-12 transition-transform">
