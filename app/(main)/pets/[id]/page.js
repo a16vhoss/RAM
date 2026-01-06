@@ -148,25 +148,27 @@ export default function PetProfilePage() {
             <div className="fixed bottom-[10%] -right-[10%] w-[250px] h-[250px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
 
             {/* Top Navigation */}
-            <div className="sticky top-0 z-50 flex items-center justify-between px-4 py-4 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 animate-slide-up">
-                <button onClick={() => router.back()} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
-                    <FaArrowLeft size={20} />
-                </button>
-                <div className="flex gap-1 bg-white/5 p-1 rounded-full">
-                    <button
-                        onClick={() => setActiveTab('overview')}
-                        className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${activeTab === 'overview' ? 'bg-primary text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
-                    >
-                        General
+            <div className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 animate-slide-up">
+                <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+                    <button onClick={() => router.back()} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
+                        <FaArrowLeft size={20} />
                     </button>
-                    <button
-                        onClick={() => setActiveTab('medical')}
-                        className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${activeTab === 'medical' ? 'bg-primary text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
-                    >
-                        Médico
-                    </button>
+                    <div className="flex gap-1 bg-white/5 p-1 rounded-full">
+                        <button
+                            onClick={() => setActiveTab('overview')}
+                            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${activeTab === 'overview' ? 'bg-primary text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                        >
+                            General
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('medical')}
+                            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${activeTab === 'medical' ? 'bg-primary text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                        >
+                            Médico
+                        </button>
+                    </div>
+                    <div className="w-10"></div>
                 </div>
-                <div className="w-10"></div>
             </div>
 
             {/* LOST PET BANNER */}
@@ -178,7 +180,7 @@ export default function PetProfilePage() {
             )}
 
             {/* Scrollable Content */}
-            <div className="relative z-10 flex flex-col gap-6">
+            <div className="relative z-10 flex flex-col gap-6 max-w-5xl mx-auto w-full">
 
                 {activeTab === 'overview' && (
                     <>

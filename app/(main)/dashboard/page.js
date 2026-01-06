@@ -18,35 +18,37 @@ export default async function DashboardPage() {
         <div className="min-h-screen bg-background-light dark:bg-background-dark pb-28 overflow-x-hidden">
             {/* Header Section */}
             <header className="sticky top-0 z-20 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 shadow-lg pt-6 pb-4 px-6 animate-slide-up">
-                <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                        <div className="relative group cursor-pointer">
-                            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-colors">
-                                <img
-                                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.first_name || 'User')}&background=random`}
-                                    alt="Profile"
-                                    className="w-full h-full object-cover"
-                                />
+                <div className="max-w-5xl mx-auto w-full">
+                    <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                            <div className="relative group cursor-pointer">
+                                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-colors">
+                                    <img
+                                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.first_name || 'User')}&background=random`}
+                                        alt="Profile"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                                <div className="absolute bottom-0 right-0 w-3 h-3 bg-success rounded-full border-2 border-slate-900"></div>
                             </div>
-                            <div className="absolute bottom-0 right-0 w-3 h-3 bg-success rounded-full border-2 border-slate-900"></div>
+                            <div className="flex flex-col">
+                                <span className="text-xs text-text-secondary uppercase tracking-wider font-semibold">Bienvenido</span>
+                                <h1 className="text-xl font-display font-bold text-white leading-tight">{user.first_name || 'Usuario'}</h1>
+                            </div>
                         </div>
-                        <div className="flex flex-col">
-                            <span className="text-xs text-text-secondary uppercase tracking-wider font-semibold">Bienvenido</span>
-                            <h1 className="text-xl font-display font-bold text-white leading-tight">{user.first_name || 'Usuario'}</h1>
-                        </div>
+                        <button className="relative p-2 rounded-full hover:bg-white/5 transition-colors">
+                            <FaBell size={24} className="text-text-secondary hover:text-white transition-colors" />
+                            <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-error rounded-full border-2 border-slate-900 animate-pulse"></span>
+                        </button>
                     </div>
-                    <button className="relative p-2 rounded-full hover:bg-white/5 transition-colors">
-                        <FaBell size={24} className="text-text-secondary hover:text-white transition-colors" />
-                        <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-error rounded-full border-2 border-slate-900 animate-pulse"></span>
-                    </button>
+                    <p className="text-2xl font-bold text-white leading-tight mt-2">
+                        Tus peludos están <br />
+                        <span className="text-primary bg-clip-text">protegidos y seguros.</span>
+                    </p>
                 </div>
-                <p className="text-2xl font-bold text-white leading-tight mt-2">
-                    Tus peludos están <br />
-                    <span className="text-primary bg-clip-text">protegidos y seguros.</span>
-                </p>
             </header>
 
-            <main className="flex flex-col gap-8 w-full mt-6">
+            <main className="flex flex-col gap-8 w-full mt-6 max-w-5xl mx-auto">
                 {/* Search Bar */}
                 <div className="px-5 animate-fade-in" style={{ animationDelay: '0.1s' }}>
                     <DashboardSearch />
@@ -59,7 +61,7 @@ export default async function DashboardPage() {
                         <Link href="/documents" className="text-xs font-semibold text-primary hover:text-primary-hover transition-colors">Ver todo</Link>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {/* RUAC */}
                         <Link href="/documents" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
                             <div className="absolute top-0 right-0 p-3 opacity-20 transform translate-x-2 -translate-y-2 group-hover:rotate-12 transition-transform">
