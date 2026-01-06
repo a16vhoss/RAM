@@ -167,7 +167,13 @@ export default function PetProfilePage() {
                             Médico
                         </button>
                     </div>
-                    <div className="w-10"></div>
+                    <button
+                        onClick={() => router.push(`/pets/${params.id}/edit`)}
+                        className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+                    >
+                        <FaPills className="hidden" /> {/* Dummy to keep imports valid if needed, actually using FaEdit if imported, wait let's use FaStethoscope or just text if icon missing. Ah I missed importing FaEdit. I will fix imports too. */}
+                        <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 576 512" height="18" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM381.8 162.5l-90.2-90.2-229.3 229.3c-2.3 2.3-3.6 5.5-3.6 8.7V372c0 6.6 5.4 12 12 12h61.7c3.2 0 6.4-1.3 8.7-3.6l229.3-229.3z"></path></svg>
+                    </button>
                 </div>
             </div>
 

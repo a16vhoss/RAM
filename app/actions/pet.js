@@ -188,3 +188,73 @@ export async function toggleLostPetStatus(petId, isLost) {
         return { error: 'Failed to update status' };
     }
 }
+
+export async function updatePet(petId, formData) {
+    const session = await getSession();
+    if (!session) return { error: 'Unauthorized' };
+
+    try {
+        const userId = session.user.user_id;
+
+        // Verify ownership
+        const [existingPet] = await db.getAll('SELECT user_id, pet_photo FROM pets WHERE pet_id = $1', [petId]);
+        if (!existingPet) return { error: 'Pet not found' };
+        if (existingPet.user_id !== userId) return { error: 'Unauthorized' };
+
+        const petName = formData.get('petName');
+        const species = formData.get('species');
+        const breed = formData.get('breed');
+        const color = formData.get('color');
+        const sex = formData.get('sex');
+        const birthDate = formData.get('birthDate');
+        const weight = formData.get('weight');
+        const microchipNumber = formData.get('microchipNumber');
+        const isSpayed = formData.get('isSpayed') === 'true';
+        const medicalNotes = formData.get('medicalNotes');
+        const allergies = formData.get('allergies');
+        const photoFile = formData.get('photo'); // File object
+
+        let photoUrl = existingPet.pet_photo;
+
+        // Handle New Photo Upload if provided
+        if (photoFile && photoFile.size > 0) {
+            const supabase = getSupabaseClient();
+            if (supabase) {
+                const fileExt = photoFile.name.split('.').pop();
+                const fileName = `${userId}/${uuidv4()}.${fileExt}`;
+
+                const { data, error: uploadError } = await supabase.storage
+                    .from('pet-photos')
+                    .upload(fileName, photoFile, { contentType: photoFile.type, upsert: false });
+
+                if (!uploadError) {
+                    const { data: { publicUrl } } = supabase.storage.from('pet-photos').getPublicUrl(fileName);
+                    photoUrl = publicUrl;
+                }
+            }
+        }
+
+        // Update Pet
+        await db.run(`
+            UPDATE pets SET
+                pet_name = $1, species = $2, breed = $3, color = $4, sex = $5, 
+                birth_date = $6, weight = $7, microchip_number = $8, 
+                spayed_neutered = $9, medical_notes = $10, allergies = $11, 
+                pet_photo = $12
+            WHERE pet_id = $13
+        `, [
+            petName, species, breed, color, sex,
+            birthDate || null, weight || null, microchipNumber || null, isSpayed ? 1 : 0,
+            medicalNotes || null, allergies || null, photoUrl,
+            petId
+        ]);
+
+        revalidatePath(`/pets/${petId}`);
+        revalidatePath('/dashboard');
+        return { success: true };
+
+    } catch (error) {
+        console.error('Update pet error:', error);
+        return { success: false, error: error.message };
+    }
+}
