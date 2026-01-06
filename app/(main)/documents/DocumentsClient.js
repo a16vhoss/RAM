@@ -151,7 +151,7 @@ export default function DocumentsClient({ documents = [], pets = [], session }) 
                                 <h4 className="text-base font-bold text-white truncate pr-2">{doc.document_type}</h4>
                                 {doc.expires_at && <span className="shrink-0 px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/20 uppercase tracking-wide">Vence pronto</span>}
                             </div>
-                            <p className="text-sm text-slate-400 mt-0.5">{doc.pet_name} • {new Date(doc.issued_at).toLocaleDateString()}</p>
+                            <p className="text-sm text-slate-400 mt-0.5">{doc.pet_name} • {new Date(doc.created_at || doc.issued_at).toLocaleDateString()}</p>
                         </div>
                         <div className="text-slate-500">
                             <FaChevronRight />
