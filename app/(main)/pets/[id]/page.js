@@ -3,8 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import QRCode from 'qrcode';
-import { FaArrowLeft, FaShareAlt, FaCheckCircle, FaShieldAlt, FaMicrochip, FaPaw, FaWeight, FaVenusMars, FaBirthdayCake, FaIdCard, FaSyringe, FaCut, FaArrowRight } from 'react-icons/fa';
+import {
+    FaArrowLeft, FaShareAlt, FaCheckCircle, FaShieldAlt, FaMicrochip, FaPaw, FaWeight,
+    FaVenusMars, FaBirthdayCake, FaIdCard, FaSyringe, FaCut, FaArrowRight, FaTrash,
+    FaFileAlt, FaChevronRight
+} from 'react-icons/fa';
 import Link from 'next/link';
+import { deletePet } from '@/app/actions/pet';
+import DocumentViewerModal from '@/app/(main)/documents/DocumentViewerModal';
 
 export default function PetProfilePage() {
     const params = useParams();
@@ -12,6 +18,8 @@ export default function PetProfilePage() {
     const [pet, setPet] = useState(null);
     const [qrCodeUrl, setQrCodeUrl] = useState('');
     const [loading, setLoading] = useState(true);
+    const [deleting, setDeleting] = useState(false);
+    const [selectedDoc, setSelectedDoc] = useState(null);
 
     useEffect(() => {
         async function fetchPet() {
@@ -46,11 +54,17 @@ export default function PetProfilePage() {
         fetchPet();
     }, [params.id, router]);
 
-    const downloadQR = () => {
-        const link = document.createElement('a');
-        link.href = qrCodeUrl;
-        link.download = `${pet.pet_name}-QR.png`;
-        link.click();
+    const handleDelete = async () => {
+        if (!confirm('¿Estás seguro de que deseas eliminar permanentemente a esta mascota? Esta acción no se puede deshacer.')) return;
+
+        setDeleting(true);
+        const res = await deletePet(pet.pet_id);
+        if (res.success) {
+            router.push('/dashboard');
+        } else {
+            alert('Error al eliminar: ' + res.error);
+            setDeleting(false);
+        }
     };
 
     if (loading) {
@@ -99,13 +113,7 @@ export default function PetProfilePage() {
                     <FaArrowLeft size={20} />
                 </button>
                 <h2 style={{ fontSize: '14px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.8 }}>Perfil de Mascota</h2>
-                <button style={{
-                    width: '40px', height: '40px', borderRadius: '50%', background: 'var(--primary)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', border: 'none',
-                    boxShadow: '0 0 15px rgba(39,145,231,0.5)', cursor: 'pointer'
-                }}>
-                    <FaShareAlt size={18} />
-                </button>
+                <div style={{ width: '40px' }}></div> {/* Spacer for alignment */}
             </div>
 
             {/* Scrollable Content */}
@@ -204,8 +212,6 @@ export default function PetProfilePage() {
                                     <span style={{ fontSize: '14px', color: 'white', fontWeight: '500' }}>Admin Usuario</span>
                                 </div>
                             </div>
-
-                            {/* QR Code Area */}
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                                 <div style={{ background: 'white', padding: '8px', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}>
                                     {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '80px', height: '80px' }} />}
@@ -213,66 +219,65 @@ export default function PetProfilePage() {
                                 <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.8)', fontWeight: '500' }}>Escanear</span>
                             </div>
                         </div>
-
-                        {/* Card Footer Action */}
-                        <div onClick={() => router.push('/documents')} style={{
-                            position: 'relative', background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(4px)', padding: '12px',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
-                            transition: 'background 0.2s'
-                        }}>
-                            <span style={{ color: 'white', fontSize: '12px', fontWeight: '700', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                VER DOCUMENTOS COMPLETOS <FaArrowRight size={14} />
-                            </span>
-                        </div>
                     </div>
                 </div>
 
-                {/* Recent Medical History */}
+                {/* Documents List Section */}
                 <div style={{ padding: '16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', padding: '0 4px' }}>
-                        <h3 style={{ color: 'white', fontSize: '18px', fontWeight: '700' }}>Historial Reciente</h3>
-                        <button style={{ color: 'var(--primary)', fontSize: '14px', fontWeight: '500', background: 'none', border: 'none' }}>Ver todo</button>
+                        <h3 style={{ color: 'white', fontSize: '18px', fontWeight: '700' }}>Documentos de {pet.pet_name.split(' ')[0]}</h3>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                        {/* Mock History Data based on design */}
-                        <div style={{
-                            background: 'rgba(26, 34, 43, 0.6)', backdropFilter: 'blur(12px)', padding: '16px',
-                            borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '16px', border: '1px solid rgba(255,255,255,0.08)'
-                        }}>
-                            <div style={{
-                                width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.2)',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f87171', flexShrink: 0
-                            }}>
-                                <FaSyringe size={18} />
+                        {pet.documents && pet.documents.length > 0 ? pet.documents.map((doc) => (
+                            <div
+                                key={doc.document_id}
+                                onClick={() => setSelectedDoc({ ...doc, pet_name: pet.pet_name })} // Inject pet name for modal
+                                style={{
+                                    background: 'rgba(26, 34, 43, 0.6)', backdropFilter: 'blur(12px)', padding: '16px',
+                                    borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '16px',
+                                    border: '1px solid rgba(255,255,255,0.08)', cursor: 'pointer',
+                                    transition: 'background 0.2s'
+                                }}
+                            >
+                                <div style={{
+                                    width: '40px', height: '40px', borderRadius: '12px',
+                                    background: doc.document_type.includes('Acta') ? 'rgba(249, 115, 22, 0.2)' : 'rgba(59, 130, 246, 0.2)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    color: doc.document_type.includes('Acta') ? '#fb923c' : '#60a5fa', flexShrink: 0
+                                }}>
+                                    <FaFileAlt size={18} />
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <p style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>{doc.document_type}</p>
+                                    <p style={{ color: '#94a3b8', fontSize: '14px' }}>Emitido: {formatDateShort(doc.issued_at || doc.created_at)}</p>
+                                </div>
+                                <FaChevronRight color="#64748b" size={12} />
                             </div>
-                            <div style={{ flex: 1 }}>
-                                <p style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>Vacuna Antirrábica</p>
-                                <p style={{ color: '#94a3b8', fontSize: '14px' }}>Clínica VetMX • Dr. Suarez</p>
+                        )) : (
+                            <div className="text-center p-8 border border-dashed border-white/10 rounded-2xl">
+                                <p className="text-gray-500">No hay documentos registrados.</p>
                             </div>
-                            <p style={{ color: '#64748b', fontSize: '12px', fontWeight: '500' }}>10 Oct</p>
-                        </div>
-
-                        <div style={{
-                            background: 'rgba(26, 34, 43, 0.6)', backdropFilter: 'blur(12px)', padding: '16px',
-                            borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '16px', border: '1px solid rgba(255,255,255,0.08)'
-                        }}>
-                            <div style={{
-                                width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(59, 130, 246, 0.2)',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#60a5fa', flexShrink: 0
-                            }}>
-                                <FaCut size={18} />
-                            </div>
-                            <div style={{ flex: 1 }}>
-                                <p style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>Estética Canina</p>
-                                <p style={{ color: '#94a3b8', fontSize: '14px' }}>Spa PetLife</p>
-                            </div>
-                            <p style={{ color: '#64748b', fontSize: '12px', fontWeight: '500' }}>25 Sep</p>
-                        </div>
+                        )}
                     </div>
                 </div>
 
+                {/* Delete Area */}
+                <div className="mt-8 px-4 mb-8">
+                    <button
+                        onClick={handleDelete}
+                        disabled={deleting}
+                        className="w-full py-4 rounded-xl border border-red-500/30 text-red-500 font-bold hover:bg-red-500/10 transition-colors flex items-center justify-center gap-2"
+                    >
+                        {deleting ? 'Eliminando...' : <><FaTrash /> Eliminar Mascota</>}
+                    </button>
+                    <p className="text-center text-xs text-gray-600 mt-2">Esta acción eliminará todos los datos y documentos de la mascota.</p>
+                </div>
+
             </div>
+
+            {/* Modal */}
+            <DocumentViewerModal document={selectedDoc} onClose={() => setSelectedDoc(null)} />
         </div>
     );
 }

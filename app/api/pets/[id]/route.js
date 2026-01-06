@@ -17,6 +17,10 @@ export async function GET(request, { params }) {
             return NextResponse.json({ error: 'Pet not found' }, { status: 404 });
         }
 
+        // Fetch documents for this pet
+        const documents = await db.getAll('SELECT * FROM documents WHERE pet_id = $1 ORDER BY issued_at DESC', [id]);
+        pet.documents = documents;
+
         return NextResponse.json(pet);
     } catch (error) {
         console.error('Error fetching pet:', error);
