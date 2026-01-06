@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { FaCamera, FaArrowRight, FaArrowLeft, FaSearch, FaDog, FaCat, FaCrow, FaDragon, FaMouse, FaEllipsisH, FaQrcode, FaCheck, FaTimes } from 'react-icons/fa';
+import { FaCamera, FaArrowRight, FaArrowLeft, FaSearch, FaDog, FaCat, FaCrow, FaDragon, FaMouse, FaEllipsisH, FaQrcode } from 'react-icons/fa';
+import { createPet } from '@/app/actions/pet';
 
 export default function NewPetPage() {
     const [step, setStep] = useState(1);
@@ -12,8 +13,12 @@ export default function NewPetPage() {
         microchipNumber: '', isSpayed: false,
         allergies: '', medicalNotes: ''
     });
+    const [photoFile, setPhotoFile] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState(null);
     const [loading, setLoading] = useState(false);
+
     const router = useRouter();
+    const fileInputRef = useRef(null);
 
     const handleChange = (e) => {
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -24,25 +29,39 @@ export default function NewPetPage() {
         setFormData({ ...formData, species });
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setPhotoFile(file);
+            setPreviewUrl(URL.createObjectURL(file));
+        }
+    };
+
     const handleNext = () => setStep(step + 1);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+
+        const data = new FormData();
+        Object.keys(formData).forEach(key => {
+            data.append(key, formData[key]);
+        });
+        if (photoFile) {
+            data.append('photo', photoFile);
+        }
+
         try {
-            const res = await fetch('/api/pets/create', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
-            if (res.ok) {
+            const result = await createPet(data);
+            if (result.success) {
                 router.push('/dashboard');
-                router.refresh();
+                router.refresh(); // Refresh to see the new pet
             } else {
-                alert('Error al registrar');
+                alert('Error al registrar: ' + (result.error || 'Desconocido'));
             }
-        } catch (e) {
-            alert('Error de conexión');
+        } catch (error) {
+            console.error(error);
+            alert('Error al enviar el formulario');
         } finally {
             setLoading(false);
         }
@@ -84,10 +103,24 @@ export default function NewPetPage() {
                         <div className="animate-fade-in-up">
                             {/* Photo Upload */}
                             <div className="flex flex-col items-center pt-6 pb-8">
-                                <div className="relative group cursor-pointer">
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handleFileChange}
+                                    className="hidden"
+                                    accept="image/*"
+                                />
+                                <div
+                                    className="relative group cursor-pointer"
+                                    onClick={() => fileInputRef.current?.click()}
+                                >
                                     <div className="absolute inset-0 bg-primary/30 rounded-full blur-xl animate-pulse group-hover:bg-primary/50 transition-all duration-500"></div>
                                     <div className="relative z-10 w-32 h-32 rounded-full border-4 border-surface dark:border-background-dark bg-surface-dark overflow-hidden flex items-center justify-center shadow-lg transition-transform hover:scale-105">
-                                        <FaCamera className="text-white text-4xl drop-shadow-md z-20" />
+                                        {previewUrl ? (
+                                            <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+                                        ) : (
+                                            <FaCamera className="text-white text-4xl drop-shadow-md z-20" />
+                                        )}
                                     </div>
                                     <div className="absolute bottom-1 right-1 z-20 bg-primary text-white p-1.5 rounded-full border-4 border-background flex items-center justify-center shadow-md">
                                         <FaCamera size={12} />
@@ -297,3 +330,4 @@ export default function NewPetPage() {
         </div>
     );
 }
+
