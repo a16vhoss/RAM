@@ -1,7 +1,8 @@
 import db from '@/lib/db';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { FaArrowLeft, FaCalendarAlt, FaEye } from 'react-icons/fa';
+import { FaArrowLeft, FaCalendarAlt, FaEye, FaUserMd } from 'react-icons/fa';
+import ReactMarkdown from 'react-markdown';
 
 export default async function BlogPostPage({ params }) {
     const { slug } = await params;
@@ -12,43 +13,91 @@ export default async function BlogPostPage({ params }) {
         notFound();
     }
 
-    // Increment view count (not ideal for strict React Server Components without actions, but okay for demo)
+    // Increment view count
     await db.run('UPDATE blog_posts SET views_count = views_count + 1 WHERE slug = $1', [slug]);
 
     return (
-        <div style={{ padding: '0 0 80px 0' }}>
-            <div style={{ position: 'relative', height: '250px', background: '#eee' }}>
-                <div style={{ width: '100%', height: '100%', background: 'linear-gradient(45deg, var(--primary), var(--secondary))' }}></div>
-                <Link href="/blog" style={{ position: 'absolute', top: '20px', left: '20px', background: 'white', padding: '8px 12px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: 'var(--shadow-sm)' }}>
-                    <FaArrowLeft /> Regresar
-                </Link>
+        <article className="min-h-screen bg-white dark:bg-slate-900 pb-20">
+            {/* Hero Section */}
+            <div className="relative h-[400px] w-full">
+                <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${post.image_url || 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=2000'})` }}
+                >
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent"></div>
+                </div>
+
+                <div className="absolute top-6 left-6 z-10">
+                    <Link
+                        href="/blog"
+                        className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white/20 transition-all text-sm font-medium"
+                    >
+                        <FaArrowLeft /> Volver al Blog
+                    </Link>
+                </div>
+
+                <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 max-w-4xl mx-auto">
+                    <div className="flex items-center gap-3 mb-4">
+                        <span className="px-3 py-1 rounded-full bg-blue-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg">
+                            {post.category || 'Blog RAM'}
+                        </span>
+                        <span className="flex items-center gap-1 text-slate-300 text-xs">
+                            <FaCalendarAlt /> {new Date(post.published_at).toLocaleDateString()}
+                        </span>
+                    </div>
+                    <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight mb-4 drop-shadow-md">
+                        {post.title}
+                    </h1>
+                    <div className="flex items-center gap-6 text-slate-300 text-sm">
+                        <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center border border-white/20">
+                                <FaUserMd />
+                            </div>
+                            <span className="font-medium text-white">{post.author_name}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <FaEye /> {post.views_count + 1} vistas
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div style={{ padding: '24px', background: 'white', borderRadius: '24px 24px 0 0', marginTop: '-24px', position: 'relative' }}>
-                <div style={{ display: 'inline-block', background: '#F0F7FC', color: 'var(--primary)', padding: '4px 12px', borderRadius: '12px', fontSize: '12px', marginBottom: '12px' }}>
-                    {post.category}
-                </div>
-
-                <h1 style={{ fontSize: '24px', marginBottom: '16px', lineHeight: '1.3' }}>{post.title}</h1>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: 'var(--text-secondary)', fontSize: '13px', marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid #eee' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <FaCalendarAlt /> {new Date(post.published_at).toLocaleDateString()}
+            {/* Content Body */}
+            <div className="max-w-3xl mx-auto px-6 -mt-10 relative z-10">
+                <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-8 md:p-12 border border-slate-100 dark:border-white/5">
+                    <div className="prose prose-lg dark:prose-invert prose-headings:font-bold prose-a:text-blue-600 max-w-none">
+                        <ReactMarkdown>{post.content}</ReactMarkdown>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <FaEye /> {post.views_count + 1} vistas
-                    </div>
-                </div>
 
-                <div style={{ lineHeight: '1.8', color: '#333' }} dangerouslySetInnerHTML={{ __html: post.content }}></div>
+                    {/* Tags */}
+                    {post.tags && (
+                        <div className="mt-12 pt-8 border-t border-slate-100 dark:border-white/5 flex flex-wrap gap-2">
+                            {post.tags.split(',').map((tag, i) => (
+                                <span key={i} className="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-sm font-medium">
+                                    #{tag.trim()}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+                </div>
 
                 {/* CTA */}
-                <div style={{ background: '#E8F5E9', padding: '20px', borderRadius: '12px', marginTop: '40px', textAlign: 'center' }}>
-                    <h3 style={{ color: 'var(--success)', marginBottom: '8px' }}>💡 ¿Sabías que?</h3>
-                    <p style={{ marginBottom: '16px' }}>Puedes proteger a tu mascota registrándola gratis en RAM.</p>
-                    <Link href="/pets/new" className="btn btn-primary">Registrar ahora</Link>
+                <div className="mt-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-8 md:p-10 text-center text-white shadow-2xl relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-12 opacity-10 transform translate-x-12 -translate-y-6 group-hover:scale-110 transition-transform duration-700">
+                        <FaUserMd size={140} />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 relative z-10">¿Te gustó este artículo?</h3>
+                    <p className="text-blue-100 mb-8 max-w-lg mx-auto relative z-10">
+                        Únete a RAM para recibir más consejos veterinarios y proteger a tus mascotas con nuestra tecnología inteligente.
+                    </p>
+                    <Link
+                        href="/pets/new"
+                        className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all"
+                    >
+                        Registrar mi Mascota Gratis
+                    </Link>
                 </div>
             </div>
-        </div>
+        </article>
     );
 }

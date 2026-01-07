@@ -67,11 +67,16 @@ export async function GET(request) {
         const postData = JSON.parse(jsonString);
 
 
-        // 4. Image Selection (Using Unsplash Source for simplicity)
-        // We use keywords from the title/tags to get a relevant random image
-        const keywords = postData.tags.split(',')[0].trim();
-        // Fallback image since source.unsplash is unreliable
-        const imageUrl = `https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=1000`;
+        // 4. Image Generation (AI)
+        // Since standard Gemini API keys don't always support Imagen, we use a robust fallback to Pollinations.ai 
+        // which acts as a free, specialized AI image generator. 
+        // We create a specific prompt for the image based on the article title.
+        const imagePrompt = `Realist cinematic photography of ${postData.title}, ${postData.tags.split(',')[0]}, pet care context, warm lighting, 8k resolution`;
+        const encodedPrompt = encodeURIComponent(imagePrompt);
+
+        // Use a random seed to ensure uniqueness even for similar prompts
+        const randomSeed = Math.floor(Math.random() * 1000);
+        const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=600&seed=${randomSeed}&nologo=true`;
 
         // 5. Save to Database
         const postId = uuidv4();
