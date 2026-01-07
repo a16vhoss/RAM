@@ -112,9 +112,14 @@ export default function NotificationsBell() {
                                         </p>
 
                                         {note.type === 'amber_alert' && note.related_id && (
-                                            <Link href={`/pets/${note.related_id}`} className="block mt-2 text-xs font-bold text-red-400 hover:underline">
+                                            <span className="block mt-2 text-xs font-bold text-red-400 hover:underline cursor-pointer">
                                                 Ver Mascota
-                                            </Link>
+                                            </span>
+                                        )}
+                                        {note.type === 'pet_found' && note.related_id && (
+                                            <span className="block mt-2 text-xs font-bold text-green-400 hover:underline cursor-pointer">
+                                                Ver Mascota
+                                            </span>
                                         )}
                                     </div>
                                 </div>
