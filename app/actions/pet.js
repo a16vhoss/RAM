@@ -170,15 +170,56 @@ export async function deletePet(petId) {
     }
 }
 
-export async function toggleLostPetStatus(petId, isLost) {
+export async function toggleLostPetStatus(petId, isLost, location = null, radius = 5, message = '') {
     const session = await getSession();
     if (!session) return { error: 'Unauthorized' };
 
     try {
         const newStatus = isLost ? 'lost' : 'active';
+        const userId = session.user.user_id;
 
-        // Update status
-        await db.query('UPDATE pets SET status = $1 WHERE pet_id = $2', [newStatus, petId]);
+        // Update status and location if provided
+        if (isLost && location) {
+            await db.run(
+                'UPDATE pets SET status = $1, last_latitude = $2, last_longitude = $3 WHERE pet_id = $4',
+                [newStatus, location.lat, location.lng, petId]
+            );
+
+            // Find users nearby and create notifications
+            // Using Haversine formula approximation in SQL
+            // 6371 is Earth radius in km
+            // We use raw SQL for complex logic
+            const nearbyUsers = await db.getAll(`
+                SELECT user_id, 
+                   (6371 * acos(least(1.0, greatest(-1.0, cos(radians($1)) * cos(radians(last_latitude)) * cos(radians(last_longitude) - radians($2)) + sin(radians($1)) * sin(radians(last_latitude)))))) AS distance
+                FROM users
+                WHERE last_latitude IS NOT NULL 
+                  AND last_longitude IS NOT NULL
+                  AND user_id != $3
+                HAVING (6371 * acos(least(1.0, greatest(-1.0, cos(radians($1)) * cos(radians(last_latitude)) * cos(radians(last_longitude) - radians($2)) + sin(radians($1)) * sin(radians(last_latitude)))))) <= $4
+            `, [location.lat, location.lng, userId, radius]);
+
+            console.log(`Found ${nearbyUsers.length} users nearby to notify.`);
+
+            // Insert notifications
+            // We do this individually for now, could be bulk inserted for performance
+            for (const user of nearbyUsers) {
+                await db.run(`
+                    INSERT INTO notifications (user_id, title, message, type, related_id)
+                    VALUES ($1, $2, $3, $4, $5)
+                `, [
+                    user.user_id,
+                    '🚨 ALERTA AMBER: Mascota Perdida Cerca',
+                    message || 'Se ha reportado una mascota perdida en tu zona. ¡Ayúdanos a encontrarla!',
+                    'amber_alert',
+                    petId
+                ]);
+            }
+
+        } else {
+            // Just update status if found or no location provided
+            await db.run('UPDATE pets SET status = $1 WHERE pet_id = $2', [newStatus, petId]);
+        }
 
         revalidatePath(`/pets/${petId}`);
         revalidatePath('/dashboard');
@@ -186,7 +227,7 @@ export async function toggleLostPetStatus(petId, isLost) {
         return { success: true, status: newStatus };
     } catch (error) {
         console.error('Error toggling lost status:', error);
-        return { error: 'Failed to update status' };
+        return { error: 'Failed to update status: ' + error.message };
     }
 }
 

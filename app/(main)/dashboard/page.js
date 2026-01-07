@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FaPlus, FaBell, FaIdCard, FaStethoscope, FaSyringe, FaExclamationTriangle } from 'react-icons/fa';
 import { redirect } from 'next/navigation';
 import DashboardSearch from './DashboardSearch';
+import NotificationsBell from '@/app/components/NotificationsBell';
 
 export default async function DashboardPage() {
     const session = await getSession();
@@ -36,10 +37,7 @@ export default async function DashboardPage() {
                                 <h1 className="text-xl font-display font-bold text-white leading-tight">{user.first_name || 'Usuario'}</h1>
                             </div>
                         </div>
-                        <button className="relative p-2 rounded-full hover:bg-white/5 transition-colors">
-                            <FaBell size={24} className="text-text-secondary hover:text-white transition-colors" />
-                            <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-error rounded-full border-2 border-slate-900 animate-pulse"></span>
-                        </button>
+                        <NotificationsBell />
                     </div>
                     <p className="text-2xl font-bold text-white leading-tight mt-2">
                         Tus peludos están <br />
@@ -47,6 +45,7 @@ export default async function DashboardPage() {
                     </p>
                 </div>
             </header>
+
 
             <main className="flex flex-col gap-8 w-full mt-6 max-w-7xl mx-auto">
                 {/* Search Bar */}
@@ -105,7 +104,7 @@ export default async function DashboardPage() {
                         </Link>
 
                         {/* Amber Alert */}
-                        <Link href="/documents" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
+                        <Link href="/amber-alert" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
                             <div className="absolute top-0 right-0 p-3 opacity-20 transform translate-x-2 -translate-y-2 group-hover:rotate-12 transition-transform">
                                 <FaExclamationTriangle size={90} className="text-white" />
                             </div>

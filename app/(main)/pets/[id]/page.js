@@ -1,22 +1,23 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import QRCode from 'qrcode';
 import {
     FaArrowLeft, FaCheckCircle, FaShieldAlt, FaMicrochip, FaPaw, FaWeight,
     FaVenusMars, FaBirthdayCake, FaIdCard, FaTrash, FaFileAlt, FaChevronRight, FaArrowRight,
     FaPlus, FaNotesMedical, FaSyringe, FaStethoscope, FaPills, FaEdit
 } from 'react-icons/fa';
+import ReportLostModal from '@/app/components/ReportLostModal';
 import { deletePet, toggleLostPetStatus } from '@/app/actions/pet';
 import { getMedicalRecords } from '@/app/actions/medical';
 import DocumentViewerModal from '@/app/(main)/documents/DocumentViewerModal';
 import MedicalRecordModal from '../MedicalRecordModal';
 
-
 export default function PetProfilePage() {
     const params = useParams();
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [pet, setPet] = useState(null);
     const [medicalRecords, setMedicalRecords] = useState([]);
     const [qrCodeUrl, setQrCodeUrl] = useState('');
@@ -25,6 +26,7 @@ export default function PetProfilePage() {
     const [selectedDoc, setSelectedDoc] = useState(null);
     const [activeTab, setActiveTab] = useState('overview'); // overview, medical
     const [isMedicalModalOpen, setIsMedicalModalOpen] = useState(false);
+    const [isReportLostModalOpen, setIsReportLostModalOpen] = useState(false);
 
     async function fetchMedicalRecords() {
         const recordsRes = await getMedicalRecords(params.id);
@@ -54,6 +56,11 @@ export default function PetProfilePage() {
                         color: { dark: '#000000', light: '#FFFFFF' }
                     });
                     setQrCodeUrl(qr);
+
+                    // Auto-open modal if query param is set
+                    if (searchParams.get('report') === 'true' && data.status !== 'lost') {
+                        setIsReportLostModalOpen(true);
+                    }
                 } else {
                     router.push('/dashboard');
                 }
@@ -66,7 +73,7 @@ export default function PetProfilePage() {
         }
 
         fetchData();
-    }, [params.id, router]);
+    }, [params.id, router, searchParams]);
 
     const handleDelete = async () => {
         if (!confirm('¿Estás seguro de que deseas eliminar permanentemente a esta mascota? Esta acción no se puede deshacer.')) return;
@@ -81,17 +88,35 @@ export default function PetProfilePage() {
         }
     };
 
-    const handleToggleLost = async () => {
+    const handleToggleLost = async (data = null) => {
         const isLost = pet.status === 'lost';
-        const action = isLost ? 'marcar como encontrado' : 'reportar como extraviado';
 
-        if (!confirm(`¿Estás seguro de que deseas ${action}?`)) return;
+        // If currently lost, we are marking as found (no modal needed)
+        if (isLost) {
+            if (!confirm('¿Estás seguro de que deseas marcar como encontrado?')) return;
 
-        const res = await toggleLostPetStatus(pet.pet_id, !isLost);
+            const res = await toggleLostPetStatus(pet.pet_id, false);
+            if (res.success) {
+                setPet({ ...pet, status: res.status });
+            } else {
+                alert('Error al actualizar estado: ' + res.error);
+            }
+            return;
+        }
+
+        // If currently active, we are reporting lost (open modal if no data passed)
+        if (!data) {
+            setIsReportLostModalOpen(true);
+            return;
+        }
+
+        // Processing Amber Alert with data from modal
+        const res = await toggleLostPetStatus(pet.pet_id, true, data.location, data.radius, data.message);
         if (res.success) {
             setPet({ ...pet, status: res.status });
+            alert('🚨 ALERTA AMBER ACTIVADA: Se ha notificado a los vecinos cercanos.');
         } else {
-            alert('Error al actualizar estado: ' + res.error);
+            alert('Error al activar alerta: ' + res.error);
         }
     };
 
@@ -228,7 +253,7 @@ export default function PetProfilePage() {
 
                                     {/* Alert Toggle Button */}
                                     <button
-                                        onClick={handleToggleLost}
+                                        onClick={() => handleToggleLost()}
                                         className={`mt-2 py-2 px-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 w-max shadow-lg transform active:scale-95 transition-all ${pet.status === 'lost' ? 'bg-white text-red-600' : 'bg-red-600/90 hover:bg-red-600 text-white backdrop-blur-md'}`}
                                     >
                                         {pet.status === 'lost' ? '✅ Marcar Encontrado' : '🚨 Reportar Extravío'}
@@ -410,6 +435,13 @@ export default function PetProfilePage() {
                 isOpen={isMedicalModalOpen}
                 onClose={() => setIsMedicalModalOpen(false)}
                 onRecordAdded={fetchMedicalRecords}
+            />
+
+            <ReportLostModal
+                isOpen={isReportLostModalOpen}
+                onClose={() => setIsReportLostModalOpen(false)}
+                onConfirm={handleToggleLost}
+                petName={pet.pet_name}
             />
         </div>
     );
