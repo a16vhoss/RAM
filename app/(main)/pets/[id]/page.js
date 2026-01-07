@@ -202,19 +202,24 @@ export default function PetProfilePage() {
                         >
                             General
                         </button>
-                        <button
-                            onClick={() => setActiveTab('medical')}
-                            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${activeTab === 'medical' ? 'bg-primary text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
-                        >
-                            Médico
-                        </button>
+                        {pet.isOwner && (
+                            <button
+                                onClick={() => setActiveTab('medical')}
+                                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${activeTab === 'medical' ? 'bg-primary text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                            >
+                                Médico
+                            </button>
+                        )}
                     </div>
-                    <button
-                        onClick={() => router.push(`/pets/${params.id}/edit`)}
-                        className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
-                    >
-                        <FaEdit size={18} />
-                    </button>
+                    {pet.isOwner && (
+                        <button
+                            onClick={() => router.push(`/pets/${params.id}/edit`)}
+                            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+                        >
+                            <FaEdit size={18} />
+                        </button>
+                    )}
+                    {!pet.isOwner && <div className="w-10"></div>} {/* Spacer */}
                 </div>
             </div>
 
@@ -222,7 +227,7 @@ export default function PetProfilePage() {
             {pet.status === 'lost' && (
                 <div className="bg-red-600 px-4 py-3 animate-pulse flex items-center justify-center gap-2 shadow-xl relative z-20">
                     <FaShieldAlt className="text-white animate-bounce" />
-                    <span className="text-white font-black tracking-widest uppercase text-sm">¡SE BUSCA! - MODO ALERTA ACTIVO</span>
+                    <span className="text-white font-black tracking-widest uppercase text-sm">¡SE BUSCA! - AYÚDANOS A ENCONTRARLO</span>
                 </div>
             )}
 
@@ -251,13 +256,24 @@ export default function PetProfilePage() {
                                         {pet.breed} <span className="w-1 h-1 rounded-full bg-white"></span> {calculateAge(pet.birth_date)}
                                     </p>
 
-                                    {/* Alert Toggle Button */}
-                                    <button
-                                        onClick={() => handleToggleLost()}
-                                        className={`mt-2 py-2 px-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 w-max shadow-lg transform active:scale-95 transition-all ${pet.status === 'lost' ? 'bg-white text-red-600' : 'bg-red-600/90 hover:bg-red-600 text-white backdrop-blur-md'}`}
-                                    >
-                                        {pet.status === 'lost' ? '✅ Marcar Encontrado' : '🚨 Reportar Extravío'}
-                                    </button>
+                                    {/* Alert Toggle Button - Only for Owner */}
+                                    {pet.isOwner && (
+                                        <button
+                                            onClick={() => handleToggleLost()}
+                                            className={`mt-2 py-2 px-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 w-max shadow-lg transform active:scale-95 transition-all ${pet.status === 'lost' ? 'bg-white text-red-600' : 'bg-red-600/90 hover:bg-red-600 text-white backdrop-blur-md'}`}
+                                        >
+                                            {pet.status === 'lost' ? '✅ Marcar Encontrado' : '🚨 Reportar Extravío'}
+                                        </button>
+                                    )}
+
+                                    {/* Contact Button for Lost Pets (Non-Owner) */}
+                                    {!pet.isOwner && pet.status === 'lost' && (
+                                        <button
+                                            className="mt-2 py-2 px-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 w-max shadow-lg bg-green-600 text-white backdrop-blur-md cursor-default"
+                                        >
+                                            <FaShieldAlt /> Reportado como Extraviado
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -265,6 +281,7 @@ export default function PetProfilePage() {
                         {/* Status Chips */}
                         <div className="no-scrollbar flex w-full overflow-x-auto gap-3 px-4 -my-2 snap-x animate-fade-in" style={{ animationDelay: '0.1s' }}>
                             <div className="pl-1"></div>
+                            {/* ... chips ... */}
                             <div className="snap-center h-9 flex-shrink-0 flex items-center gap-2 rounded-full bg-slate-800/60 border border-white/5 pl-3 pr-4 border-l-4 border-l-green-500">
                                 <FaCheckCircle className="text-green-400" size={16} />
                                 <span className="text-sm font-medium">Vacunado</span>
@@ -291,9 +308,10 @@ export default function PetProfilePage() {
                             </div>
                         </div>
 
-                        {/* Digital ID Card Section */}
+                        {/* Digital ID Card Section - Owner Only maybe? Or Public? Keep Public for now but hide management buttons */}
                         <div className="px-4 mt-2 animate-fade-in" style={{ animationDelay: '0.3s' }}>
                             <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 group">
+                                {/* ... ID Card ... */}
                                 <div className="absolute inset-0 bg-gradient-to-br from-primary to-blue-900"></div>
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl translate-x-10 -translate-y-10 pointer-events-none"></div>
                                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/10 rounded-full blur-2xl -translate-x-10 translate-y-10 pointer-events-none"></div>
@@ -313,60 +331,67 @@ export default function PetProfilePage() {
                                         <div className="bg-white p-2 rounded-xl shadow-lg transform transition-transform group-hover:scale-105">
                                             {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" className="w-32 h-32" />}
                                         </div>
-                                        <div className="flex gap-2 w-full justify-center">
-                                            <button onClick={downloadQR} className="px-4 py-2 bg-black/30 hover:bg-black/50 rounded-full text-[10px] font-bold text-white flex items-center gap-2 transition-colors uppercase tracking-wide backdrop-blur-md flex-1 justify-center whitespace-nowrap">
-                                                Descargar QR
-                                            </button>
-                                            <button
-                                                onClick={handleDownloadCredential}
-                                                className="px-4 py-2 bg-primary/80 hover:bg-primary rounded-full text-[10px] font-bold text-white flex items-center gap-2 transition-colors uppercase tracking-wide backdrop-blur-md flex-1 justify-center whitespace-nowrap shadow-lg border border-white/10"
-                                            >
-                                                <FaIdCard size={12} />
-                                                Descargar Credencial
-                                            </button>
-                                        </div>
+                                        {pet.isOwner && (
+                                            <div className="flex gap-2 w-full justify-center">
+                                                <button onClick={downloadQR} className="px-4 py-2 bg-black/30 hover:bg-black/50 rounded-full text-[10px] font-bold text-white flex items-center gap-2 transition-colors uppercase tracking-wide backdrop-blur-md flex-1 justify-center whitespace-nowrap">
+                                                    Descargar QR
+                                                </button>
+                                                <button
+                                                    onClick={handleDownloadCredential}
+                                                    className="px-4 py-2 bg-primary/80 hover:bg-primary rounded-full text-[10px] font-bold text-white flex items-center gap-2 transition-colors uppercase tracking-wide backdrop-blur-md flex-1 justify-center whitespace-nowrap shadow-lg border border-white/10"
+                                                >
+                                                    <FaIdCard size={12} />
+                                                    Descargar Credencial
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
-
-                                <div onClick={() => router.push('/documents')} className="relative bg-black/20 backdrop-blur-sm p-3 flex items-center justify-center cursor-pointer hover:bg-black/30 transition-colors">
-                                    <span className="text-white text-xs font-bold tracking-wider flex items-center gap-2">
-                                        VER DOCS COMPLETOS <FaArrowRight size={12} />
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Documents */}
-                        <div className="px-4">
-                            <h3 className="text-lg font-bold text-white mb-4 px-1">Documentos</h3>
-                            <div className="flex flex-col gap-3">
-                                {pet.documents && pet.documents.length > 0 ? pet.documents.map((doc) => (
-                                    <div
-                                        key={doc.document_id}
-                                        onClick={() => setSelectedDoc({ ...doc, pet_name: pet.pet_name })}
-                                        className="group bg-slate-800/60 backdrop-blur-md p-4 rounded-2xl flex items-center gap-4 border border-white/5 cursor-pointer hover:bg-slate-800 transition-colors shadow-sm"
-                                    >
-                                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${doc.document_type.includes('Acta') ? 'bg-orange-500/20 text-orange-400' : 'bg-blue-500/20 text-blue-400'}`}>
-                                            <FaFileAlt size={20} />
-                                        </div>
-                                        <div className="flex-1">
-                                            <p className="text-white font-semibold text-base group-hover:text-primary transition-colors">{doc.document_type}</p>
-                                            <p className="text-slate-400 text-sm">Emitido: {formatDateShort(doc.issued_at || doc.created_at)}</p>
-                                        </div>
-                                        <FaChevronRight className="text-slate-600 group-hover:text-white transition-colors" size={12} />
-                                    </div>
-                                )) : (
-                                    <div className="text-center p-8 border-2 border-dashed border-white/10 rounded-2xl">
-                                        <p className="text-slate-500 text-sm">No hay documentos registrados.</p>
+                                {pet.isOwner && (
+                                    <div onClick={() => router.push('/documents')} className="relative bg-black/20 backdrop-blur-sm p-3 flex items-center justify-center cursor-pointer hover:bg-black/30 transition-colors">
+                                        <span className="text-white text-xs font-bold tracking-wider flex items-center gap-2">
+                                            VER DOCS COMPLETOS <FaArrowRight size={12} />
+                                        </span>
                                     </div>
                                 )}
                             </div>
                         </div>
+
+                        {/* Documents - Owner Only */}
+                        {pet.isOwner && (
+                            <div className="px-4">
+                                <h3 className="text-lg font-bold text-white mb-4 px-1">Documentos</h3>
+                                <div className="flex flex-col gap-3">
+                                    {pet.documents && pet.documents.length > 0 ? pet.documents.map((doc) => (
+                                        <div
+                                            key={doc.document_id}
+                                            onClick={() => setSelectedDoc({ ...doc, pet_name: pet.pet_name })}
+                                            className="group bg-slate-800/60 backdrop-blur-md p-4 rounded-2xl flex items-center gap-4 border border-white/5 cursor-pointer hover:bg-slate-800 transition-colors shadow-sm"
+                                        >
+                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${doc.document_type.includes('Acta') ? 'bg-orange-500/20 text-orange-400' : 'bg-blue-500/20 text-blue-400'}`}>
+                                                <FaFileAlt size={20} />
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="text-white font-semibold text-base group-hover:text-primary transition-colors">{doc.document_type}</p>
+                                                <p className="text-slate-400 text-sm">Emitido: {formatDateShort(doc.issued_at || doc.created_at)}</p>
+                                            </div>
+                                            <FaChevronRight className="text-slate-600 group-hover:text-white transition-colors" size={12} />
+                                        </div>
+                                    )) : (
+                                        <div className="text-center p-8 border-2 border-dashed border-white/10 rounded-2xl">
+                                            <p className="text-slate-500 text-sm">No hay documentos registrados.</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </>
                 )}
 
-                {activeTab === 'medical' && (
+                {/* Medical Tab - Owner Only (Already protected by Conditional Rendering in Nav but added check here too) */}
+                {activeTab === 'medical' && pet.isOwner && (
                     <div className="px-4 flex flex-col gap-6 animate-fade-in">
+                        {/* ... medical content ... */}
                         <div className="flex justify-between items-center">
                             <h3 className="text-xl font-bold text-white">Historial Clínico</h3>
                             <button
@@ -376,7 +401,7 @@ export default function PetProfilePage() {
                                 <FaPlus size={14} />
                             </button>
                         </div>
-
+                        {/* ... medical list ... */}
                         <div className="flex flex-col gap-4 relative">
                             {/* Timeline Line */}
                             <div className="absolute left-[20px] top-4 bottom-4 w-0.5 bg-white/10"></div>
@@ -412,8 +437,8 @@ export default function PetProfilePage() {
                     </div>
                 )}
 
-                {/* Delete Area */}
-                {activeTab === 'overview' && (
+                {/* Delete Area - Owner Only */}
+                {activeTab === 'overview' && pet.isOwner && (
                     <div className="mt-4 px-4 mb-4">
                         <button
                             onClick={handleDelete}
