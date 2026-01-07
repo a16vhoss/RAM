@@ -60,7 +60,7 @@ export default async function DashboardPage() {
                         <Link href="/documents" className="text-xs font-semibold text-primary hover:text-primary-hover transition-colors">Ver todo</Link>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         {/* RUAC */}
                         <Link href="/documents" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
                             <div className="absolute top-0 right-0 p-3 opacity-20 transform translate-x-2 -translate-y-2 group-hover:rotate-12 transition-transform">

@@ -60,3 +60,11 @@ export async function markNotificationAsRead(notificationId) {
         return { success: false, error: error.message };
     }
 }
+
+import { logout } from '@/lib/auth';
+import { redirect } from 'next/navigation';
+
+export async function logoutUser() {
+    await logout();
+    redirect('/login');
+}

@@ -37,7 +37,7 @@ export default async function LandingPage() {
             </nav>
 
             {/* Hero Section */}
-            <section className="relative pt-32 pb-20 px-6">
+            <section className="relative pt-24 md:pt-32 pb-20 px-6">
                 {/* Background Effects */}
                 <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[150px] pointer-events-none"></div>
                 <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
