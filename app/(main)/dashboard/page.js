@@ -1,7 +1,7 @@
 import { getSession } from '@/lib/auth';
 import db from '@/lib/db';
 import Link from 'next/link';
-import { FaPlus, FaBell, FaIdCard, FaStethoscope, FaSyringe, FaExclamationTriangle } from 'react-icons/fa';
+import { FaPlus, FaBell, FaIdCard, FaStethoscope, FaSyringe, FaExclamationTriangle, FaSearch } from 'react-icons/fa';
 import { redirect } from 'next/navigation';
 import DashboardSearch from './DashboardSearch';
 import NotificationsBell from '@/app/components/NotificationsBell';
