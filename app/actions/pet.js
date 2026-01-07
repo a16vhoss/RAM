@@ -218,6 +218,34 @@ export async function toggleLostPetStatus(petId, isLost, location = null, radius
         } else {
             // Just update status if found or no location provided
             await db.run('UPDATE pets SET status = $1 WHERE pet_id = $2', [newStatus, petId]);
+
+            // Notify original recipients that the pet was found
+            if (!isLost) { // Marking as found
+                const originalRecipients = await db.getAll(`
+                    SELECT DISTINCT user_id FROM notifications 
+                    WHERE related_id = $1 AND type = 'amber_alert'
+                `, [petId]);
+
+                if (originalRecipients.length > 0) {
+                    // Get Pet Name for the message
+                    const [pet] = await db.getAll('SELECT pet_name FROM pets WHERE pet_id = $1', [petId]);
+                    const petName = pet ? pet.pet_name : 'La mascota';
+
+                    for (const recipient of originalRecipients) {
+                        await db.run(`
+                            INSERT INTO notifications (user_id, title, message, type, related_id)
+                            VALUES ($1, $2, $3, $4, $5)
+                        `, [
+                            recipient.user_id,
+                            '🎉 ¡Mascota Encontrada!',
+                            `¡Buenas noticias! ${petName} ya está de vuelta en casa. Gracias por tu apoyo.`,
+                            'pet_found',
+                            petId
+                        ]);
+                    }
+                    console.log(`Notified ${originalRecipients.length} users that pet was found.`);
+                }
+            }
         }
 
         revalidatePath(`/pets/${petId}`);

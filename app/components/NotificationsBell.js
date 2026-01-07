@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { FaBell, FaInfoCircle, FaExclamationTriangle, FaTimes } from 'react-icons/fa';
+import { FaBell, FaInfoCircle, FaExclamationTriangle, FaTimes, FaCheckCircle } from 'react-icons/fa';
 import { getNotifications, markNotificationAsRead } from '@/app/actions/user';
 import Link from 'next/link';
 
@@ -52,7 +52,7 @@ export default function NotificationsBell() {
         }
 
         // Navigation Logic
-        if (notification.type === 'amber_alert' && notification.related_id) {
+        if ((notification.type === 'amber_alert' || notification.type === 'pet_found') && notification.related_id) {
             setIsOpen(false); // Close dropdown
             router.push(`/pets/${notification.related_id}`);
         }
@@ -62,6 +62,7 @@ export default function NotificationsBell() {
 
     const getIcon = (type) => {
         if (type === 'amber_alert') return <FaExclamationTriangle className="text-red-500" />;
+        if (type === 'pet_found') return <FaCheckCircle className="text-green-500" />;
         return <FaInfoCircle className="text-blue-400" />;
     };
 
