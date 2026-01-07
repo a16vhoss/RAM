@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaHome, FaSearch, FaPlusCircle, FaNewspaper, FaUser, FaPaw, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaSearch, FaPlusCircle, FaNewspaper, FaUser, FaPaw, FaSignOutAlt, FaExclamationTriangle } from 'react-icons/fa';
 import { logoutUser } from '@/app/actions/user';
 
 export default function Sidebar() {
@@ -12,7 +12,7 @@ export default function Sidebar() {
 
     const menuItems = [
         { name: 'Inicio', path: '/dashboard', icon: <FaHome size={20} /> },
-        { name: 'Buscar', path: '/directory', icon: <FaSearch size={20} /> },
+        { name: 'Alertas', path: '/public/lost-pets', icon: <FaExclamationTriangle size={20} /> },
         { name: 'Blog', path: '/blog', icon: <FaNewspaper size={20} /> },
         { name: 'Cuenta', path: '/account', icon: <FaUser size={20} /> },
     ];
