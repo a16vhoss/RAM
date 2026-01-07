@@ -51,3 +51,4 @@ export async function GET(request, { params }) {
         console.error('Error fetching pet:', error);
         return NextResponse.json({ error: 'Server error: ' + error.message }, { status: 500 });
     }
+}
