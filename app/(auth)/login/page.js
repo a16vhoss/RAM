@@ -70,24 +70,31 @@ export default function LoginPage() {
                         animation: 'pulse 2s infinite'
                     }}></div>
 
-                    <div style={{ position: 'relative', width: '100%', maxWidth: '300px', aspectRatio: '1/1' }}>
+                    <div style={{ position: 'relative', width: '100%', maxWidth: '220px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
                         <div style={{
-                            width: '100%', height: '100%', borderRadius: '50%',
-                            backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCg1H9R4IP-Lc-dW-7OlPwP9etGcD4_avl9FLGvJxfuq2vF32nmITW6rE0eJKIXkp7CAB-Leq1lZp1z5aF8hCb38BvPy23SDGihLts94Tl5nM0kE94jGwll0s4yi8AGfVWKomeBiHhg7jPGwGpM6novjHwJbvQO1Ve3StqLyMC5cuc6a1dQI3V0KVLPX7u5165dsDqgnYCcyoKq4nZbJgeqGM2ryZFAPYPcMEuYnYeJvv43F11f4YqAQOl68PAG9SOG4lOtEPP_b5ws")',
-                            backgroundSize: 'cover', backgroundPosition: 'center',
-                            boxShadow: '0 0 40px rgba(39, 145, 231, 0.3)',
-                            border: '4px solid rgba(39, 145, 231, 0.2)'
-                        }}></div>
+                            width: '180px', height: '180px', borderRadius: '40px',
+                            background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
+                            boxShadow: '0 0 60px rgba(59, 130, 246, 0.4)',
+                            border: '3px solid rgba(255, 255, 255, 0.1)',
+                            padding: '20px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            <img src="/icon.png" alt="RAM Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                        </div>
+
+                        <div style={{ textAlign: 'center' }}>
+                            <h2 style={{ fontSize: '28px', fontWeight: '800', color: 'white', letterSpacing: '-0.5px' }}>RAM</h2>
+                            <p style={{ color: '#64748b', fontSize: '12px', fontWeight: '500' }}>Registro Animal Mundial</p>
+                        </div>
 
                         {/* Floating Badge */}
                         <div style={{
-                            position: 'absolute', bottom: '-16px', right: '16px',
                             background: 'rgba(17, 26, 33, 0.9)', backdropFilter: 'blur(12px)',
                             border: '1px solid rgba(255, 255, 255, 0.1)', padding: '8px 16px', borderRadius: '12px',
                             display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)'
                         }}>
                             <span style={{ color: 'var(--primary)', fontSize: '20px' }}>✓</span>
-                            <span style={{ fontSize: '14px', fontWeight: '600', color: 'white' }}>Official ID</span>
+                            <span style={{ fontSize: '14px', fontWeight: '600', color: 'white' }}>ID Oficial</span>
                         </div>
                     </div>
                 </div>
