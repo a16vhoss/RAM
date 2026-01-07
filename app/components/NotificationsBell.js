@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { FaBell, FaInfoCircle, FaExclamationTriangle, FaTimes } from 'react-icons/fa';
 import { getNotifications, markNotificationAsRead } from '@/app/actions/user';
 import Link from 'next/link';
 
 export default function NotificationsBell() {
+    const router = useRouter();
     const [notifications, setNotifications] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [unreadCount, setUnreadCount] = useState(0);
@@ -36,6 +38,8 @@ export default function NotificationsBell() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [dropdownRef]);
 
+
+    // ...
     const handleMarkAsRead = async (notification) => {
         if (!notification.is_read) {
             await markNotificationAsRead(notification.notification_id);
@@ -45,6 +49,12 @@ export default function NotificationsBell() {
             );
             setNotifications(updated);
             setUnreadCount(updated.filter(n => !n.is_read).length);
+        }
+
+        // Navigation Logic
+        if (notification.type === 'amber_alert' && notification.related_id) {
+            setIsOpen(false); // Close dropdown
+            router.push(`/pets/${notification.related_id}`);
         }
     };
 
