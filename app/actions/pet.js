@@ -60,29 +60,30 @@ export async function createPet(formData) {
         // Handle File Upload
         if (photoFile && photoFile.size > 0) {
             const supabase = getSupabaseClient();
-            if (supabase) {
-                const fileExt = photoFile.name.split('.').pop();
-                const fileName = `${uuidv4()}.${fileExt}`;
-                const filePath = `${session.user.user_id}/${fileName}`;
-
-                const { data, error: uploadError } = await supabase.storage
-                    .from('pet-photos')
-                    .upload(filePath, photoFile, {
-                        contentType: photoFile.type,
-                        upsert: false
-                    });
-
-                if (uploadError) {
-                    console.error('Storage upload error:', uploadError);
-                } else {
-                    const { data: { publicUrl } } = supabase.storage
-                        .from('pet-photos')
-                        .getPublicUrl(filePath);
-                    photoUrl = publicUrl;
-                }
-            } else {
-                console.warn('Skipping photo upload: Supabase not configured');
+            if (!supabase) {
+                return { success: false, error: 'Error crítico: No se pueden subir fotos porque faltan las credenciales de Supabase.' };
             }
+
+            const fileExt = photoFile.name.split('.').pop();
+            const fileName = `${uuidv4()}.${fileExt}`;
+            const filePath = `${session.user.user_id}/${fileName}`;
+
+            const { data, error: uploadError } = await supabase.storage
+                .from('pet-photos')
+                .upload(filePath, photoFile, {
+                    contentType: photoFile.type,
+                    upsert: false
+                });
+
+            if (uploadError) {
+                console.error('Storage upload error:', uploadError);
+                return { success: false, error: 'Falló la subida de imagen.' };
+            }
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('pet-photos')
+                .getPublicUrl(filePath);
+            photoUrl = publicUrl;
         }
 
         const petId = uuidv4();
@@ -219,19 +220,24 @@ export async function updatePet(petId, formData) {
         // Handle New Photo Upload if provided
         if (photoFile && photoFile.size > 0) {
             const supabase = getSupabaseClient();
-            if (supabase) {
-                const fileExt = photoFile.name.split('.').pop();
-                const fileName = `${userId}/${uuidv4()}.${fileExt}`;
-
-                const { data, error: uploadError } = await supabase.storage
-                    .from('pet-photos')
-                    .upload(fileName, photoFile, { contentType: photoFile.type, upsert: false });
-
-                if (!uploadError) {
-                    const { data: { publicUrl } } = supabase.storage.from('pet-photos').getPublicUrl(fileName);
-                    photoUrl = publicUrl;
-                }
+            if (!supabase) {
+                return { success: false, error: 'Error de configuración: Faltan las claves de Supabase para subir imágenes.' };
             }
+
+            const fileExt = photoFile.name.split('.').pop();
+            const fileName = `${userId}/${uuidv4()}.${fileExt}`;
+
+            const { data, error: uploadError } = await supabase.storage
+                .from('pet-photos')
+                .upload(fileName, photoFile, { contentType: photoFile.type, upsert: false });
+
+            if (uploadError) {
+                console.error('Supabase upload error:', uploadError);
+                return { success: false, error: 'Error al subir la imagen a Supabase' };
+            }
+
+            const { data: { publicUrl } } = supabase.storage.from('pet-photos').getPublicUrl(fileName);
+            photoUrl = publicUrl;
         }
 
         // Update Pet
