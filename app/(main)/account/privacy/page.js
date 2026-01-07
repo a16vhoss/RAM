@@ -17,58 +17,71 @@ export default function PrivacyPage() {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <Link href="/account" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '24px', color: 'var(--primary)' }}>
-                <FaArrowLeft /> Volver
-            </Link>
+        <div className="min-h-screen bg-background-dark text-white p-6 md:p-10 animate-in fade-in duration-300">
+            <div className="max-w-2xl mx-auto">
+                <Link href="/account" className="inline-flex items-center gap-2 mb-8 text-gray-400 hover:text-white transition-colors font-medium">
+                    <FaArrowLeft /> Volver
+                </Link>
 
-            <h1 style={{ marginBottom: '24px' }}>Privacidad</h1>
+                <h1 className="text-3xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Privacidad</h1>
 
-            <section style={{ background: 'white', padding: '20px', borderRadius: '16px', marginBottom: '20px', boxShadow: 'var(--shadow-sm)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-                    <FaShieldAlt size={24} color="var(--primary)" />
-                    <h2 style={{ fontSize: '18px' }}>Datos Personales</h2>
-                </div>
-
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '20px', lineHeight: 1.6 }}>
-                    Tus datos están protegidos y nunca serán compartidos con terceros sin tu consentimiento.
-                    Solo utilizamos tu información para brindarte un mejor servicio.
-                </p>
-
-                <button onClick={handleExportData} className="btn btn-secondary btn-block" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                    <FaDownload /> Descargar Mis Datos
-                </button>
-            </section>
-
-            <section style={{ background: 'white', padding: '20px', borderRadius: '16px', marginBottom: '20px', boxShadow: 'var(--shadow-sm)' }}>
-                <h2 style={{ fontSize: '18px', marginBottom: '12px' }}>Visibilidad de Perfil</h2>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: '#f9f9f9', borderRadius: '8px', marginBottom: '12px' }}>
-                    <div>
-                        <h3 style={{ fontSize: '14px', marginBottom: '4px' }}>Perfil Público</h3>
-                        <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Permite que otros usuarios vean tu perfil</p>
+                <section className="bg-surface-dark border border-white/5 p-6 rounded-3xl mb-6 shadow-xl">
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2 bg-primary/10 rounded-lg">
+                            <FaShieldAlt size={20} className="text-primary" />
+                        </div>
+                        <h2 className="text-xl font-bold">Datos Personales</h2>
                     </div>
-                    <input type="checkbox" style={{ width: '20px', height: '20px' }} />
-                </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: '#f9f9f9', borderRadius: '8px' }}>
-                    <div>
-                        <h3 style={{ fontSize: '14px', marginBottom: '4px' }}>Mostrar Email</h3>
-                        <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Visible en información de QR de mascotas</p>
+                    <p className="text-gray-400 mb-6 leading-relaxed">
+                        Tus datos están protegidos y nunca serán compartidos con terceros sin tu consentimiento.
+                        Solo utilizamos tu información para brindarte un mejor servicio.
+                    </p>
+
+                    <button onClick={handleExportData} className="w-full bg-white/5 border border-white/10 hover:bg-white/10 text-white font-medium py-3 rounded-xl transition-all flex items-center justify-center gap-2">
+                        <FaDownload /> Descargar Mis Datos
+                    </button>
+                </section>
+
+                <section className="bg-surface-dark border border-white/5 p-6 rounded-3xl mb-6 shadow-xl space-y-4">
+                    <h2 className="text-xl font-bold mb-2">Visibilidad de Perfil</h2>
+
+                    <div className="flex justify-between items-center p-4 bg-black/20 rounded-xl border border-white/5">
+                        <div>
+                            <h3 className="font-bold text-sm mb-1">Perfil Público</h3>
+                            <p className="text-xs text-gray-500">Permite que otros usuarios vean tu perfil</p>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" className="sr-only peer" />
+                            <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
                     </div>
-                    <input type="checkbox" defaultChecked style={{ width: '20px', height: '20px' }} />
-                </div>
-            </section>
 
-            <section style={{ background: '#FFF5F5', padding: '20px', borderRadius: '16px', border: '1px solid #FFC9C9', boxShadow: 'var(--shadow-sm)' }}>
-                <h2 style={{ fontSize: '18px', marginBottom: '12px', color: 'var(--error)' }}>Zona de Peligro</h2>
-                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-                    Una vez que elimines tu cuenta, no hay vuelta atrás. Por favor, estate seguro.
-                </p>
-                <button onClick={handleDeleteAccount} className="btn" style={{ width: '100%', background: 'var(--error)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                    <FaTrash /> Eliminar Cuenta
-                </button>
-            </section>
+                    <div className="flex justify-between items-center p-4 bg-black/20 rounded-xl border border-white/5">
+                        <div>
+                            <h3 className="font-bold text-sm mb-1">Mostrar Email</h3>
+                            <p className="text-xs text-gray-500">Visible en información de QR de mascotas</p>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" defaultChecked className="sr-only peer" />
+                            <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                    </div>
+                </section>
+
+                <section className="bg-red-500/5 border border-red-500/20 p-6 rounded-3xl shadow-xl">
+                    <div className="flex items-center gap-2 mb-3">
+                        <FaTrash className="text-red-500" />
+                        <h2 className="text-xl font-bold text-red-500">Zona de Peligro</h2>
+                    </div>
+                    <p className="text-sm text-red-400/80 mb-6">
+                        Una vez que elimines tu cuenta, no hay vuelta atrás. Por favor, estate seguro.
+                    </p>
+                    <button onClick={handleDeleteAccount} className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-red-500/20">
+                        Eliminar Cuenta
+                    </button>
+                </section>
+            </div>
         </div>
     );
 }

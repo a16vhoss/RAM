@@ -19,45 +19,47 @@ export default function NotificationsPage() {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <Link href="/account" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '24px', color: 'var(--primary)' }}>
-                <FaArrowLeft /> Volver
-            </Link>
+        <div className="min-h-screen bg-background-dark text-white p-6 md:p-10 animate-in fade-in duration-300">
+            <div className="max-w-xl mx-auto">
+                <Link href="/account" className="inline-flex items-center gap-2 mb-8 text-gray-400 hover:text-white transition-colors font-medium">
+                    <FaArrowLeft /> Volver
+                </Link>
 
-            <h1 style={{ marginBottom: '24px' }}>Notificaciones</h1>
+                <h1 className="text-3xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Notificaciones</h1>
 
-            <div style={{ background: 'white', padding: '20px', borderRadius: '16px', boxShadow: 'var(--shadow-sm)' }}>
-                <NotificationToggle
-                    label="Recordatorios de Citas"
-                    description="Recibe notificaciones 24h antes de tus citas"
-                    checked={settings.appointments}
-                    onChange={() => handleToggle('appointments')}
-                />
-                <NotificationToggle
-                    label="Recordatorios de Vacunas"
-                    description="Alertas cuando tus mascotas necesiten vacunas"
-                    checked={settings.vaccineReminders}
-                    onChange={() => handleToggle('vaccineReminders')}
-                />
-                <NotificationToggle
-                    label="Promociones"
-                    description="Ofertas especiales y descuentos"
-                    checked={settings.promotions}
-                    onChange={() => handleToggle('promotions')}
-                />
-                <NotificationToggle
-                    label="Newsletter"
-                    description="Consejos y noticias sobre cuidado de mascotas"
-                    checked={settings.newsletter}
-                    onChange={() => handleToggle('newsletter')}
-                />
-                <NotificationToggle
-                    label="Actividad de Mascota"
-                    description="Actualizaciones sobre tus mascotas"
-                    checked={settings.petActivity}
-                    onChange={() => handleToggle('petActivity')}
-                    last
-                />
+                <div className="bg-surface-dark border border-white/5 p-6 rounded-3xl shadow-2xl space-y-2">
+                    <NotificationToggle
+                        label="Recordatorios de Citas"
+                        description="Recibe notificaciones 24h antes de tus citas"
+                        checked={settings.appointments}
+                        onChange={() => handleToggle('appointments')}
+                    />
+                    <NotificationToggle
+                        label="Recordatorios de Vacunas"
+                        description="Alertas cuando tus mascotas necesiten vacunas"
+                        checked={settings.vaccineReminders}
+                        onChange={() => handleToggle('vaccineReminders')}
+                    />
+                    <NotificationToggle
+                        label="Promociones"
+                        description="Ofertas especiales y descuentos"
+                        checked={settings.promotions}
+                        onChange={() => handleToggle('promotions')}
+                    />
+                    <NotificationToggle
+                        label="Newsletter"
+                        description="Consejos y noticias sobre cuidado de mascotas"
+                        checked={settings.newsletter}
+                        onChange={() => handleToggle('newsletter')}
+                    />
+                    <NotificationToggle
+                        label="Actividad de Mascota"
+                        description="Actualizaciones sobre tus mascotas"
+                        checked={settings.petActivity}
+                        onChange={() => handleToggle('petActivity')}
+                        last
+                    />
+                </div>
             </div>
         </div>
     );
@@ -65,38 +67,15 @@ export default function NotificationsPage() {
 
 function NotificationToggle({ label, description, checked, onChange, last }) {
     return (
-        <div style={{ paddingBottom: last ? 0 : '16px', marginBottom: last ? 0 : '16px', borderBottom: last ? 'none' : '1px solid #f0f0f0' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                    <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '4px' }}>{label}</h3>
-                    <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{description}</p>
-                </div>
-                <label style={{ display: 'block', position: 'relative', width: '50px', height: '28px', cursor: 'pointer' }}>
-                    <input type="checkbox" checked={checked} onChange={onChange} style={{ opacity: 0, width: 0, height: 0 }} />
-                    <span style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundColor: checked ? 'var(--primary)' : '#ccc',
-                        borderRadius: '28px',
-                        transition: '0.4s'
-                    }}>
-                        <span style={{
-                            position: 'absolute',
-                            content: '',
-                            height: '20px',
-                            width: '20px',
-                            left: checked ? '26px' : '4px',
-                            bottom: '4px',
-                            backgroundColor: 'white',
-                            borderRadius: '50%',
-                            transition: '0.4s'
-                        }}></span>
-                    </span>
-                </label>
+        <div className={`flex justify-between items-center p-4 rounded-xl transition-colors hover:bg-white/5 ${!last ? 'border-b border-white/5' : ''}`}>
+            <div>
+                <h3 className="font-bold text-sm mb-1 text-white">{label}</h3>
+                <p className="text-xs text-gray-400">{description}</p>
             </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" checked={checked} onChange={onChange} className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
         </div>
     );
 }
