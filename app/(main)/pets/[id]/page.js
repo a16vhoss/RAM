@@ -6,7 +6,7 @@ import QRCode from 'qrcode';
 import {
     FaArrowLeft, FaCheckCircle, FaShieldAlt, FaMicrochip, FaPaw, FaWeight,
     FaVenusMars, FaBirthdayCake, FaIdCard, FaTrash, FaFileAlt, FaChevronRight, FaArrowRight,
-    FaPlus, FaNotesMedical, FaSyringe, FaStethoscope, FaPills
+    FaPlus, FaNotesMedical, FaSyringe, FaStethoscope, FaPills, FaEdit
 } from 'react-icons/fa';
 import { deletePet, toggleLostPetStatus } from '@/app/actions/pet';
 import { getMedicalRecords } from '@/app/actions/medical';
@@ -105,6 +105,23 @@ export default function PetProfilePage() {
         document.body.removeChild(link);
     };
 
+    const handleDownloadCredential = async () => {
+        try {
+            const res = await fetch(`/api/og?id=${pet.pet_id}`);
+            if (!res.ok) throw new Error('Error generando credencial');
+            const blob = await res.blob();
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `Credencial-${pet.pet_name}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error:', error);
+            alert('No se pudo descargar la credencial. Intenta nuevamente.');
+        }
+    };
+
     const getRecordIcon = (type) => {
         const t = type.toLowerCase();
         if (t.includes('vacuna')) return <FaSyringe size={16} />;
@@ -171,8 +188,7 @@ export default function PetProfilePage() {
                         onClick={() => router.push(`/pets/${params.id}/edit`)}
                         className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
                     >
-                        <FaPills className="hidden" /> {/* Dummy to keep imports valid if needed, actually using FaEdit if imported, wait let's use FaStethoscope or just text if icon missing. Ah I missed importing FaEdit. I will fix imports too. */}
-                        <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 576 512" height="18" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM381.8 162.5l-90.2-90.2-229.3 229.3c-2.3 2.3-3.6 5.5-3.6 8.7V372c0 6.6 5.4 12 12 12h61.7c3.2 0 6.4-1.3 8.7-3.6l229.3-229.3z"></path></svg>
+                        <FaEdit size={18} />
                     </button>
                 </div>
             </div>
@@ -268,13 +284,22 @@ export default function PetProfilePage() {
                                         </div>
                                     </div>
 
-                                    <div className="bg-white/10 backdrop-blur-sm p-4 rounded-2xl flex flex-col items-center justify-center gap-4 border border-white/5">
+                                    <div className="bg-white/10 backdrop-blur-sm p-4 rounded-2xl flex flex-col items-center justify-center gap-4 border border-white/5 w-full">
                                         <div className="bg-white p-2 rounded-xl shadow-lg transform transition-transform group-hover:scale-105">
                                             {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" className="w-32 h-32" />}
                                         </div>
-                                        <button onClick={downloadQR} className="px-4 py-2 bg-black/30 hover:bg-black/50 rounded-full text-xs font-bold text-white flex items-center gap-2 transition-colors uppercase tracking-wide backdrop-blur-md">
-                                            Descargar QR
-                                        </button>
+                                        <div className="flex gap-2 w-full justify-center">
+                                            <button onClick={downloadQR} className="px-4 py-2 bg-black/30 hover:bg-black/50 rounded-full text-[10px] font-bold text-white flex items-center gap-2 transition-colors uppercase tracking-wide backdrop-blur-md flex-1 justify-center whitespace-nowrap">
+                                                Descargar QR
+                                            </button>
+                                            <button
+                                                onClick={handleDownloadCredential}
+                                                className="px-4 py-2 bg-primary/80 hover:bg-primary rounded-full text-[10px] font-bold text-white flex items-center gap-2 transition-colors uppercase tracking-wide backdrop-blur-md flex-1 justify-center whitespace-nowrap shadow-lg border border-white/10"
+                                            >
+                                                <FaIdCard size={12} />
+                                                Descargar Credencial
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
