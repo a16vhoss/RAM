@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaArrowLeft, FaBell } from 'react-icons/fa';
+import { updateNotificationSettings, exportUserData } from '@/app/actions/user';
 
 export default function NotificationsPage() {
     const [settings, setSettings] = useState({
@@ -12,11 +14,44 @@ export default function NotificationsPage() {
         newsletter: true,
         petActivity: true
     });
+    const [loading, setLoading] = useState(true);
 
-    const handleToggle = (key) => {
-        setSettings(prev => ({ ...prev, [key]: !prev[key] }));
-        // TODO: Save to API
+    useEffect(() => {
+        async function loadSettings() {
+            try {
+                const result = await exportUserData();
+                if (result.success && result.data.user && result.data.user.notification_preferences) {
+                    setSettings({ ...settings, ...result.data.user.notification_preferences });
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadSettings();
+    }, []);
+
+    const handleToggle = async (key) => {
+        const newSettings = { ...settings, [key]: !settings[key] };
+        setSettings(newSettings); // Optimistic update
+
+        try {
+            await updateNotificationSettings(newSettings);
+        } catch (error) {
+            console.error('Failed to save settings:', error);
+            setSettings(settings); // Revert on failure
+            alert('Error al guardar configuración');
+        }
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-background-dark text-white p-10 flex justify-center items-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-background-dark text-white p-6 md:p-10 animate-in fade-in duration-300">
@@ -64,6 +99,7 @@ export default function NotificationsPage() {
         </div>
     );
 }
+
 
 function NotificationToggle({ label, description, checked, onChange, last }) {
     return (

@@ -3,17 +3,44 @@
 import Link from 'next/link';
 import { FaArrowLeft, FaShieldAlt, FaTrash, FaDownload } from 'react-icons/fa';
 
+
+import { deleteAccount, exportUserData } from '@/app/actions/user';
+
 export default function PrivacyPage() {
-    const handleDeleteAccount = () => {
-        if (confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')) {
-            // TODO: Implement account deletion
-            alert('Funcionalidad de eliminación en desarrollo');
+    const handleDeleteAccount = async () => {
+        if (confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción ELIMINARÁ PERMANENTEMENTE todos tus datos y mascotas. No se puede deshacer.')) {
+            try {
+                const result = await deleteAccount();
+                if (!result.success) {
+                    alert('Error al eliminar cuenta: ' + result.error);
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Ocurrió un error inesperado');
+            }
         }
     };
 
-    const handleExportData = () => {
-        // TODO: Implement data export
-        alert('Exportación de datos en desarrollo');
+    const handleExportData = async () => {
+        try {
+            const result = await exportUserData();
+            if (result.success) {
+                const blob = new Blob([JSON.stringify(result.data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `ram_user_data_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } else {
+                alert('Error al exportar datos: ' + result.error);
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Error al descargar datos');
+        }
     };
 
     return (

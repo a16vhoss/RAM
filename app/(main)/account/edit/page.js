@@ -5,9 +5,13 @@ import { useRouter } from 'next/navigation';
 import { FaSave, FaArrowLeft } from 'react-icons/fa';
 import Link from 'next/link';
 
+
+import { updateUserProfile, exportUserData } from '@/app/actions/user';
+
 export default function EditProfilePage() {
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -15,16 +19,56 @@ export default function EditProfilePage() {
         address: ''
     });
 
+    useEffect(() => {
+        async function loadData() {
+            try {
+                const result = await exportUserData();
+                if (result.success && result.data.user) {
+                    const { first_name, last_name, phone, address } = result.data.user;
+                    setFormData({
+                        firstName: first_name || '',
+                        lastName: last_name || '',
+                        phone: phone || '',
+                        address: address || ''
+                    });
+                }
+            } catch (e) {
+                console.error('Error loading profile:', e);
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadData();
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
+        setSaving(true);
 
-        // TODO: Implement update API
-        setTimeout(() => {
-            alert('Perfil actualizado exitosamente');
-            router.push('/account');
-        }, 1000);
+        try {
+            const result = await updateUserProfile(formData);
+            if (result.success) {
+                alert('Perfil actualizado exitosamente');
+                router.refresh(); // Refresh server components to show new name in sidebar/header if applicable
+                router.push('/account');
+            } else {
+                alert('Error al actualizar: ' + result.error);
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Ocurrió un error inesperado');
+        } finally {
+            setSaving(false);
+        }
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-background-dark text-white p-10 flex justify-center items-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-background-dark text-white p-6 md:p-10 animate-in fade-in duration-300">
@@ -86,10 +130,10 @@ export default function EditProfilePage() {
 
                     <button
                         type="submit"
-                        disabled={loading}
+                        disabled={saving}
                         className="w-full mt-8 bg-gradient-to-r from-primary to-blue-600 hover:from-primary-dark hover:to-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        <FaSave /> {loading ? 'Guardando...' : 'Guardar Cambios'}
+                        <FaSave /> {saving ? 'Guardando...' : 'Guardar Cambios'}
                     </button>
                 </form>
             </div>

@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation';
 import { FaLock, FaArrowLeft } from 'react-icons/fa';
 import Link from 'next/link';
 
+
+import { changePassword } from '@/app/actions/user';
+
 export default function PasswordPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
@@ -23,11 +26,20 @@ export default function PasswordPage() {
         }
 
         setLoading(true);
-        // TODO: Implement password change API
-        setTimeout(() => {
-            alert('Contraseña actualizada exitosamente');
-            router.push('/account');
-        }, 1000);
+        try {
+            const result = await changePassword(formData.currentPassword, formData.newPassword);
+            if (result.success) {
+                alert('Contraseña actualizada exitosamente');
+                router.push('/account');
+            } else {
+                alert('Error: ' + result.error);
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Ocurrió un error inesperado');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
