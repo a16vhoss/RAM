@@ -89,7 +89,7 @@ function ProfileView({ user, pets, documents, onOpenSettings }) {
                     </div>
 
                     {pets.length > 0 ? (
-                        <div className="grid grid-cols-1 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {pets.map(pet => (
                                 <div
                                     key={pet.pet_id}
@@ -171,7 +171,7 @@ function SettingsView({ user, onBack }) {
                 <h1 className="text-xl font-bold">Configuración</h1>
             </div>
 
-            <div className="p-5 max-w-2xl mx-auto space-y-6">
+            <div className="p-5 max-w-5xl mx-auto space-y-6">
 
                 {/* Premium Card */}
                 <section>

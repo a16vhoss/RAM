@@ -5,7 +5,7 @@ export default async function BlogPage() {
     const posts = await db.getAll("SELECT * FROM blog_posts WHERE status = 'Publicado' ORDER BY published_at DESC");
 
     return (
-        <div className="min-h-screen bg-background text-text-main px-4 py-6 max-w-2xl mx-auto">
+        <div className="min-h-screen bg-background text-text-main px-4 py-6 max-w-7xl mx-auto">
             {/* Header */}
             <div className="mb-8">
                 <h1 className="text-3xl font-bold mb-2">Blog & Tips</h1>
@@ -13,7 +13,7 @@ export default async function BlogPage() {
             </div>
 
             {/* Posts Grid */}
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {posts.map(post => (
                     <Link
                         href={`/blog/${post.slug}`}
