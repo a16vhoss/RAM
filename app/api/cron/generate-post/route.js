@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { v4 as uuidv4 } from 'uuid';
 
 export const maxDuration = 60; // Allow 60 seconds for execution (OpenAI can be slow)
@@ -13,14 +13,15 @@ export async function GET(request) {
     // }
 
     // Check for API Key
-    const apiKey = process.env.OPENAI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY; // Changed env var name
     if (!apiKey) {
-        console.log('OPENAI_API_KEY missing, generating mock post.');
+        console.log('GEMINI_API_KEY missing, generating mock post.');
         return createMockPost();
     }
 
     try {
-        const openai = new OpenAI({ apiKey });
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
         // 2. Topic Rotation
         const topics = [
@@ -36,71 +37,64 @@ export async function GET(request) {
             'Golpe de calor: Prevención y síntomas'
         ];
 
-        // Pick a random topic or rotate based on day
-        const today = new Date();
-        const topicIndex = today.getDay() % topics.length; // Simple rotation
-        // Or better, random to avoid repetition if run rarely
+        // Pick a random topic
         const selectedTopic = topics[Math.floor(Math.random() * topics.length)];
 
-        // 3. Generate Content with OpenAI
-        const completion = await openai.chat.completions.create({
-            model: "gpt-4o-mini", // Cost effective
-            messages: [
-                {
-                    role: "system",
-                    content: "Eres un experto veterinario y amante de los animales que escribe para el blog de RAM (Registro Animal Mundial). Tu tono es amigable, profesional, informativo y empático. Escribes en Markdown. Usas emojis ocasionalmente."
-                },
-                {
-                    role: "user",
-                    content: `Escribe un artículo de blog corto (300-400 palabras) sobre el tema: "${selectedTopic}". 
-                    
-                    Estructura requerida en JSON:
-                    {
-                        "title": "Un título atractivo y catchy",
-                        "slug": "un-slug-seo-friendly",
-                        "excerpt": "Un resumen corto de 2 lineas",
-                        "content": "El contenido completo en Markdown... con subtítulos (##), listas, etc.",
-                        "tags": "tag1, tag2, tag3"
-                    }
-                    
-                    Asegúrate de que la respuesta sea SOLO el JSON válido.`
-                }
-            ],
-            response_format: { type: "json_object" }
-        });
+        // 3. Generate Content with Gemini
+        const prompt = `
+            Actúa como un experto veterinario y blogger de RAM (Registro Animal Mundial).
+            Escribe un artículo de blog corto (300-400 palabras) sobre el tema: "${selectedTopic}".
+            
+            Requisitos:
+            - Tono: Amigable, profesional, empático.
+            - Formato de respuesta: ÚNICAMENTE un objeto JSON válido.
+            - Estructura JSON:
+            {
+                "title": "Un título atractivo",
+                "slug": "un-slug-seo-friendly",
+                "excerpt": "Resumen corto de 2 lineas",
+                "content": "El contenido completo en Markdown (Usa ## para subtítulos, listas, negritas, emojis)",
+                "tags": "tag1, tag2, tag3"
+            }
+        `;
 
-        const result = JSON.parse(completion.choices[0].message.content);
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
 
-        // 4. Image Selection (Using Unsplash Source for simplicity without key)
+        // Clean markdown code blocks if present (```json ... ```)
+        const jsonString = text.replace(/```json/g, '').replace(/```/g, '').trim();
+        const postData = JSON.parse(jsonString);
+
+
+        // 4. Image Selection (Using Unsplash Source for simplicity)
         // We use keywords from the title/tags to get a relevant random image
-        const keywords = result.tags.split(',')[0].trim();
-        const imageUrl = `https://source.unsplash.com/800x600/?${keywords},pet`;
-        // Note: source.unsplash is deprecated/unreliable sometimes, let's use a standard implementation or static list if it fails. 
-        // Better alternative for now: specific collection or keyword
-        const reliableImage = `https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=1000`; // Fallback
+        const keywords = postData.tags.split(',')[0].trim();
+        // Fallback image since source.unsplash is unreliable
+        const imageUrl = `https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=1000`;
 
         // 5. Save to Database
         const postId = uuidv4();
 
         await db.run(`
             INSERT INTO blog_posts (post_id, title, slug, excerpt, content, tags, image_url, published_at, status, author_name)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), 'Publicado', 'RAM AI Assistant')
+            VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), 'Publicado', 'RAM AI Assistant (Gemini)')
         `, [
             postId,
-            result.title,
-            result.slug + '-' + Date.now(), // Ensure uniqueness
-            result.excerpt,
-            result.content,
-            result.tags,
-            imageUrl, // Try dynamic first
+            postData.title,
+            postData.slug + '-' + Date.now(), // Ensure uniqueness
+            postData.excerpt,
+            postData.content,
+            postData.tags,
+            imageUrl,
         ]);
 
-        return NextResponse.json({ success: true, post: result });
+        return NextResponse.json({ success: true, post: postData });
 
     } catch (error) {
         console.error('Error generating post:', error);
 
-        // FAIL SAFE: If no API key or Error, create a Mock Post so user sees SOMETHING
+        // FAIL SAFE
         if (!apiKey || error.message.includes('API key')) {
             return createMockPost();
         }
