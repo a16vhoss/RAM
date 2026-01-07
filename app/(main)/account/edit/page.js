@@ -27,58 +27,72 @@ export default function EditProfilePage() {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <Link href="/account" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '24px', color: 'var(--primary)' }}>
-                <FaArrowLeft /> Volver
-            </Link>
+        <div className="min-h-screen bg-background-dark text-white p-6 md:p-10 animate-in fade-in duration-300">
+            <div className="max-w-2xl mx-auto">
+                <Link href="/account" className="inline-flex items-center gap-2 mb-8 text-gray-400 hover:text-white transition-colors font-medium">
+                    <FaArrowLeft /> Volver
+                </Link>
 
-            <h1 style={{ marginBottom: '24px' }}>Editar Perfil</h1>
+                <h1 className="text-3xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Editar Perfil</h1>
 
-            <form onSubmit={handleSubmit} style={{ background: 'white', padding: '24px', borderRadius: '16px', boxShadow: 'var(--shadow-sm)' }}>
-                <div className="input-group">
-                    <label className="input-label">Nombre</label>
-                    <input
-                        className="input-control"
-                        value={formData.firstName}
-                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                        required
-                    />
-                </div>
+                <form onSubmit={handleSubmit} className="bg-surface-dark border border-white/5 p-6 md:p-8 rounded-3xl shadow-2xl">
+                    <div className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <label className="text-sm font-bold text-gray-400 uppercase tracking-wider ml-1">Nombre</label>
+                                <input
+                                    className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
+                                    value={formData.firstName}
+                                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                                    required
+                                    placeholder="Tu nombre"
+                                />
+                            </div>
 
-                <div className="input-group">
-                    <label className="input-label">Apellido</label>
-                    <input
-                        className="input-control"
-                        value={formData.lastName}
-                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                        required
-                    />
-                </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-bold text-gray-400 uppercase tracking-wider ml-1">Apellido</label>
+                                <input
+                                    className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
+                                    value={formData.lastName}
+                                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                                    required
+                                    placeholder="Tu apellido"
+                                />
+                            </div>
+                        </div>
 
-                <div className="input-group">
-                    <label className="input-label">Teléfono</label>
-                    <input
-                        className="input-control"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    />
-                </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-bold text-gray-400 uppercase tracking-wider ml-1">Teléfono</label>
+                            <input
+                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
+                                type="tel"
+                                value={formData.phone}
+                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                placeholder="+52 55 1234 5678"
+                            />
+                        </div>
 
-                <div className="input-group">
-                    <label className="input-label">Dirección</label>
-                    <textarea
-                        className="input-control"
-                        rows={3}
-                        value={formData.address}
-                        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    />
-                </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-bold text-gray-400 uppercase tracking-wider ml-1">Dirección</label>
+                            <textarea
+                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600 resize-none"
+                                rows={3}
+                                value={formData.address}
+                                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                                placeholder="Calle, Número, Colonia, Ciudad..."
+                            />
+                        </div>
+                    </div>
 
-                <button type="submit" className="btn btn-primary btn-block" disabled={loading} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                    <FaSave /> {loading ? 'Guardando...' : 'Guardar Cambios'}
-                </button>
-            </form>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full mt-8 bg-gradient-to-r from-primary to-blue-600 hover:from-primary-dark hover:to-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <FaSave /> {loading ? 'Guardando...' : 'Guardar Cambios'}
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }

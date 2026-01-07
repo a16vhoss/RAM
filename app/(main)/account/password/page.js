@@ -31,53 +31,64 @@ export default function PasswordPage() {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <Link href="/account" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '24px', color: 'var(--primary)' }}>
-                <FaArrowLeft /> Volver
-            </Link>
+        <div className="min-h-screen bg-background-dark text-white p-6 md:p-10 animate-in fade-in duration-300">
+            <div className="max-w-xl mx-auto">
+                <Link href="/account" className="inline-flex items-center gap-2 mb-8 text-gray-400 hover:text-white transition-colors font-medium">
+                    <FaArrowLeft /> Volver
+                </Link>
 
-            <h1 style={{ marginBottom: '24px' }}>Cambiar Contraseña</h1>
+                <h1 className="text-3xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Cambiar Contraseña</h1>
 
-            <form onSubmit={handleSubmit} style={{ background: 'white', padding: '24px', borderRadius: '16px', boxShadow: 'var(--shadow-sm)' }}>
-                <div className="input-group">
-                    <label className="input-label">Contraseña Actual</label>
-                    <input
-                        className="input-control"
-                        type="password"
-                        value={formData.currentPassword}
-                        onChange={(e) => setFormData({ ...formData, currentPassword: e.target.value })}
-                        required
-                    />
-                </div>
+                <form onSubmit={handleSubmit} className="bg-surface-dark border border-white/5 p-6 md:p-8 rounded-3xl shadow-2xl">
+                    <div className="space-y-6">
+                        <div className="space-y-2">
+                            <label className="text-sm font-bold text-gray-400 uppercase tracking-wider ml-1">Contraseña Actual</label>
+                            <input
+                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
+                                type="password"
+                                value={formData.currentPassword}
+                                onChange={(e) => setFormData({ ...formData, currentPassword: e.target.value })}
+                                required
+                                placeholder="••••••••"
+                            />
+                        </div>
 
-                <div className="input-group">
-                    <label className="input-label">Nueva Contraseña</label>
-                    <input
-                        className="input-control"
-                        type="password"
-                        value={formData.newPassword}
-                        onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
-                        required
-                        minLength={8}
-                    />
-                    <small style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Mínimo 8 caracteres</small>
-                </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-bold text-gray-400 uppercase tracking-wider ml-1">Nueva Contraseña</label>
+                            <input
+                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
+                                type="password"
+                                value={formData.newPassword}
+                                onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
+                                required
+                                minLength={8}
+                                placeholder="Mínimo 8 caracteres"
+                            />
+                            <p className="text-xs text-gray-500 ml-1">Debe incluir números y símbolos.</p>
+                        </div>
 
-                <div className="input-group">
-                    <label className="input-label">Confirmar Nueva Contraseña</label>
-                    <input
-                        className="input-control"
-                        type="password"
-                        value={formData.confirmPassword}
-                        onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                        required
-                    />
-                </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-bold text-gray-400 uppercase tracking-wider ml-1">Confirmar Nueva Contraseña</label>
+                            <input
+                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
+                                type="password"
+                                value={formData.confirmPassword}
+                                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                                required
+                                placeholder="Repite la nueva contraseña"
+                            />
+                        </div>
+                    </div>
 
-                <button type="submit" className="btn btn-primary btn-block" disabled={loading} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                    <FaLock /> {loading ? 'Actualizando...' : 'Cambiar Contraseña'}
-                </button>
-            </form>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full mt-8 bg-gradient-to-r from-primary to-blue-600 hover:from-primary-dark hover:to-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <FaLock /> {loading ? 'Actualizando...' : 'Cambiar Contraseña'}
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }
