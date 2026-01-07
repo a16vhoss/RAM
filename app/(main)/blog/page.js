@@ -22,8 +22,13 @@ export default async function BlogPage() {
                     >
                         <article className="bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:scale-[1.01]">
                             {/* Image Header */}
-                            <div className="h-40 bg-gradient-to-br from-primary/20 to-primary/5 relative overflow-hidden">
-                                <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-hover to-secondary opacity-80"></div>
+                            <div
+                                className="h-40 bg-cover bg-center relative overflow-hidden"
+                                style={{
+                                    backgroundImage: `url(${post.image_url || 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=800'})`
+                                }}
+                            >
+                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
 
                                 {/* Category Badge */}
                                 <span className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium">
