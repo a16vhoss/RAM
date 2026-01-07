@@ -332,3 +332,56 @@ export async function updatePet(petId, formData) {
         return { success: false, error: error.message };
     }
 }
+
+export async function getLostPets({ city = '', species = '', query = '' } = {}) {
+    try {
+        let sql = `
+            SELECT p.*, u.first_name, u.last_name, u.phone, u.city 
+            FROM pets p
+            JOIN users u ON p.user_id = u.user_id
+            WHERE p.status = 'lost'
+        `;
+        const params = [];
+        let paramIndex = 1;
+
+        if (city) {
+            sql += ` AND u.city ILIKE $${paramIndex}`;
+            params.push(`%${city}%`);
+            paramIndex++;
+        }
+
+        if (species) {
+            sql += ` AND p.species = $${paramIndex}`;
+            params.push(species);
+            paramIndex++;
+        }
+
+        if (query) {
+            sql += ` AND (p.pet_name ILIKE $${paramIndex} OR p.breed ILIKE $${paramIndex})`;
+            params.push(`%${query}%`);
+            paramIndex++;
+        }
+
+        sql += ` ORDER BY p.updated_at DESC`;
+
+        const lostPets = await db.getAll(sql, params);
+
+        // Get unique cities for filter dropdown
+        const cities = await db.getAll(`
+            SELECT DISTINCT u.city 
+            FROM pets p
+            JOIN users u ON p.user_id = u.user_id
+            WHERE p.status = 'lost' AND u.city IS NOT NULL
+        `);
+
+        return {
+            success: true,
+            data: lostPets,
+            cities: cities.map(c => c.city).filter(Boolean)
+        };
+
+    } catch (error) {
+        console.error('Error fetching lost pets:', error);
+        return { success: false, error: error.message };
+    }
+}
