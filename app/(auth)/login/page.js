@@ -79,7 +79,7 @@ export default function LoginPage() {
                             padding: '20px',
                             display: 'flex', alignItems: 'center', justifyContent: 'center'
                         }}>
-                            <img src="/icon.png" alt="RAM Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                            <img src="/logo_transparent.png" alt="RAM Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                         </div>
 
                         <div style={{ textAlign: 'center' }}>

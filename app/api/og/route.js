@@ -41,7 +41,7 @@ export async function GET(request) {
         const baseUrl = process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3001');
         const publicProfileUrl = `${baseUrl}/public/pet/${petId}`;
         const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(publicProfileUrl)}&size=200&dark=1e3a8a&light=ffffff&margin=1`;
-        const logoUrl = `${baseUrl}/icon.png`;
+        const logoUrl = `${baseUrl}/logo_transparent.png`;
 
         let petPhoto = pet.pet_photo;
         if (petPhoto && petPhoto.startsWith('/')) {
