@@ -172,36 +172,7 @@ export default async function PublicPetPage({ params }) {
                     )}
                 </div>
 
-                {/* Map Location (Static Visual) */}
-                <div className="mb-8">
-                    <div className="flex items-center justify-between mb-4 px-1">
-                        <h4 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Ubicación (Propietario)</h4>
-                    </div>
-                    <div className="relative h-40 w-full rounded-2xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-800 group bg-slate-800">
-                        {/* Static Map Gradient Placeholder */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-900 opacity-50"></div>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <p className="text-slate-500 text-xs">Mapa no disponible</p>
-                        </div>
 
-                        {/* Map Pin Overlay */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                            <div className="relative">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2791e7] opacity-75"></span>
-                                <div className="relative h-8 w-8 rounded-full bg-[#2791e7] border-2 border-white dark:border-[#111a21] shadow-lg flex items-center justify-center z-10">
-                                    <FaPaw className="text-white" size={16} />
-                                </div>
-                            </div>
-                        </div>
-                        {/* Location Label */}
-                        <div className="absolute bottom-3 left-3 bg-white/90 dark:bg-[#111a21]/90 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700">
-                            <p className="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1">
-                                <FaMapMarkerAlt className="text-[#2791e7]" size={14} />
-                                {pet.city || 'Ubicación Privada'}
-                            </p>
-                        </div>
-                    </div>
-                </div>
 
                 {/* ID and Official Footer */}
                 <div className="flex flex-col items-center justify-center pb-8 pt-4 border-t border-gray-100 dark:border-gray-800">
