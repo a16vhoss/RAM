@@ -187,8 +187,7 @@ export async function toggleLostPetStatus(petId, isLost, location = null, radius
 
             // Find users nearby and create notifications
             // Using Haversine formula approximation in SQL
-            // 6371 is Earth radius in km
-            // We use raw SQL for complex logic
+            // We verify distance in the WHERE clause directly
             const nearbyUsers = await db.getAll(`
                 SELECT user_id, 
                    (6371 * acos(least(1.0, greatest(-1.0, cos(radians($1)) * cos(radians(last_latitude)) * cos(radians(last_longitude) - radians($2)) + sin(radians($1)) * sin(radians(last_latitude)))))) AS distance
@@ -196,7 +195,7 @@ export async function toggleLostPetStatus(petId, isLost, location = null, radius
                 WHERE last_latitude IS NOT NULL 
                   AND last_longitude IS NOT NULL
                   AND user_id != $3
-                HAVING (6371 * acos(least(1.0, greatest(-1.0, cos(radians($1)) * cos(radians(last_latitude)) * cos(radians(last_longitude) - radians($2)) + sin(radians($1)) * sin(radians(last_latitude)))))) <= $4
+                  AND (6371 * acos(least(1.0, greatest(-1.0, cos(radians($1)) * cos(radians(last_latitude)) * cos(radians(last_longitude) - radians($2)) + sin(radians($1)) * sin(radians(last_latitude)))))) <= $4
             `, [location.lat, location.lng, userId, radius]);
 
             console.log(`Found ${nearbyUsers.length} users nearby to notify.`);
