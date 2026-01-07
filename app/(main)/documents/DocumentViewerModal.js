@@ -64,61 +64,18 @@ export default function DocumentViewerModal({ document, onClose }) {
 }
 
 function CredentialTemplate({ doc, qrUrl }) {
+    // Use the OG image API for consistent credential design
+    const credentialImageUrl = `/api/og?id=${doc.pet_id}`;
+
     return (
-        <div className="relative w-full aspect-[1.586] bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 overflow-hidden">
-            {/* Background Pattern */}
-            <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/20 rounded-full blur-2xl translate-y-1/3 -translate-x-1/3"></div>
-
-            {/* Header */}
-            <div className="relative z-10 flex justify-between items-start mb-4">
-                <div className="flex items-center gap-2">
-                    <div className="p-1.5 bg-white/10 rounded-lg backdrop-blur-md">
-                        <FaPaw className="text-primary text-xl" />
-                    </div>
-                    <div>
-                        <h2 className="text-xs font-bold text-white/50 tracking-widest uppercase">Registro Animal</h2>
-                        <h1 className="text-sm font-bold text-white">IDENTIFICACIÓN OFICIAL</h1>
-                    </div>
-                </div>
-                <div className="text-right">
-                    <p className="text-[10px] text-white/50 font-mono">REGISTRO NO.</p>
-                    <p className="text-sm font-mono font-bold text-primary">{doc.unique_registration_number || 'PENDING'}</p>
-                </div>
-            </div>
-
-            {/* Content */}
-            <div className="relative z-10 flex gap-4">
-                {/* Photo Area */}
-                <div className="w-24 h-24 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center overflow-hidden shrink-0">
-                    {/* We assume doc has pet_photo joined, if not we show placeholder */}
-                    <span className="text-xs text-white/30">FOTO</span>
-                </div>
-
-                <div className="flex-1 flex flex-col justify-center gap-3">
-                    <div>
-                        <p className="text-[10px] text-white/50 uppercase tracking-wide">Nombre</p>
-                        <p className="text-xl font-bold text-white tracking-tight">{doc.pet_name || 'Mascota'}</p>
-                    </div>
-                    <div className="flex gap-4">
-                        <div>
-                            <p className="text-[10px] text-white/50 uppercase tracking-wide">Emisión</p>
-                            <p className="text-xs font-medium text-white">{new Date(doc.issued_at || doc.created_at).toLocaleDateString()}</p>
-                        </div>
-                        <div>
-                            <p className="text-[10px] text-white/50 uppercase tracking-wide">Vigencia</p>
-                            <p className="text-xs font-medium text-white">Permanente</p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* QR */}
-                <div className="shrink-0 flex flex-col justify-end">
-                    <div className="bg-white p-1 rounded-lg">
-                        {qrUrl && <img src={qrUrl} className="w-12 h-12" alt="QR" />}
-                    </div>
-                </div>
-            </div>
+        <div className="relative w-full bg-slate-900">
+            {/* Credential Image from OG API */}
+            <img
+                src={credentialImageUrl}
+                alt={`Credencial de ${doc.pet_name}`}
+                className="w-full h-auto"
+                style={{ aspectRatio: '1000/500' }}
+            />
         </div>
     );
 }
