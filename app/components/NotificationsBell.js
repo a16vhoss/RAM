@@ -54,7 +54,7 @@ export default function NotificationsBell() {
         // Navigation Logic
         if ((notification.type === 'amber_alert' || notification.type === 'pet_found') && notification.related_id) {
             setIsOpen(false); // Close dropdown
-            router.push(`/pets/${notification.related_id}`);
+            router.push(`/public/pet/${notification.related_id}`);
         }
     };
 
