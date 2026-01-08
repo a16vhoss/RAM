@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaSave, FaArrowLeft } from 'react-icons/fa';
 import Link from 'next/link';
-
-
 import { updateUserProfile, exportUserData } from '@/app/actions/user';
 
 export default function EditProfilePage() {
@@ -49,7 +47,7 @@ export default function EditProfilePage() {
             const result = await updateUserProfile(formData);
             if (result.success) {
                 alert('Perfil actualizado exitosamente');
-                router.refresh(); // Refresh server components to show new name in sidebar/header if applicable
+                router.refresh();
                 router.push('/account');
             } else {
                 alert('Error al actualizar: ' + result.error);

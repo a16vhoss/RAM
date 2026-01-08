@@ -2,6 +2,15 @@
 
 import db from '@/lib/db';
 import { getSession } from '@/lib/auth';
+import bcrypt from 'bcrypt';
+import { logout } from '@/lib/auth';
+import { redirect } from 'next/navigation';
+
+export async function logoutUser() {
+    await logout();
+    redirect('/login');
+}
+
 
 export async function updateUserLocation(zone, lat, lng) {
     const session = await getSession();
@@ -29,7 +38,7 @@ export async function updateUserLocation(zone, lat, lng) {
 }
 
 
-import bcrypt from 'bcrypt';
+
 
 export async function updateUserProfile(formData) {
     const session = await getSession();
@@ -165,10 +174,4 @@ export async function markNotificationAsRead(notificationId) {
     }
 }
 
-import { logout } from '@/lib/auth';
-import { redirect } from 'next/navigation';
 
-export async function logoutUser() {
-    await logout();
-    redirect('/login');
-}
