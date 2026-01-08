@@ -28,10 +28,11 @@ export default function PrintTrigger() {
 
             const imgData = canvas.toDataURL('image/png');
             const pdf = new jsPDF('p', 'mm', 'a4');
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            // Force fit to A4 dimensions (210mm x 297mm)
+            // This ensures the entire poster fits on the page regardless of screen capture scale
+            pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
+
             pdf.save('Cartel_Busqueda_RAM.pdf');
         } catch (err) {
             console.error(err);
