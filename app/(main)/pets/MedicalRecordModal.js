@@ -1,22 +1,39 @@
 'use client';
 
 import { useState } from 'react';
-import { FaTimes, FaSave, FaSyringe, FaNotesMedical, FaPills, FaStethoscope } from 'react-icons/fa';
+import { FaTimes, FaSave, FaSyringe, FaNotesMedical, FaPills, FaStethoscope, FaPaperclip } from 'react-icons/fa';
 import { addMedicalRecord } from '@/app/actions/medical';
 import { useRouter } from 'next/navigation';
+import FilePreview from '@/app/components/FilePreview';
 
 export default function MedicalRecordModal({ petId, isOpen, onClose, onRecordAdded }) {
     const router = useRouter();
     const [submitting, setSubmitting] = useState(false);
     const [recordType, setRecordType] = useState('Vacuna');
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
     if (!isOpen) return null;
+
+    const handleFileSelect = (e) => {
+        if (e.target.files) {
+            setSelectedFiles(prev => [...prev, ...Array.from(e.target.files)]);
+        }
+    };
+
+    const handleRemoveFile = (index) => {
+        setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+    };
 
     async function handleSubmit(formData) {
         setSubmitting(true);
         // Append petId manually since it's passed as prop
         formData.append('pet_id', petId);
         formData.append('type', recordType);
+
+        // Append files
+        selectedFiles.forEach(file => {
+            formData.append('files', file);
+        });
 
         const res = await addMedicalRecord(formData);
 
@@ -97,6 +114,40 @@ export default function MedicalRecordModal({ petId, isOpen, onClose, onRecordAdd
                                 placeholder="Ej. Rabia Refuerzo Anual o Detalles de la consulta..."
                                 className="w-full bg-slate-800 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-primary placeholder-slate-500 resize-none"
                             />
+                        </div>
+
+                        {/* File Attachments */}
+                        <div className="flex flex-col gap-3">
+                            <div className="flex justify-between items-center">
+                                <label className="text-xs font-bold uppercase text-slate-400">Archivos Adjuntos</label>
+                                <button
+                                    type="button"
+                                    onClick={() => document.getElementById('file-upload').click()}
+                                    className="text-primary text-xs font-bold hover:text-primary-hover flex items-center gap-1"
+                                >
+                                    <FaPaperclip /> Adjuntar
+                                </button>
+                                <input
+                                    id="file-upload"
+                                    type="file"
+                                    multiple
+                                    accept="image/*,application/pdf"
+                                    className="hidden"
+                                    onChange={handleFileSelect}
+                                />
+                            </div>
+
+                            {selectedFiles.length > 0 && (
+                                <div className="flex flex-col gap-2">
+                                    {selectedFiles.map((file, index) => (
+                                        <FilePreview
+                                            key={index}
+                                            file={file}
+                                            onRemove={() => handleRemoveFile(index)}
+                                        />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
 

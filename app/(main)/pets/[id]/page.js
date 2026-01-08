@@ -6,7 +6,7 @@ import QRCode from 'qrcode';
 import {
     FaArrowLeft, FaCheckCircle, FaShieldAlt, FaMicrochip, FaPaw, FaWeight,
     FaVenusMars, FaBirthdayCake, FaIdCard, FaTrash, FaFileAlt, FaChevronRight, FaArrowRight,
-    FaPlus, FaNotesMedical, FaSyringe, FaStethoscope, FaPills, FaEdit
+    FaPlus, FaNotesMedical, FaSyringe, FaStethoscope, FaPills, FaEdit, FaPaperclip
 } from 'react-icons/fa';
 import ReportLostModal from '@/app/components/ReportLostModal';
 import { deletePet, toggleLostPetStatus } from '@/app/actions/pet';
@@ -422,6 +422,24 @@ export default function PetProfilePage() {
                                             <FaStethoscope className="text-slate-500" size={12} />
                                             <span className="text-xs text-slate-500 font-medium">{record.vet_name || 'Veterinario General'}</span>
                                         </div>
+
+                                        {/* Attachments */}
+                                        {record.attachments && Array.isArray(record.attachments) && record.attachments.length > 0 && (
+                                            <div className="flex gap-2 mt-2 flex-wrap">
+                                                {record.attachments.map((file, i) => (
+                                                    <a
+                                                        key={i}
+                                                        href={file.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs transition-colors border border-white/5 group/file"
+                                                    >
+                                                        <FaPaperclip size={10} className="text-primary group-hover/file:text-white transition-colors" />
+                                                        <span className="max-w-[120px] truncate text-slate-300 group-hover/file:text-white decoration-0">{file.name}</span>
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             )) : (
