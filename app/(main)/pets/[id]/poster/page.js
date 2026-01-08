@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import db from '@/lib/db';
 import { notFound } from 'next/navigation';
-import QRCode from 'qrcode';
+import PosterQRCode from '@/app/components/PosterQRCode';
 
 export const metadata = {
     title: 'Cartel de Búsqueda - RAM',
@@ -31,20 +31,6 @@ async function PosterContent({ id }) {
     if (!pet) notFound();
 
     const profileUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://ram-weld-zeta.vercel.app'}/pets/${pet.pet_id}`;
-
-    // Generate QR as SVG String (No Canvas required for Serverless)
-    const qrSvg = await QRCode.toString(profileUrl, {
-        type: 'svg',
-        width: 500,
-        margin: 2,
-        color: {
-            dark: '#000000',
-            light: '#FFFFFF'
-        }
-    });
-
-    // Convert SVG string to Data URI safely
-    const qrCodeDataUrl = `data:image/svg+xml;base64,${Buffer.from(qrSvg).toString('base64')}`;
 
     return (
         <div className="min-h-screen bg-gray-100 flex justify-center items-start lg:py-10 print:bg-white print:p-0">
@@ -105,11 +91,8 @@ async function PosterContent({ id }) {
 
                         <div className="flex flex-col items-center gap-2 bg-white p-4 border-4 border-slate-900 rounded-xl">
                             <div className="w-32 h-32 relative">
-                                <img
-                                    src={qrCodeDataUrl}
-                                    alt="QR Code"
-                                    className="w-full h-full object-contain"
-                                />
+                                {/* Use Client Component for QR to avoid SSR issues */}
+                                <PosterQRCode url={profileUrl} />
                             </div>
                             <span className="text-xs font-bold uppercase tracking-wide text-slate-900">Escanear Perfil</span>
                         </div>
