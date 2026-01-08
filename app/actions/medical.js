@@ -61,12 +61,12 @@ export async function addMedicalRecord(formData) {
                     const fileName = `${petId}/${uuidv4()}.${fileExt}`;
 
                     const { error: uploadError } = await supabase.storage
-                        .from('medical-records')
+                        .from('Medical-records')
                         .upload(fileName, file, { contentType: file.type, upsert: false });
 
                     if (!uploadError) {
                         const { data: { publicUrl } } = supabase.storage
-                            .from('medical-records')
+                            .from('Medical-records')
                             .getPublicUrl(fileName);
 
                         attachments.push({
