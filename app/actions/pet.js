@@ -363,7 +363,7 @@ export async function getLostPets({ city = '', species = '', query = '' } = {}) 
             paramIndex++;
         }
 
-        sql += ` ORDER BY p.updated_at DESC`;
+        sql += ` ORDER BY p.created_at DESC`;
 
         const lostPets = await db.getAll(sql, params);
 
