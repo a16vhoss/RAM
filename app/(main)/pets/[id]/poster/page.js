@@ -8,9 +8,18 @@ export const metadata = {
     description: 'Generador de cartel para mascota perdida',
 };
 
-async function PosterContent({ params }) {
+// Next.js 15: Page components can be async and params is a Promise
+export default async function PosterPage({ params }) {
     const { id } = await params;
 
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Cargando cartel...</div>}>
+            <PosterContent id={id} />
+        </Suspense>
+    );
+}
+
+async function PosterContent({ id }) {
     // Fetch Pet & Owner Details
     const pet = await db.getOne(`
         SELECT p.*, u.first_name, u.last_name, u.phone, u.city 
@@ -25,7 +34,7 @@ async function PosterContent({ params }) {
 
     // Generate QR as Data URL on server
     const qrCodeDataUrl = await QRCode.toDataURL(profileUrl, {
-        width: 500,
+        width: 600,
         margin: 2,
         color: {
             dark: '#000000',
@@ -91,7 +100,7 @@ async function PosterContent({ params }) {
                         </div>
 
                         <div className="flex flex-col items-center gap-2 bg-white p-4 border-4 border-slate-900 rounded-xl">
-                            <div className="w-32 h-32">
+                            <div className="w-32 h-32 relative">
                                 <img
                                     src={qrCodeDataUrl}
                                     alt="QR Code"
@@ -103,7 +112,7 @@ async function PosterContent({ params }) {
                     </div>
                 </div>
 
-                {/* Footer / Tear-offs visual */}
+                {/* Footer */}
                 <div className="border-t-4 border-dashed border-gray-300 p-6 flex justify-between items-center bg-slate-50 print:bg-transparent">
                     <p className="text-sm text-slate-400 font-medium">Generado por RAM (Registro Animal Municipal)</p>
                     <div className="flex gap-1 text-slate-900 font-bold text-sm items-center">
@@ -111,14 +120,14 @@ async function PosterContent({ params }) {
                     </div>
                 </div>
 
-                {/* Print Button (Hidden when printing) */}
+                {/* Print Button */}
                 <PrintTrigger />
             </div>
         </div>
     );
 }
 
-// Client Component for auto-opening print dialog
+// Client Component
 function PrintTrigger() {
     return (
         <button
@@ -129,12 +138,4 @@ function PrintTrigger() {
             Imprimir Cartel
         </button>
     )
-}
-
-export default function PosterPage({ params }) {
-    return (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Cargando cartel...</div>}>
-            <PosterContent params={params} />
-        </Suspense>
-    );
 }
