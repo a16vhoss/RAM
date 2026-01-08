@@ -104,7 +104,7 @@ export default async function DashboardPage() {
                         </Link>
 
                         {/* Lost Pets Directory */}
-                        <Link href="/public/lost-pets" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-red-500 to-rose-600 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
+                        <Link href="/alertas" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-red-500 to-rose-600 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
                             <div className="absolute top-0 right-0 p-3 opacity-20 transform translate-x-2 -translate-y-2 group-hover:rotate-12 transition-transform">
                                 <FaSearch size={90} className="text-white" />
                             </div>
@@ -112,7 +112,7 @@ export default async function DashboardPage() {
                                 <FaSearch className="text-white text-xl" />
                             </div>
                             <div className="relative z-10">
-                                <p className="text-white font-bold text-lg leading-tight">Buscador</p>
+                                <p className="text-white font-bold text-lg leading-tight">Alertas</p>
                                 <p className="text-red-100 text-xs mt-1 font-medium">Mascotas perdidas</p>
                             </div>
                         </Link>
