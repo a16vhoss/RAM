@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaHome, FaSearch, FaPlusCircle, FaNewspaper, FaUser, FaPaw, FaSignOutAlt, FaExclamationTriangle } from 'react-icons/fa';
+import { FaHome, FaSearch, FaPlusCircle, FaNewspaper, FaUser, FaPaw, FaSignOutAlt, FaExclamationTriangle, FaUsers } from 'react-icons/fa';
 import { logoutUser } from '@/app/actions/user';
 
 export default function Sidebar() {
@@ -14,6 +14,7 @@ export default function Sidebar() {
         { name: 'Inicio', path: '/dashboard', icon: <FaHome size={20} /> },
         { name: 'Buscar', path: '/directory', icon: <FaSearch size={20} /> },
         { name: 'Alertas', path: '/alertas', icon: <FaExclamationTriangle size={20} /> },
+        { name: 'Comunidades', path: '/communities', icon: <FaUsers size={20} /> },
         { name: 'Blog', path: '/blog', icon: <FaNewspaper size={20} /> },
         { name: 'Cuenta', path: '/account', icon: <FaUser size={20} /> },
     ];
