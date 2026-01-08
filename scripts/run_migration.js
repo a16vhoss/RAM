@@ -8,17 +8,25 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load env vars
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+// Load environment variables
+const envLocalPath = path.resolve(process.cwd(), '.env.local');
+const envPath = path.resolve(process.cwd(), '.env');
+
+dotenv.config({ path: envLocalPath });
+
+if (!process.env.DATABASE_URL) {
+    console.log('DATABASE_URL not found in .env.local, trying .env...');
+    dotenv.config({ path: envPath });
+}
+
+if (!process.env.DATABASE_URL) {
+    console.error('DATABASE_URL is missing from environment variables');
+    process.exit(1);
+}
 
 const { Pool } = pg;
 
 async function runMigration() {
-    if (!process.env.DATABASE_URL) {
-        console.error('DATABASE_URL is not defined');
-        process.exit(1);
-    }
-
     const pool = new Pool({
         connectionString: process.env.DATABASE_URL,
         ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
