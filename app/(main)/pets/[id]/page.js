@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import QRCode from 'qrcode';
 import {
     FaArrowLeft, FaCheckCircle, FaShieldAlt, FaMicrochip, FaPaw, FaWeight,
@@ -258,13 +259,26 @@ export default function PetProfilePage() {
                                     </p>
 
                                     {/* Alert Toggle Button - Only for Owner */}
+                                    {/* Alert Toggle Button - Only for Owner */}
                                     {pet.isOwner && (
-                                        <button
-                                            onClick={() => handleToggleLost()}
-                                            className={`mt-2 py-2 px-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 w-max shadow-lg transform active:scale-95 transition-all ${pet.status === 'lost' ? 'bg-white text-red-600' : 'bg-red-600/90 hover:bg-red-600 text-white backdrop-blur-md'}`}
-                                        >
-                                            {pet.status === 'lost' ? '✅ Marcar Encontrado' : '🚨 Reportar Extravío'}
-                                        </button>
+                                        <div className="flex flex-wrap gap-2 mt-2">
+                                            <button
+                                                onClick={() => handleToggleLost()}
+                                                className={`py-2 px-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 w-max shadow-lg transform active:scale-95 transition-all ${pet.status === 'lost' ? 'bg-white text-red-600' : 'bg-red-600/90 hover:bg-red-600 text-white backdrop-blur-md'}`}
+                                            >
+                                                {pet.status === 'lost' ? '✅ Marcar Encontrado' : '🚨 Reportar Extravío'}
+                                            </button>
+
+                                            {pet.status === 'lost' && (
+                                                <Link
+                                                    href={`/pets/${pet.pet_id}/poster`}
+                                                    target="_blank"
+                                                    className="py-2 px-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 w-max shadow-lg bg-slate-900 text-white hover:bg-black border border-white/20 backdrop-blur-md transform active:scale-95 transition-all"
+                                                >
+                                                    🖨️ Generar Cartel
+                                                </Link>
+                                            )}
+                                        </div>
                                     )}
 
                                     {/* Contact Button for Lost Pets (Non-Owner) */}
