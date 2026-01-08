@@ -95,7 +95,7 @@ async function PosterContent({ id }) {
                             <p className="text-4xl font-black leading-none tracking-normal">
                                 {pet.phone || '000-000-0000'}
                             </p>
-                            <p className="text-lg text-gray-400 mt-1 tracking-wide">
+                            <p className="text-xl text-gray-200 mt-1 font-semibold tracking-wide">
                                 {pet.first_name} {pet.last_name}
                             </p>
                         </div>
