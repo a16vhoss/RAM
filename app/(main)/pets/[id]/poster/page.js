@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import db from '@/lib/db';
 import { notFound } from 'next/navigation';
 import PosterQRCode from '@/app/components/PosterQRCode';
+import PrintTrigger from '@/app/components/PrintTrigger';
 
 export const metadata = {
     title: 'Cartel de Búsqueda - RAM',
@@ -108,7 +109,7 @@ async function PosterContent({ id }) {
                         </div>
                     </div>
 
-                    {/* Print Button */}
+                    {/* Print Button - Client Component */}
                     <PrintTrigger />
                 </div>
             </div>
@@ -122,23 +123,10 @@ async function PosterContent({ id }) {
                 <div className="bg-white p-4 rounded-lg shadow border border-red-200 text-left max-w-lg mb-6 overflow-auto">
                     <p className="font-mono text-sm text-red-500 break-all">{error.message}</p>
                 </div>
-                <button onClick={() => window.location.reload()} className="px-6 py-2 bg-slate-900 text-white rounded-lg">
+                <a href="javascript:window.location.reload()" className="px-6 py-2 bg-slate-900 text-white rounded-lg">
                     Reintentar
-                </button>
+                </a>
             </div>
         );
     }
-}
-
-// Client Component
-function PrintTrigger() {
-    return (
-        <button
-            onClick={() => window.print()}
-            className="fixed bottom-8 right-8 bg-slate-900 text-white px-6 py-4 rounded-full shadow-2xl font-bold flex items-center gap-3 hover:scale-105 transition-transform print:hidden z-50 hover:bg-black"
-        >
-            <span className="text-2xl">🖨️</span>
-            Imprimir Cartel
-        </button>
-    )
 }
