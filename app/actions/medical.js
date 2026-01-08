@@ -50,32 +50,40 @@ export async function addMedicalRecord(formData) {
     let attachments = [];
 
     if (files && files.length > 0) {
-        const supabase = getSupabaseClient();
-        if (supabase) {
-            for (const file of files) {
-                if (file.size === 0) continue;
+        try {
+            const supabase = getSupabaseClient();
+            if (supabase) {
+                for (const file of files) {
+                    // Skip empty files or non-File objects
+                    if (!file || typeof file === 'string' || file.size === 0) continue;
 
-                const fileExt = file.name.split('.').pop();
-                const fileName = `${petId}/${uuidv4()}.${fileExt}`;
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${petId}/${uuidv4()}.${fileExt}`;
 
-                const { error: uploadError } = await supabase.storage
-                    .from('medical-records')
-                    .upload(fileName, file, { contentType: file.type, upsert: false });
-
-                if (!uploadError) {
-                    const { data: { publicUrl } } = supabase.storage
+                    const { error: uploadError } = await supabase.storage
                         .from('medical-records')
-                        .getPublicUrl(fileName);
+                        .upload(fileName, file, { contentType: file.type, upsert: false });
 
-                    attachments.push({
-                        name: file.name,
-                        type: file.type,
-                        url: publicUrl
-                    });
-                } else {
-                    console.error('Failed to upload file:', file.name, uploadError);
+                    if (!uploadError) {
+                        const { data: { publicUrl } } = supabase.storage
+                            .from('medical-records')
+                            .getPublicUrl(fileName);
+
+                        attachments.push({
+                            name: file.name,
+                            type: file.type,
+                            url: publicUrl
+                        });
+                    } else {
+                        console.error('Failed to upload file:', file.name, uploadError.message);
+                    }
                 }
+            } else {
+                console.warn('Supabase client not available - skipping file uploads');
             }
+        } catch (uploadErr) {
+            console.error('File upload error (storage may not be configured):', uploadErr.message);
+            // Continue without attachments rather than crashing
         }
     }
 
