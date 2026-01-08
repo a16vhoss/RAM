@@ -55,12 +55,21 @@ export async function GET(request, { params }) {
             }
         }
 
-        // Fetch documents for this pet (Owner only or maybe limited?)
+        // Fetch documents and owners for this pet (Owner only)
         if (isOwner) {
             const documents = await db.getAll('SELECT * FROM documents WHERE pet_id = $1 ORDER BY issued_at DESC', [id]);
             responsePet.documents = documents;
+
+            const owners = await db.getAll(`
+                SELECT u.user_id, u.first_name, u.photo_url, po.role
+                FROM pet_owners po
+                JOIN users u ON po.user_id = u.user_id
+                WHERE po.pet_id = $1
+            `, [id]);
+            responsePet.owners = owners;
         } else {
             responsePet.documents = [];
+            responsePet.owners = [];
         }
 
         return NextResponse.json(responsePet);

@@ -498,6 +498,53 @@ export default function PetProfilePage() {
                     </div>
                 )}
 
+                {/* Family Members Section - Owner Only */}
+                {activeTab === 'overview' && pet.isOwner && (
+                    <div className="px-4 mt-2 mb-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                        <div className="flex justify-between items-center mb-4 px-1">
+                            <h3 className="text-lg font-bold text-white">Familia</h3>
+                            <button
+                                onClick={() => router.push(`/pets/${pet.pet_id}/edit`)}
+                                className="text-xs font-bold text-primary hover:text-white transition-colors"
+                            >
+                                Gestionar
+                            </button>
+                        </div>
+
+                        <div className="flex -space-x-3 overflow-hidden p-1">
+                            {pet.owners && pet.owners.length > 0 ? (
+                                <>
+                                    {pet.owners.map((owner) => (
+                                        <div key={owner.user_id} className="relative group/avatar">
+                                            <div className="w-12 h-12 rounded-full border-2 border-background-dark overflow-hidden relative shadow-lg">
+                                                <img
+                                                    src={owner.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(owner.first_name || 'User')}&background=random`}
+                                                    alt={owner.first_name}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                            <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full border border-background-dark bg-green-500"></div>
+
+                                            {/* Tooltip */}
+                                            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover/avatar:opacity-100 transition-opacity bg-black/80 text-white text-[10px] px-2 py-1 rounded-md whitespace-nowrap pointer-events-none z-20">
+                                                {owner.first_name} ({owner.role === 'owner' ? 'Dueño' : 'Cuidador'})
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <button
+                                        onClick={() => router.push(`/pets/${pet.pet_id}/edit`)}
+                                        className="w-12 h-12 rounded-full border-2 border-dashed border-white/20 bg-white/5 flex items-center justify-center text-white/50 hover:bg-white/10 hover:text-white hover:border-white/40 transition-all z-10"
+                                    >
+                                        <FaPlus size={14} />
+                                    </button>
+                                </>
+                            ) : (
+                                <p className="text-slate-500 text-sm italic">Cargando familia...</p>
+                            )}
+                        </div>
+                    </div>
+                )}
+
                 {/* Delete Area - Owner Only */}
                 {activeTab === 'overview' && pet.isOwner && (
                     <div className="mt-4 px-4 mb-4">

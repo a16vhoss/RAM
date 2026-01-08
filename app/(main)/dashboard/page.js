@@ -13,8 +13,13 @@ export default async function DashboardPage() {
 
     const user = session.user;
 
-    // Fetch Pets
-    const pets = await db.getAll('SELECT * FROM pets WHERE user_id = $1', [user.user_id]);
+    // Fetch Pets (owned or co-owned)
+    const pets = await db.getAll(`
+        SELECT pets.* 
+        FROM pets 
+        JOIN pet_owners ON pets.pet_id = pet_owners.pet_id 
+        WHERE pet_owners.user_id = $1
+    `, [user.user_id]);
 
     return (
         <div className="min-h-screen bg-background-light dark:bg-background-dark pb-28 overflow-x-hidden">

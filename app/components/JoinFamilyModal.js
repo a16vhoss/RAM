@@ -66,7 +66,7 @@ export default function JoinFamilyModal({ isOpen, onClose }) {
                             onChange={(e) => setCode(e.target.value.toUpperCase())}
                             placeholder="Ej. AB12CD"
                             maxLength={8}
-                            className="w-full text-center text-3xl font-mono font-bold tracking-widest uppercase border-2 border-slate-200 rounded-xl py-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300"
+                            className="w-full text-center text-3xl font-mono font-bold tracking-widest uppercase border-2 border-slate-200 rounded-xl py-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 text-slate-900"
                             required
                         />
                     </div>
