@@ -9,7 +9,6 @@ export const metadata = {
     description: 'Generador de cartel para mascota perdida',
 };
 
-// Next.js 15: Page components can be async and params is a Promise
 export default async function PosterPage({ params }) {
     const { id } = await params;
 
@@ -22,7 +21,6 @@ export default async function PosterPage({ params }) {
 
 async function PosterContent({ id }) {
     try {
-        // Fetch Pet & Owner Details
         const pet = await db.getOne(`
             SELECT p.*, u.first_name, u.last_name, u.phone, u.city 
             FROM pets p
@@ -35,73 +33,91 @@ async function PosterContent({ id }) {
         const profileUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://ram-weld-zeta.vercel.app'}/pets/${pet.pet_id}`;
 
         return (
-            <div className="min-h-screen bg-gray-100 flex justify-center items-start lg:py-10 print:bg-white print:p-0 print:m-0 print:block">
-                {/* A4 Container - Fixed height for print */}
-                <div id="poster-container" className="bg-white shadow-2xl w-full max-w-[210mm] min-h-[297mm] relative flex flex-col print:shadow-none print:w-full print:h-[100vh] print:max-w-none print:overflow-hidden print:justify-evenly">
-
-                    {/* Header */}
-                    <div className="bg-red-600 text-white text-center py-6 print:bg-red-600 print:-webkit-print-color-adjust-exact">
-                        <h1 className="text-7xl font-black tracking-tighter uppercase leading-none mb-2">SE BUSCA</h1>
-                        <p className="text-xl font-bold uppercase tracking-widest">Ayúdanos a encontrarlo</p>
+            <div className="min-h-screen bg-gray-200 flex justify-center items-center py-8">
+                {/* A4 Container - Strict Size */}
+                <div
+                    id="poster-container"
+                    className="bg-white w-[210mm] h-[297mm] shadow-2xl relative flex flex-col overflow-hidden"
+                    style={{ aspectRatio: '210/297' }}
+                >
+                    {/* 1. HEADER - High Contrast */}
+                    <div className="bg-[#DC2626] text-white pt-8 pb-6 px-8 text-center shrink-0 relative z-10">
+                        <div className="absolute top-0 left-0 w-full h-2 bg-black/20"></div>
+                        <h1 className="text-[5rem] leading-[0.85] font-black tracking-tighter uppercase mb-2 drop-shadow-md font-sans">
+                            SE BUSCA
+                        </h1>
+                        <p className="text-2xl font-bold uppercase tracking-[0.2em] text-red-50">Ayúdanos a encontrarlo</p>
                     </div>
 
-                    {/* Hero Image - Flexible height for print with max cap */}
-                    <div className="w-full h-[500px] bg-gray-200 relative overflow-hidden print:h-auto print:flex-1 print:max-h-[40%]">
+                    {/* 2. MAIN PHOTO - Optimized to fill space */}
+                    <div className="flex-1 relative bg-gray-100 overflow-hidden border-y-8 border-white">
                         <img
                             src={pet.pet_photo || "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80"}
                             alt={pet.pet_name}
-                            className="w-full h-full object-cover print:object-contain print:bg-white"
+                            className="w-full h-full object-cover"
                         />
+
+                        {/* Status Badge Overlay */}
+                        <div className="absolute bottom-6 right-6 bg-red-600 text-white px-6 py-2 rounded-full font-bold uppercase tracking-wider text-xl shadow-lg border-2 border-white transform rotate-[-2deg]">
+                            Recompensa
+                        </div>
                     </div>
 
-                    {/* Main Info - Flexible spacing for print */}
-                    <div className="flex-1 p-10 print:p-4 flex flex-col items-center text-center gap-6 print:gap-4 print:justify-center">
+                    {/* 3. DETAILS SECTION */}
+                    <div className="px-10 py-6 bg-white shrink-0 relative z-10 flex flex-col gap-5">
+                        <div className="flex justify-between items-end border-b-4 border-slate-900 pb-4">
+                            <div>
+                                <h2 className="text-7xl font-black text-slate-900 leading-none uppercase tracking-tight">
+                                    {pet.pet_name}
+                                </h2>
+                                <p className="text-2xl text-slate-500 font-bold mt-2 uppercase flex items-center gap-3">
+                                    <span>{pet.breed}</span>
+                                    <span className="w-2 h-2 rounded-full bg-slate-300"></span>
+                                    <span>{pet.color}</span>
+                                    <span className="w-2 h-2 rounded-full bg-slate-300"></span>
+                                    <span>{['M', 'MACHO', 'MALE'].includes(pet.sex?.toUpperCase()) ? 'Macho' : 'Hembra'}</span>
+                                </p>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-1">Última vez visto en</p>
+                                <p className="text-2xl font-black text-slate-800 uppercase leading-none max-w-[200px] truncate">
+                                    {pet.last_location || pet.city || 'Desconocido'}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-8 items-start">
+                            <div className="flex-1">
+                                <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-1">Señas Particulares / Notas</p>
+                                <p className="text-xl font-medium text-slate-800 leading-snug">
+                                    {pet.medical_notes || 'Si lo has visto, por favor contáctanos inmediatamente. Es muy querido por su familia.'}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* 4. FOOTER - CONTACT */}
+                    <div className="bg-slate-900 text-white p-8 shrink-0 flex items-center justify-between">
                         <div>
-                            <h2 className="text-6xl print:text-5xl font-black text-slate-900 mb-2 print:mb-1 uppercase">{pet.pet_name}</h2>
-                            <div className="flex gap-4 print:gap-3 justify-center text-2xl print:text-xl font-bold text-slate-600 uppercase">
-                                <span>{pet.species}</span>
-                                <span>•</span>
-                                <span>{pet.breed}</span>
-                                <span>•</span>
-                                <span>{['M', 'MACHO', 'MALE'].includes(pet.sex?.toUpperCase()) ? 'Macho' : 'Hembra'}</span>
-                            </div>
+                            <p className="text-red-400 font-bold uppercase tracking-widest text-sm mb-1 animate-pulse">
+                                ¡Reportar Avistamiento!
+                            </p>
+                            <p className="text-[4rem] font-black leading-none tracking-tight text-white tabular-nums">
+                                {pet.phone || '000-000-0000'}
+                            </p>
+                            <p className="text-xl text-slate-400 font-medium mt-1">
+                                {pet.first_name} {pet.last_name}
+                            </p>
                         </div>
 
-                        {/* Vitals - Compact for print */}
-                        <div className="w-full grid grid-cols-2 gap-6 print:gap-2 text-left bg-slate-50 p-6 print:p-3 rounded-2xl print:rounded-lg border border-slate-200 print:bg-slate-50 print:border-slate-300">
-                            <div>
-                                <p className="text-sm print:text-xs text-slate-500 uppercase font-bold tracking-wider">Color / Señas</p>
-                                <p className="text-xl print:text-base font-bold text-slate-800">{pet.color}</p>
+                        <div className="bg-white p-3 rounded-xl shrink-0 flex flex-col items-center gap-1">
+                            <div className="w-24 h-24 relative">
+                                <PosterQRCode url={profileUrl} />
                             </div>
-                            <div>
-                                <p className="text-sm print:text-xs text-slate-500 uppercase font-bold tracking-wider">Última vez visto</p>
-                                <p className="text-xl print:text-base font-bold text-slate-800">{pet.last_location || pet.city || 'No especificado'}</p>
-                            </div>
-                            <div className="col-span-2">
-                                <p className="text-sm print:text-xs text-slate-500 uppercase font-bold tracking-wider">Notas Adicionales</p>
-                                <p className="text-lg print:text-sm text-slate-800 leading-snug">{pet.medical_notes || 'Pone nervioso con extraños, por favor no perseguir.'}</p>
-                            </div>
-                        </div>
-
-                        {/* Contact & QR - Sized for print */}
-                        <div className="flex w-full items-center justify-between gap-8 print:gap-6 mt-4 print:mt-3">
-                            <div className="flex-1 text-left">
-                                <p className="text-sm print:text-sm text-red-600 font-bold uppercase mb-1">Si lo has visto, llama urgente:</p>
-                                <p className="text-5xl print:text-4xl font-black text-slate-900 tracking-tight">{pet.phone || 'Sin teléfono'}</p>
-                                <p className="text-xl print:text-lg font-medium text-slate-600 mt-2 print:mt-1">{pet.first_name} {pet.last_name}</p>
-                            </div>
-
-                            <div className="flex flex-col items-center gap-2 print:gap-1 bg-white p-4 print:p-3 border-4 print:border-3 border-slate-900 rounded-xl print:rounded-lg">
-                                <div className="w-32 h-32 print:w-24 print:h-24 relative">
-                                    {/* Use Client Component for QR to avoid SSR issues */}
-                                    <PosterQRCode url={profileUrl} />
-                                </div>
-                                <span className="text-xs font-bold uppercase tracking-wide text-slate-900">Escanear Perfil</span>
-                            </div>
+                            <span className="text-[0.65rem] font-black uppercase text-slate-900 tracking-wider">Escanear</span>
                         </div>
                     </div>
 
-                    {/* Print Button - Client Component */}
                     <PrintTrigger />
                 </div>
             </div>
@@ -115,9 +131,6 @@ async function PosterContent({ id }) {
                 <div className="bg-white p-4 rounded-lg shadow border border-red-200 text-left max-w-lg mb-6 overflow-auto">
                     <p className="font-mono text-sm text-red-500 break-all">{error.message}</p>
                 </div>
-                <a href="javascript:window.location.reload()" className="px-6 py-2 bg-slate-900 text-white rounded-lg">
-                    Reintentar
-                </a>
             </div>
         );
     }
