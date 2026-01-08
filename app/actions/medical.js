@@ -3,6 +3,10 @@
 import { createClient } from '@supabase/supabase-js';
 import { v4 as uuidv4 } from 'uuid';
 
+import db from '@/lib/db';
+import { getSession } from '@/lib/auth';
+import { revalidatePath } from 'next/cache';
+
 function getSupabaseClient() {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -12,6 +16,23 @@ function getSupabaseClient() {
         return null;
     }
     return createClient(supabaseUrl, supabaseKey);
+}
+
+export async function getMedicalRecords(petId) {
+    const session = await getSession();
+    if (!session) return { error: 'Unauthorized' };
+
+    try {
+        const records = await db.getAll(
+            'SELECT * FROM medical_records WHERE pet_id = $1 ORDER BY date DESC',
+            [petId]
+        );
+        return { success: true, data: records || [] };
+    } catch (error) {
+        console.error('Error fetching medical records:', error);
+        // Fail gracefully if table doesn't exist
+        return { success: false, error: 'Could not fetch records. Table might be missing.' };
+    }
 }
 
 export async function addMedicalRecord(formData) {
