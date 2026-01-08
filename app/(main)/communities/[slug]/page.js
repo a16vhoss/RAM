@@ -34,29 +34,29 @@ export default function CommunityPage() {
     const [showReportModal, setShowReportModal] = useState(null);
 
     useEffect(() => {
+        const loadData = async () => {
+            setLoading(true);
+            const [communityRes, memberRes] = await Promise.all([
+                getCommunityBySlug(params.slug),
+                isMember(null) // Will be updated after we get community ID
+            ]);
+
+            if (communityRes.success) {
+                setCommunity(communityRes.data);
+
+                // Check membership with actual community ID
+                const memberCheck = await isMember(communityRes.data.community_id);
+                setIsUserMember(memberCheck.isMember);
+
+                // Load posts
+                const postsRes = await getPostsFeed(communityRes.data.community_id);
+                if (postsRes.success) setPosts(postsRes.data);
+            }
+            setLoading(false);
+        };
+
         loadData();
     }, [params.slug]);
-
-    const loadData = async () => {
-        setLoading(true);
-        const [communityRes, memberRes] = await Promise.all([
-            getCommunityBySlug(params.slug),
-            isMember(null) // Will be updated after we get community ID
-        ]);
-
-        if (communityRes.success) {
-            setCommunity(communityRes.data);
-
-            // Check membership with actual community ID
-            const memberCheck = await isMember(communityRes.data.community_id);
-            setIsUserMember(memberCheck.isMember);
-
-            // Load posts
-            const postsRes = await getPostsFeed(communityRes.data.community_id);
-            if (postsRes.success) setPosts(postsRes.data);
-        }
-        setLoading(false);
-    };
 
     const handleJoin = async () => {
         const res = await joinCommunity(community.community_id);

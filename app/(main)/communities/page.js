@@ -36,20 +36,20 @@ export default function CommunitiesPage() {
     const [activeTab, setActiveTab] = useState('discover'); // 'discover' | 'my'
 
     useEffect(() => {
+        const loadData = async () => {
+            setLoading(true);
+            const [allRes, myRes] = await Promise.all([
+                getCommunities({ type: 'species' }),
+                getUserCommunities()
+            ]);
+
+            if (allRes.success) setAllCommunities(allRes.data);
+            if (myRes.success) setMyCommunities(myRes.data);
+            setLoading(false);
+        };
+
         loadData();
     }, []);
-
-    const loadData = async () => {
-        setLoading(true);
-        const [allRes, myRes] = await Promise.all([
-            getCommunities({ type: 'species' }),
-            getUserCommunities()
-        ]);
-
-        if (allRes.success) setAllCommunities(allRes.data);
-        if (myRes.success) setMyCommunities(myRes.data);
-        setLoading(false);
-    };
 
     const handleSearch = async (query) => {
         setSearchQuery(query);

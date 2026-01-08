@@ -23,6 +23,58 @@ const ClientMap = dynamic(
     }
 );
 
+// Fake data for fallback
+const mockProviders = [
+    {
+        business_name: "Veterinaria Huellitas",
+        address: "Av. Insurgentes Sur 123, CDMX",
+        rating_average: 4.8,
+        total_reviews: 124,
+        is_open: true,
+        photo: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80",
+        types: ["veterinary_care"],
+        phone: "+525512345678",
+        website: "https://huellitas.com",
+        opening_hours: ["Lunes-Viernes: 9 AM - 7 PM", "Sábado: 10 AM - 2 PM", "Domingo: Cerrado"]
+    },
+    {
+        business_name: "Clínica PetLife",
+        address: "Calle Reforma 442, CDMX",
+        rating_average: 4.5,
+        total_reviews: 89,
+        is_open: true,
+        photo: "https://images.unsplash.com/photo-1599443015574-be5fe8a05783?auto=format&fit=crop&q=80",
+        types: ["veterinary_care"],
+        phone: "+525587654321",
+        website: "https://petlife.mx",
+        opening_hours: ["Lunes-Sábado: 8 AM - 8 PM", "Domingo: 10 AM - 4 PM"]
+    },
+    {
+        business_name: "Hospital Veterinario 24h",
+        address: "Colonia Roma Norte 55, CDMX",
+        rating_average: 4.9,
+        total_reviews: 312,
+        is_open: true,
+        photo: "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&q=80",
+        types: ["veterinary_care", "hospital"],
+        phone: "+525599887766",
+        website: "https://hospitalvet24h.com",
+        opening_hours: ["Abierto 24 horas, 7 días a la semana"]
+    },
+    {
+        business_name: "Estética Canina Peludos",
+        address: "Polanco V Sección, CDMX",
+        rating_average: 4.2,
+        total_reviews: 45,
+        is_open: false,
+        photo: "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80",
+        types: ["pet_store"],
+        phone: "+525511223344",
+        website: "https://peludos.com",
+        opening_hours: ["Lunes-Viernes: 10 AM - 6 PM", "Sábado: 10 AM - 1 PM", "Domingo: Cerrado"]
+    }
+];
+
 export default function DirectoryPage() {
     const [viewMode, setViewMode] = useState('list'); // 'list' or 'map'
     const [query, setQuery] = useState('');
@@ -52,58 +104,6 @@ export default function DirectoryPage() {
         setMapProviders(places);
     }, []);
 
-    // Fake data for fallback
-    const mockProviders = [
-        {
-            business_name: "Veterinaria Huellitas",
-            address: "Av. Insurgentes Sur 123, CDMX",
-            rating_average: 4.8,
-            total_reviews: 124,
-            is_open: true,
-            photo: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80",
-            types: ["veterinary_care"],
-            phone: "+525512345678",
-            website: "https://huellitas.com",
-            opening_hours: ["Lunes-Viernes: 9 AM - 7 PM", "Sábado: 10 AM - 2 PM", "Domingo: Cerrado"]
-        },
-        {
-            business_name: "Clínica PetLife",
-            address: "Calle Reforma 442, CDMX",
-            rating_average: 4.5,
-            total_reviews: 89,
-            is_open: true,
-            photo: "https://images.unsplash.com/photo-1599443015574-be5fe8a05783?auto=format&fit=crop&q=80",
-            types: ["veterinary_care"],
-            phone: "+525587654321",
-            website: "https://petlife.mx",
-            opening_hours: ["Lunes-Sábado: 8 AM - 8 PM", "Domingo: 10 AM - 4 PM"]
-        },
-        {
-            business_name: "Hospital Veterinario 24h",
-            address: "Colonia Roma Norte 55, CDMX",
-            rating_average: 4.9,
-            total_reviews: 312,
-            is_open: true,
-            photo: "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&q=80",
-            types: ["veterinary_care", "hospital"],
-            phone: "+525599887766",
-            website: "https://hospitalvet24h.com",
-            opening_hours: ["Abierto 24 horas, 7 días a la semana"]
-        },
-        {
-            business_name: "Estética Canina Peludos",
-            address: "Polanco V Sección, CDMX",
-            rating_average: 4.2,
-            total_reviews: 45,
-            is_open: false,
-            photo: "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80",
-            types: ["pet_store"],
-            phone: "+525511223344",
-            website: "https://peludos.com",
-            opening_hours: ["Lunes-Viernes: 10 AM - 6 PM", "Sábado: 10 AM - 1 PM", "Domingo: Cerrado"]
-        }
-    ];
-
     // Fetch initial DB data
     useEffect(() => {
         const fetchProviders = async () => {
@@ -131,96 +131,6 @@ export default function DirectoryPage() {
 
     // Prioritize map results if available (real-time nearby), otherwise fallback to mock/db
     const displayProviders = mapProviders.length > 0 ? mapProviders : dbProviders;
-
-    const VetDetailsModal = ({ vet, onClose }) => {
-        if (!vet) return null;
-
-        return (
-            <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm p-4 sm:items-center">
-                <div className="bg-[#1c252e] rounded-t-3xl sm:rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl relative">
-                    <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white z-10 p-2 bg-black/50 rounded-full">
-                        <FaTimes size={20} />
-                    </button>
-
-                    <div className="h-48 bg-gray-700 relative">
-                        <div
-                            className="absolute inset-0 bg-cover bg-center"
-                            style={{ backgroundImage: `url(${vet.photo || 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80'})` }}
-                        ></div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#1c252e] to-transparent"></div>
-                    </div>
-
-                    <div className="p-6 -mt-12 relative">
-                        <h2 className="text-3xl font-bold text-white mb-2">{vet.business_name}</h2>
-                        <div className="flex items-center gap-2 mb-4">
-                            <div className="flex items-center gap-1 bg-yellow-500/10 px-2 py-1 rounded-lg border border-yellow-500/20">
-                                <FaStar className="text-yellow-500 text-xs" />
-                                <span className="text-yellow-500 text-sm font-bold">{vet.rating_average || 4.5}</span>
-                            </div>
-                            <span className="text-gray-400 text-sm">({vet.total_reviews || 0} reseñas)</span>
-                        </div>
-
-                        <p className="text-gray-300 flex items-center gap-2 mb-3">
-                            <FaMapMarkerAlt className="text-primary" /> {vet.address || 'Ubicación desconocida'}
-                        </p>
-
-                        {vet.phone && (
-                            <a href={`tel:${vet.phone}`} className="text-gray-300 flex items-center gap-2 mb-3 hover:text-primary transition-colors">
-                                <FaPhone className="text-primary" /> {vet.phone}
-                            </a>
-                        )}
-
-                        {vet.website && (
-                            <a href={vet.website} target="_blank" rel="noopener noreferrer" className="text-gray-300 flex items-center gap-2 mb-3 hover:text-primary transition-colors">
-                                <FaGlobe className="text-primary" /> {vet.website.replace(/(^\w+:|^)\/\//, '')}
-                            </a>
-                        )}
-
-                        {vet.opening_hours && (
-                            <div className="text-gray-300 flex items-start gap-2 mb-4">
-                                <FaClock className="text-primary mt-1" />
-                                <div>
-                                    {vet.opening_hours.map((hour, i) => (
-                                        <p key={i}>{hour}</p>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        <div className="flex items-center gap-2 mb-4">
-                            <span className={`px-3 py-1 rounded-lg text-xs font-medium ${vet.is_open ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
-                                {vet.is_open ? 'Abierto' : 'Cerrado'}
-                            </span>
-                            {vet.types && vet.types.map((type, i) => (
-                                <span key={i} className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 text-gray-400 capitalize">
-                                    {type.replace('_', ' ')}
-                                </span>
-                            ))}
-                        </div>
-
-                        <div className="mt-6 flex gap-3">
-                            <a
-                                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(vet.address)}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex-1 flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary-dark transition-colors"
-                            >
-                                <FaDirections /> Cómo llegar
-                            </a>
-                            {vet.phone && (
-                                <a
-                                    href={`tel:${vet.phone}`}
-                                    className="flex-1 flex items-center justify-center gap-2 border border-white/10 text-white py-3 rounded-xl font-semibold hover:bg-white/10 transition-colors"
-                                >
-                                    <FaPhone /> Llamar
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    };
 
     return (
         <div className="min-h-screen bg-background-dark text-white pb-24">
@@ -372,6 +282,96 @@ export default function DirectoryPage() {
             </main>
 
             <VetDetailsModal vet={selectedVet} onClose={() => setSelectedVet(null)} />
+        </div>
+    );
+}
+
+function VetDetailsModal({ vet, onClose }) {
+    if (!vet) return null;
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm p-4 sm:items-center">
+            <div className="bg-[#1c252e] rounded-t-3xl sm:rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl relative">
+                <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white z-10 p-2 bg-black/50 rounded-full">
+                    <FaTimes size={20} />
+                </button>
+
+                <div className="h-48 bg-gray-700 relative">
+                    <div
+                        className="absolute inset-0 bg-cover bg-center"
+                        style={{ backgroundImage: `url(${vet.photo || 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80'})` }}
+                    ></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1c252e] to-transparent"></div>
+                </div>
+
+                <div className="p-6 -mt-12 relative">
+                    <h2 className="text-3xl font-bold text-white mb-2">{vet.business_name}</h2>
+                    <div className="flex items-center gap-2 mb-4">
+                        <div className="flex items-center gap-1 bg-yellow-500/10 px-2 py-1 rounded-lg border border-yellow-500/20">
+                            <FaStar className="text-yellow-500 text-xs" />
+                            <span className="text-yellow-500 text-sm font-bold">{vet.rating_average || 4.5}</span>
+                        </div>
+                        <span className="text-gray-400 text-sm">({vet.total_reviews || 0} reseñas)</span>
+                    </div>
+
+                    <p className="text-gray-300 flex items-center gap-2 mb-3">
+                        <FaMapMarkerAlt className="text-primary" /> {vet.address || 'Ubicación desconocida'}
+                    </p>
+
+                    {vet.phone && (
+                        <a href={`tel:${vet.phone}`} className="text-gray-300 flex items-center gap-2 mb-3 hover:text-primary transition-colors">
+                            <FaPhone className="text-primary" /> {vet.phone}
+                        </a>
+                    )}
+
+                    {vet.website && (
+                        <a href={vet.website} target="_blank" rel="noopener noreferrer" className="text-gray-300 flex items-center gap-2 mb-3 hover:text-primary transition-colors">
+                            <FaGlobe className="text-primary" /> {vet.website.replace(/(^\w+:|^)\/\//, '')}
+                        </a>
+                    )}
+
+                    {vet.opening_hours && (
+                        <div className="text-gray-300 flex items-start gap-2 mb-4">
+                            <FaClock className="text-primary mt-1" />
+                            <div>
+                                {vet.opening_hours.map((hour, i) => (
+                                    <p key={i}>{hour}</p>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="flex items-center gap-2 mb-4">
+                        <span className={`px-3 py-1 rounded-lg text-xs font-medium ${vet.is_open ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+                            {vet.is_open ? 'Abierto' : 'Cerrado'}
+                        </span>
+                        {vet.types && vet.types.map((type, i) => (
+                            <span key={i} className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 text-gray-400 capitalize">
+                                {type.replace('_', ' ')}
+                            </span>
+                        ))}
+                    </div>
+
+                    <div className="mt-6 flex gap-3">
+                        <a
+                            href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(vet.address)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary-dark transition-colors"
+                        >
+                            <FaDirections /> Cómo llegar
+                        </a>
+                        {vet.phone && (
+                            <a
+                                href={`tel:${vet.phone}`}
+                                className="flex-1 flex items-center justify-center gap-2 border border-white/10 text-white py-3 rounded-xl font-semibold hover:bg-white/10 transition-colors"
+                            >
+                                <FaPhone /> Llamar
+                            </a>
+                        )}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

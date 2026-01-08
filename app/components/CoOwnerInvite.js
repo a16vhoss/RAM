@@ -11,16 +11,16 @@ export default function CoOwnerInvite({ petId, owners = [], currentUserId }) {
     const [activeInvite, setActiveInvite] = useState(null);
 
     useEffect(() => {
+        const loadActiveInvite = async () => {
+            const result = await getActiveInvite(petId);
+            if (result.success && result.invite) {
+                setActiveInvite(result.invite);
+            }
+        };
+
         // Load active invite on mount if exists
         loadActiveInvite();
     }, [petId]);
-
-    const loadActiveInvite = async () => {
-        const result = await getActiveInvite(petId);
-        if (result.success && result.invite) {
-            setActiveInvite(result.invite);
-        }
-    };
 
     const handleCreateInvite = async () => {
         setIsLoading(true);

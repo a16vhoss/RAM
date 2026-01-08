@@ -10,10 +10,6 @@ export default function ReportedPostsPage() {
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState(null); // id of report being processed
 
-    useEffect(() => {
-        loadReports();
-    }, []);
-
     const loadReports = async () => {
         try {
             const res = await getReportedPosts();
@@ -26,6 +22,10 @@ export default function ReportedPostsPage() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        loadReports();
+    }, []);
 
     const handleDismiss = async (reportId) => {
         if (!confirm('¿Descartar este reporte? El post se mantendrá visible.')) return;

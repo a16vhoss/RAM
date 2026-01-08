@@ -7,6 +7,8 @@ import DashboardSearch from './DashboardSearch';
 import NotificationsBell from '@/app/components/NotificationsBell';
 import JoinFamilyButton from '@/app/components/JoinFamilyButton';
 
+import Image from 'next/image';
+
 export default async function DashboardPage() {
     const session = await getSession();
     if (!session) redirect('/login');
@@ -29,11 +31,13 @@ export default async function DashboardPage() {
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
                             <div className="relative group cursor-pointer">
-                                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-colors">
-                                    <img
+                                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-colors relative">
+                                    <Image
                                         src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.first_name || 'User')}&background=random`}
                                         alt="Profile"
-                                        className="w-full h-full object-cover"
+                                        fill
+                                        className="object-cover"
+                                        sizes="48px"
                                     />
                                 </div>
                                 <div className="absolute bottom-0 right-0 w-3 h-3 bg-success rounded-full border-2 border-slate-900"></div>
@@ -150,7 +154,7 @@ export default async function DashboardPage() {
                             <p className="text-white font-bold text-sm leading-snug">La hidratación es clave. Cambia el agua de Max 3 veces al día.</p>
                         </div>
                         <div className="relative z-10 w-20 h-20 rounded-full border-4 border-white/20 overflow-hidden shadow-xl flex-shrink-0 group-hover:scale-105 transition-transform">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8C8auowYV8uJJuZgzvEXrnh8b4hBUpQJb3yn_J4u6ZVhM_loZU7UemBwnuxwFW12hyCE1iKnIbHu1bRVgxENNo5Ia7MyepghWmOabsDyY5NigXOVzQI2G9_eFTsU9X0FaR9JWyDwfHcBiXy3YmWc4hh7Ox-u7mp0FRNOFXQ78nqggVGVX6nRqRdYQljAnsETQQfUJrJphHqHZxgQmibIsQ5mkIy_aElAF3FgPx-BGDTtELL5XMnzg8Gvv8zaKNpmt3YOaNPOH9CTU" alt="Tip" className="w-full h-full object-cover" />
+                            <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8C8auowYV8uJJuZgzvEXrnh8b4hBUpQJb3yn_J4u6ZVhM_loZU7UemBwnuxwFW12hyCE1iKnIbHu1bRVgxENNo5Ia7MyepghWmOabsDyY5NigXOVzQI2G9_eFTsU9X0FaR9JWyDwfHcBiXy3YmWc4hh7Ox-u7mp0FRNOFXQ78nqggVGVX6nRqRdYQljAnsETQQfUJrJphHqHZxgQmibIsQ5mkIy_aElAF3FgPx-BGDTtELL5XMnzg8Gvv8zaKNpmt3YOaNPOH9CTU" alt="Tip" fill className="object-cover" sizes="80px" />
                         </div>
                     </div>
                 </section>
@@ -180,15 +184,17 @@ export default async function DashboardPage() {
                                     className="snap-center group min-w-[160px] h-[220px] rounded-3xl overflow-hidden relative shadow-lg hover:shadow-glow transition-all hover:-translate-y-1"
                                 >
                                     <div className="absolute inset-0">
-                                        <img
+                                        <Image
                                             src={pet.pet_photo || "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80"}
                                             alt={pet.pet_name}
-                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                            fill
+                                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                            sizes="160px"
                                         />
                                     </div>
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
 
-                                    <div className="absolute bottom-0 left-0 w-full p-4 flex flex-col items-start gap-1">
+                                    <div className="absolute bottom-0 left-0 w-full p-4 flex flex-col items-start gap-1 z-10">
                                         <div className="flex items-center gap-1.5 bg-green-500/20 backdrop-blur-md px-2 py-0.5 rounded-full border border-green-500/30 mb-1">
                                             <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
                                             <span className="text-[10px] font-bold text-green-100 uppercase tracking-wide">Al día</span>

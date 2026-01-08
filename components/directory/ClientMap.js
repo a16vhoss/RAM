@@ -214,9 +214,11 @@ export default function ClientMap({ onPlacesFound, onLocationDetected }) {
                 }
             );
         } else {
-            setLocationError('Tu navegador no soporta geolocalización.');
-            setUserLocation(defaultCenter);
-            searchNearbyVets(defaultCenter);
+            setTimeout(() => {
+                setLocationError('Tu navegador no soporta geolocalización.');
+                setUserLocation(defaultCenter);
+                searchNearbyVets(defaultCenter);
+            }, 0);
         }
     }, [isLoaded, map, searchNearbyVets]);
 

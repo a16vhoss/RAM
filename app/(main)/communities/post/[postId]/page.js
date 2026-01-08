@@ -25,20 +25,20 @@ export default function PostDetailPage() {
     const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
+        const loadData = async () => {
+            setLoading(true);
+            const [postRes, commentsRes] = await Promise.all([
+                getPost(params.postId),
+                getComments(params.postId)
+            ]);
+
+            if (postRes.success) setPost(postRes.data);
+            if (commentsRes.success) setComments(commentsRes.data);
+            setLoading(false);
+        };
+
         loadData();
     }, [params.postId]);
-
-    const loadData = async () => {
-        setLoading(true);
-        const [postRes, commentsRes] = await Promise.all([
-            getPost(params.postId),
-            getComments(params.postId)
-        ]);
-
-        if (postRes.success) setPost(postRes.data);
-        if (commentsRes.success) setComments(commentsRes.data);
-        setLoading(false);
-    };
 
     const handleLike = async () => {
         if (!post) return;

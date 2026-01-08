@@ -13,15 +13,15 @@ export default function NotificationsBell() {
     const [unreadCount, setUnreadCount] = useState(0);
     const dropdownRef = useRef(null);
 
-    async function fetchNotifications() {
-        const res = await getNotifications();
-        if (res.success) {
-            setNotifications(res.data);
-            setUnreadCount(res.data.filter(n => !n.is_read).length);
-        }
-    }
-
     useEffect(() => {
+        async function fetchNotifications() {
+            const res = await getNotifications();
+            if (res.success) {
+                setNotifications(res.data);
+                setUnreadCount(res.data.filter(n => !n.is_read).length);
+            }
+        }
+
         fetchNotifications();
         // Poll every minute
         const interval = setInterval(fetchNotifications, 60000);
