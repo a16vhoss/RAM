@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import db from '@/lib/db';
 import { notFound } from 'next/navigation';
-import QRCode from 'react-qr-code';
+import QRCode from 'qrcode';
 
 export const metadata = {
     title: 'Cartel de Búsqueda - RAM',
@@ -22,6 +22,16 @@ async function PosterContent({ params }) {
     if (!pet) notFound();
 
     const profileUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://ram-weld-zeta.vercel.app'}/pets/${pet.pet_id}`;
+
+    // Generate QR as Data URL on server
+    const qrCodeDataUrl = await QRCode.toDataURL(profileUrl, {
+        width: 500,
+        margin: 2,
+        color: {
+            dark: '#000000',
+            light: '#FFFFFF'
+        }
+    });
 
     return (
         <div className="min-h-screen bg-gray-100 flex justify-center items-start lg:py-10 print:bg-white print:p-0">
@@ -82,11 +92,10 @@ async function PosterContent({ params }) {
 
                         <div className="flex flex-col items-center gap-2 bg-white p-4 border-4 border-slate-900 rounded-xl">
                             <div className="w-32 h-32">
-                                <QRCode
-                                    size={256}
-                                    style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                                    value={profileUrl}
-                                    viewBox={`0 0 256 256`}
+                                <img
+                                    src={qrCodeDataUrl}
+                                    alt="QR Code"
+                                    className="w-full h-full object-contain"
                                 />
                             </div>
                             <span className="text-xs font-bold uppercase tracking-wide text-slate-900">Escanear Perfil</span>
