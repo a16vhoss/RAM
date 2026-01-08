@@ -86,7 +86,7 @@ export default async function LostPetsPage({ searchParams }) {
                 {pets && pets.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {pets.map((pet) => (
-                            <Link href={`/public/pet/${pet.pet_id}`} key={pet.pet_id} className="group relative bg-white dark:bg-[#162028] rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                            <Link href={`/pets/${pet.pet_id}`} key={pet.pet_id} className="group relative bg-white dark:bg-[#162028] rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
                                 {/* Image Container */}
                                 <div className="relative aspect-[4/5] overflow-hidden">
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#162028] via-transparent to-transparent opacity-80 z-10"></div>
@@ -136,7 +136,7 @@ export default async function LostPetsPage({ searchParams }) {
                             Por el momento no hay reportes de mascotas perdidas que coincidan con tu búsqueda. ¡Qué buenas noticias!
                         </p>
                         {(city || species || query) && (
-                            <Link href="/public/lost-pets" className="mt-6 px-6 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-white rounded-full font-bold text-sm hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                            <Link href="/alertas" className="mt-6 px-6 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-white rounded-full font-bold text-sm hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
                                 Limpiar Filtros
                             </Link>
                         )}

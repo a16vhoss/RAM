@@ -13,7 +13,7 @@ export default function Sidebar() {
     const menuItems = [
         { name: 'Inicio', path: '/dashboard', icon: <FaHome size={20} /> },
         { name: 'Buscar', path: '/directory', icon: <FaSearch size={20} /> },
-        { name: 'Alertas', path: '/public/lost-pets', icon: <FaExclamationTriangle size={20} /> },
+        { name: 'Alertas', path: '/alertas', icon: <FaExclamationTriangle size={20} /> },
         { name: 'Blog', path: '/blog', icon: <FaNewspaper size={20} /> },
         { name: 'Cuenta', path: '/account', icon: <FaUser size={20} /> },
     ];
