@@ -63,7 +63,7 @@ async function PosterContent({ id }) {
                                 <span>•</span>
                                 <span>{pet.breed}</span>
                                 <span>•</span>
-                                <span>{pet.sex?.toUpperCase() === 'M' ? 'Macho' : 'Hembra'}</span>
+                                <span>{['M', 'MACHO', 'MALE'].includes(pet.sex?.toUpperCase()) ? 'Macho' : 'Hembra'}</span>
                             </div>
                         </div>
 
