@@ -29,23 +29,9 @@ export default async function DashboardPage() {
             <header className="sticky top-0 z-20 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 shadow-lg pt-6 pb-4 px-6 animate-slide-up">
                 <div className="max-w-7xl mx-auto w-full">
                     <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                            <div className="relative group cursor-pointer">
-                                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-colors relative bg-slate-700">
-                                    <Image
-                                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.first_name || 'User')}&background=random`}
-                                        alt=""
-                                        fill
-                                        className="object-cover"
-                                        sizes="48px"
-                                    />
-                                </div>
-                                <div className="absolute bottom-0 right-0 w-3 h-3 bg-success rounded-full border-2 border-slate-900"></div>
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-xs text-text-secondary uppercase tracking-wider font-semibold">Bienvenido</span>
-                                <h1 className="text-xl font-display font-bold text-white leading-tight">{user.first_name || 'Usuario'}</h1>
-                            </div>
+                        <div className="flex flex-col">
+                            <span className="text-xs text-text-secondary uppercase tracking-wider font-semibold">Bienvenido</span>
+                            <h1 className="text-xl font-display font-bold text-white leading-tight">{user.first_name || 'Usuario'}</h1>
                         </div>
                         <NotificationsBell />
                     </div>
