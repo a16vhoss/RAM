@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS public.communities (
 CREATE TABLE IF NOT EXISTS public.community_members (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     community_id UUID NOT NULL REFERENCES public.communities(community_id) ON DELETE CASCADE,
-    user_id UUID NOT NULL REFERENCES public.users(user_id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL REFERENCES public.users(user_id) ON DELETE CASCADE,
     role TEXT DEFAULT 'member' CHECK (role IN ('member', 'moderator', 'admin')),
     is_auto_joined BOOLEAN DEFAULT true,
     joined_at TIMESTAMPTZ DEFAULT NOW(),
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS public.community_members (
 CREATE TABLE IF NOT EXISTS public.community_posts (
     post_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     community_id UUID NOT NULL REFERENCES public.communities(community_id) ON DELETE CASCADE,
-    user_id UUID REFERENCES public.users(user_id) ON DELETE SET NULL,
+    user_id TEXT REFERENCES public.users(user_id) ON DELETE SET NULL,
     post_type TEXT DEFAULT 'general' CHECK (post_type IN ('general', 'question', 'tip', 'photo', 'alert')),
     content TEXT NOT NULL,
     media_urls JSONB DEFAULT '[]',
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS public.community_posts (
 CREATE TABLE IF NOT EXISTS public.post_comments (
     comment_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     post_id UUID NOT NULL REFERENCES public.community_posts(post_id) ON DELETE CASCADE,
-    user_id UUID REFERENCES public.users(user_id) ON DELETE SET NULL,
+    user_id TEXT REFERENCES public.users(user_id) ON DELETE SET NULL,
     content TEXT NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS public.post_comments (
 CREATE TABLE IF NOT EXISTS public.post_likes (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     post_id UUID NOT NULL REFERENCES public.community_posts(post_id) ON DELETE CASCADE,
-    user_id UUID NOT NULL REFERENCES public.users(user_id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL REFERENCES public.users(user_id) ON DELETE CASCADE,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     UNIQUE(post_id, user_id)
 );
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS public.post_likes (
 CREATE TABLE IF NOT EXISTS public.post_reports (
     report_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     post_id UUID NOT NULL REFERENCES public.community_posts(post_id) ON DELETE CASCADE,
-    reported_by UUID REFERENCES public.users(user_id) ON DELETE SET NULL,
+    reported_by TEXT REFERENCES public.users(user_id) ON DELETE SET NULL,
     reason TEXT,
     status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'reviewed', 'dismissed')),
     created_at TIMESTAMPTZ DEFAULT NOW()
