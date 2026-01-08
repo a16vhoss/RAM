@@ -32,15 +32,19 @@ async function PosterContent({ id }) {
 
     const profileUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://ram-weld-zeta.vercel.app'}/pets/${pet.pet_id}`;
 
-    // Generate QR as Data URL on server
-    const qrCodeDataUrl = await QRCode.toDataURL(profileUrl, {
-        width: 600,
+    // Generate QR as SVG String (No Canvas required for Serverless)
+    const qrSvg = await QRCode.toString(profileUrl, {
+        type: 'svg',
+        width: 500,
         margin: 2,
         color: {
             dark: '#000000',
             light: '#FFFFFF'
         }
     });
+
+    // Convert SVG string to Data URI safely
+    const qrCodeDataUrl = `data:image/svg+xml;base64,${Buffer.from(qrSvg).toString('base64')}`;
 
     return (
         <div className="min-h-screen bg-gray-100 flex justify-center items-start lg:py-10 print:bg-white print:p-0">
