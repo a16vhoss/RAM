@@ -1,22 +1,8 @@
 'use server';
 
-import { createClient } from '@supabase/supabase-js';
-import { v4 as uuidv4 } from 'uuid';
-
 import db from '@/lib/db';
 import { getSession } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
-
-function getSupabaseClient() {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-    if (!supabaseUrl || !supabaseKey) {
-        console.error('Missing Supabase environment variables');
-        return null;
-    }
-    return createClient(supabaseUrl, supabaseKey);
-}
 
 export async function getMedicalRecords(petId) {
     const session = await getSession();
@@ -30,7 +16,6 @@ export async function getMedicalRecords(petId) {
         return { success: true, data: records || [] };
     } catch (error) {
         console.error('Error fetching medical records:', error);
-        // Fail gracefully if table doesn't exist
         return { success: false, error: 'Could not fetch records. Table might be missing.' };
     }
 }
@@ -46,50 +31,20 @@ export async function addMedicalRecord(formData) {
         const date = formData.get('date');
         const vetName = formData.get('vet_name');
 
-        if (!petId || !type || !date) {
-            return { error: 'Missing required fields (pet_id, type, or date)' };
-        }
-
-        // Handle File Uploads
-        const files = formData.getAll('files');
+        // Get attachments from JSON string (files were uploaded client-side)
+        const attachmentsJson = formData.get('attachments_json');
         let attachments = [];
 
-        if (files && files.length > 0) {
+        if (attachmentsJson) {
             try {
-                const supabase = getSupabaseClient();
-                if (supabase) {
-                    for (const file of files) {
-                        // Skip empty files or non-File objects
-                        if (!file || typeof file === 'string' || file.size === 0) continue;
-
-                        const fileExt = file.name.split('.').pop();
-                        const fileName = `${petId}/${uuidv4()}.${fileExt}`;
-
-                        const { error: uploadError } = await supabase.storage
-                            .from('Medical-records')
-                            .upload(fileName, file, { contentType: file.type, upsert: false });
-
-                        if (!uploadError) {
-                            const { data: { publicUrl } } = supabase.storage
-                                .from('Medical-records')
-                                .getPublicUrl(fileName);
-
-                            attachments.push({
-                                name: file.name,
-                                type: file.type,
-                                url: publicUrl
-                            });
-                        } else {
-                            console.error('Upload error:', uploadError.message);
-                        }
-                    }
-                } else {
-                    console.warn('Supabase client not available - skipping file uploads');
-                }
-            } catch (uploadErr) {
-                console.error('File upload error:', uploadErr.message);
-                // Continue without attachments
+                attachments = JSON.parse(attachmentsJson);
+            } catch (e) {
+                console.error('Failed to parse attachments JSON:', e);
             }
+        }
+
+        if (!petId || !type || !date) {
+            return { error: 'Missing required fields (pet_id, type, or date)' };
         }
 
         // Insert record into database

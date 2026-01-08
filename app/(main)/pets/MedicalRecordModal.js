@@ -5,12 +5,23 @@ import { FaTimes, FaSave, FaSyringe, FaNotesMedical, FaPills, FaStethoscope, FaP
 import { addMedicalRecord } from '@/app/actions/medical';
 import { useRouter } from 'next/navigation';
 import FilePreview from '@/app/components/FilePreview';
+import { createClient } from '@supabase/supabase-js';
+import { v4 as uuidv4 } from 'uuid';
+
+// Client-side Supabase instance for file uploads
+function getSupabaseClient() {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseKey) return null;
+    return createClient(supabaseUrl, supabaseKey);
+}
 
 export default function MedicalRecordModal({ petId, isOpen, onClose, onRecordAdded }) {
     const router = useRouter();
     const [submitting, setSubmitting] = useState(false);
     const [recordType, setRecordType] = useState('Vacuna');
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [uploadProgress, setUploadProgress] = useState('');
 
     if (!isOpen) return null;
 
@@ -24,26 +35,70 @@ export default function MedicalRecordModal({ petId, isOpen, onClose, onRecordAdd
         setSelectedFiles(prev => prev.filter((_, i) => i !== index));
     };
 
+    // Upload files directly to Supabase Storage from client
+    async function uploadFilesToStorage(files) {
+        const attachments = [];
+        const supabase = getSupabaseClient();
+
+        if (!supabase || files.length === 0) return attachments;
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (!file || file.size === 0) continue;
+
+            setUploadProgress(`Subiendo archivo ${i + 1} de ${files.length}...`);
+
+            try {
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${petId}/${uuidv4()}.${fileExt}`;
+
+                const { error: uploadError } = await supabase.storage
+                    .from('Medical-records')
+                    .upload(fileName, file, { contentType: file.type, upsert: false });
+
+                if (!uploadError) {
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('Medical-records')
+                        .getPublicUrl(fileName);
+
+                    attachments.push({
+                        name: file.name,
+                        type: file.type,
+                        url: publicUrl
+                    });
+                } else {
+                    console.error('Upload error:', uploadError.message);
+                }
+            } catch (err) {
+                console.error('File upload failed:', err);
+            }
+        }
+
+        setUploadProgress('');
+        return attachments;
+    }
+
     async function handleSubmit(formData) {
         setSubmitting(true);
         try {
-            // Append petId manually since it's passed as prop
+            // 1. Upload files to Supabase Storage first (client-side)
+            const attachments = await uploadFilesToStorage(selectedFiles);
+
+            // 2. Add form data
             formData.append('pet_id', petId);
             formData.append('type', recordType);
+            // Pass attachments as JSON string instead of files
+            formData.append('attachments_json', JSON.stringify(attachments));
 
-            // Append files
-            selectedFiles.forEach(file => {
-                formData.append('files', file);
-            });
-
+            // 3. Call server action (without files, just metadata)
             const res = await addMedicalRecord(formData);
 
             setSubmitting(false);
 
             if (res.success) {
-                setSelectedFiles([]); // Clear files
-                onRecordAdded && onRecordAdded(); // Callback to refresh parent list
-                router.refresh(); // Refresh Data Cache
+                setSelectedFiles([]);
+                onRecordAdded && onRecordAdded();
+                router.refresh();
                 onClose();
             } else {
                 alert('Error al guardar: ' + (res.error || 'Error desconocido'));
@@ -163,7 +218,7 @@ export default function MedicalRecordModal({ petId, isOpen, onClose, onRecordAdd
                         disabled={submitting}
                         className="w-full bg-primary hover:bg-primary-hover text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-95 flex items-center justify-center gap-2"
                     >
-                        {submitting ? 'Guardando...' : <><FaSave /> Guardar Registro</>}
+                        {submitting ? (uploadProgress || 'Guardando...') : <><FaSave /> Guardar Registro</>}
                     </button>
                 </form>
             </div>
