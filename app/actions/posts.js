@@ -44,7 +44,6 @@ export async function getPostsFeed(communityId, page = 1, limit = 20) {
                 p.*,
                 u.first_name,
                 u.last_name,
-                u.photo_url as user_photo,
                 (SELECT COUNT(*) FROM post_likes pl WHERE pl.post_id = p.post_id) as likes_count,
                 (SELECT COUNT(*) FROM post_comments pc WHERE pc.post_id = p.post_id) as comments_count
             FROM community_posts p
@@ -88,7 +87,6 @@ export async function getPost(postId) {
                 p.*,
                 u.first_name,
                 u.last_name,
-                u.photo_url as user_photo,
                 c.name as community_name,
                 c.slug as community_slug
             FROM community_posts p
@@ -258,8 +256,7 @@ export async function getComments(postId) {
             SELECT 
                 c.*,
                 u.first_name,
-                u.last_name,
-                u.photo_url as user_photo
+                u.last_name
             FROM post_comments c
             LEFT JOIN users u ON c.user_id = u.user_id
             WHERE c.post_id = $1
