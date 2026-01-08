@@ -1,3 +1,5 @@
+'use client';
+
 import { FaFilePdf, FaImage, FaTimes } from 'react-icons/fa';
 
 export default function FilePreview({ file, onRemove }) {
