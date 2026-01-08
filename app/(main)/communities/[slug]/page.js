@@ -256,7 +256,7 @@ function PostCard({ post, onLike, onDelete, onReport }) {
                     </button>
                     {showMenu && (
                         <div className="absolute right-0 top-full mt-1 bg-slate-700 rounded-xl shadow-xl border border-white/10 py-1 min-w-[140px] z-10">
-                            {post.isOwner && (
+                            {post.canDelete && (
                                 <button onClick={() => { onDelete(); setShowMenu(false); }} className="w-full px-4 py-2 text-left text-red-400 hover:bg-white/5 flex items-center gap-2 text-sm">
                                     <FaTrash /> Eliminar
                                 </button>

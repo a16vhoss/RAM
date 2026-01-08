@@ -57,11 +57,17 @@ export async function getPostsFeed(communityId, page = 1, limit = 20) {
         // Check if current user has liked each post
         const session = await getSession();
         if (session) {
+            // Verify admin role once
+            const [userRole] = await db.getAll('SELECT role FROM users WHERE user_id = $1', [session.user.user_id]);
+            const isAdmin = userRole?.role === 'admin';
+
             for (const post of posts) {
                 const [liked] = await db.getAll(`
                     SELECT 1 FROM post_likes WHERE post_id = $1 AND user_id = $2
                 `, [post.post_id, session.user.user_id]);
                 post.isLiked = !!liked;
+                post.isOwner = post.user_id === session.user.user_id;
+                post.canDelete = post.isOwner || isAdmin;
             }
         }
 
@@ -101,8 +107,12 @@ export async function getPost(postId) {
             const [liked] = await db.getAll(`
                 SELECT 1 FROM post_likes WHERE post_id = $1 AND user_id = $2
             `, [postId, session.user.user_id]);
+            const [userRole] = await db.getAll('SELECT role FROM users WHERE user_id = $1', [session.user.user_id]);
+            const isAdmin = userRole?.role === 'admin';
+
             post.isLiked = !!liked;
             post.isOwner = post.user_id === session.user.user_id;
+            post.canDelete = post.isOwner || isAdmin;
         }
 
         return { success: true, data: post };
@@ -170,7 +180,11 @@ export async function deletePost(postId) {
             return { success: false, error: 'Post no encontrado' };
         }
 
-        if (post.user_id !== session.user.user_id) {
+        // Check if user is owner or admin
+        const [userRole] = await db.getAll('SELECT role FROM users WHERE user_id = $1', [session.user.user_id]);
+        const isAdmin = userRole?.role === 'admin';
+
+        if (post.user_id !== session.user.user_id && !isAdmin) {
             return { success: false, error: 'No tienes permiso para eliminar este post' };
         }
 
