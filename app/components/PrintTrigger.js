@@ -18,24 +18,33 @@ export default function PrintTrigger() {
                 return;
             }
 
+            // Force specific dimensions for capture
             const canvas = await html2canvas(element, {
-                scale: 2, // Better resolution
-                useCORS: true, // Allow cross-origin images
+                scale: 2,
+                useCORS: true,
                 logging: false,
-                windowWidth: element.scrollWidth,
-                windowHeight: element.scrollHeight
+                width: 794,
+                height: 1123,
+                windowWidth: 794,
+                windowHeight: 1123,
+                backgroundColor: '#ffffff'
             });
 
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgData = canvas.toDataURL('image/png', 1.0);
 
-            // Force fit to A4 dimensions (210mm x 297mm)
-            // This ensures the entire poster fits on the page regardless of screen capture scale
+            // Create PDF with exact A4 dimensions
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            // Add image to fill the entire A4 page
             pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
-
             pdf.save('Cartel_Busqueda_RAM.pdf');
+
         } catch (err) {
-            console.error(err);
+            console.error('PDF Error:', err);
             alert('Error al generar PDF. Intenta de nuevo.');
         } finally {
             setLoading(false);
@@ -50,7 +59,7 @@ export default function PrintTrigger() {
             className="fixed bottom-8 right-8 bg-slate-900 text-white px-6 py-4 rounded-full shadow-2xl font-bold flex items-center gap-3 hover:scale-105 transition-transform print:hidden z-50 hover:bg-black disabled:opacity-75 disabled:cursor-wait"
         >
             <FaDownload className="text-xl" />
-            {loading ? 'Generando PDF...' : 'Descargar Cartel'}
+            {loading ? 'Generando...' : 'Descargar Cartel'}
         </button>
     );
 }
