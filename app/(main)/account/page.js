@@ -10,14 +10,21 @@ export default async function AccountPage() {
     const user = session.user;
 
     // Fetch user pets
-    const pets = await db.getAll('SELECT * FROM pets WHERE user_id = $1', [user.user_id]);
+    // Fetch user pets (owned and co-owned)
+    const pets = await db.getAll(`
+        SELECT pets.* 
+        FROM pets 
+        JOIN pet_owners ON pets.pet_id = pet_owners.pet_id 
+        WHERE pet_owners.user_id = $1
+    `, [user.user_id]);
 
-    // Fetch user documents summary
+    // Fetch user documents summary (owned and co-owned)
     const documents = await db.getAll(`
         SELECT d.document_type 
         FROM documents d 
         JOIN pets p ON d.pet_id = p.pet_id 
-        WHERE p.user_id = $1
+        JOIN pet_owners po ON p.pet_id = po.pet_id
+        WHERE po.user_id = $1
     `, [user.user_id]);
 
     return (

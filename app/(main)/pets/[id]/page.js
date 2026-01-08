@@ -36,44 +36,44 @@ export default function PetProfilePage() {
         }
     }
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                // Fetch Pet Details
-                const res = await fetch(`/api/pets/${params.id}`);
+    async function fetchData() {
+        try {
+            // Fetch Pet Details
+            const res = await fetch(`/api/pets/${params.id}`);
 
-                if (res.ok) {
-                    const data = await res.json();
-                    setPet(data);
+            if (res.ok) {
+                const data = await res.json();
+                setPet(data);
 
-                    // Fetch Medical Records
-                    await fetchMedicalRecords();
+                // Fetch Medical Records
+                await fetchMedicalRecords();
 
-                    // Generate QR Code
-                    const petInfoUrl = `${window.location.origin}/public/pet/${params.id}`;
-                    const qr = await QRCode.toDataURL(petInfoUrl, {
-                        width: 300,
-                        margin: 2,
-                        color: { dark: '#000000', light: '#FFFFFF' }
-                    });
-                    setQrCodeUrl(qr);
+                // Generate QR Code
+                const petInfoUrl = `${window.location.origin}/public/pet/${params.id}`;
+                const qr = await QRCode.toDataURL(petInfoUrl, {
+                    width: 300,
+                    margin: 2,
+                    color: { dark: '#000000', light: '#FFFFFF' }
+                });
+                setQrCodeUrl(qr);
 
-                    // Auto-open modal if query param is set
-                    if (searchParams.get('report') === 'true' && data.status !== 'lost') {
-                        setIsReportLostModalOpen(true);
-                    }
-                } else {
-                    const err = await res.json();
-                    setErrorMessage(`Error ${res.status}: ${err.error || 'Unknown error'}`);
+                // Auto-open modal if query param is set
+                if (searchParams.get('report') === 'true' && data.status !== 'lost') {
+                    setIsReportLostModalOpen(true);
                 }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setErrorMessage('Error de conexión: ' + error.message);
-            } finally {
-                setLoading(false);
+            } else {
+                const err = await res.json();
+                setErrorMessage(`Error ${res.status}: ${err.error || 'Unknown error'}`);
             }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setErrorMessage('Error de conexión: ' + error.message);
+        } finally {
+            setLoading(false);
         }
+    }
 
+    useEffect(() => {
         fetchData();
     }, [params.id, router, searchParams]);
 
