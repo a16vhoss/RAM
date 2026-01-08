@@ -37,7 +37,7 @@ async function PosterContent({ id }) {
         return (
             <div className="min-h-screen bg-gray-100 flex justify-center items-start lg:py-10 print:bg-white print:p-0 print:m-0 print:block">
                 {/* A4 Container - Fixed height for print */}
-                <div className="bg-white shadow-2xl w-full max-w-[210mm] min-h-[297mm] relative flex flex-col print:shadow-none print:w-full print:h-[100vh] print:max-w-none print:overflow-hidden">
+                <div className="bg-white shadow-2xl w-full max-w-[210mm] min-h-[297mm] relative flex flex-col print:shadow-none print:w-full print:h-[100vh] print:max-w-none print:overflow-hidden print:justify-evenly">
 
                     {/* Header */}
                     <div className="bg-red-600 text-white text-center py-6 print:bg-red-600 print:-webkit-print-color-adjust-exact">
@@ -45,8 +45,8 @@ async function PosterContent({ id }) {
                         <p className="text-xl font-bold uppercase tracking-widest">Ayúdanos a encontrarlo</p>
                     </div>
 
-                    {/* Hero Image - Fixed height for print */}
-                    <div className="w-full h-[500px] bg-gray-200 relative overflow-hidden print:h-[35vh] print:flex-shrink-0">
+                    {/* Hero Image - Flexible height for print with max cap */}
+                    <div className="w-full h-[500px] bg-gray-200 relative overflow-hidden print:h-auto print:flex-1 print:max-h-[40%]">
                         <img
                             src={pet.pet_photo || "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80"}
                             alt={pet.pet_name}
@@ -54,8 +54,8 @@ async function PosterContent({ id }) {
                         />
                     </div>
 
-                    {/* Main Info - Fixed spacing for print */}
-                    <div className="flex-1 p-10 print:p-5 flex flex-col items-center text-center gap-6 print:gap-3">
+                    {/* Main Info - Flexible spacing for print */}
+                    <div className="flex-1 p-10 print:p-4 flex flex-col items-center text-center gap-6 print:gap-4 print:justify-center">
                         <div>
                             <h2 className="text-6xl print:text-5xl font-black text-slate-900 mb-2 print:mb-1 uppercase">{pet.pet_name}</h2>
                             <div className="flex gap-4 print:gap-3 justify-center text-2xl print:text-xl font-bold text-slate-600 uppercase">
