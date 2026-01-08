@@ -42,7 +42,7 @@ async function PosterContent({ id }) {
                 >
                     {/* HEADER */}
                     <div className="bg-red-600 text-white py-5 px-6 text-center shrink-0">
-                        <h1 className="text-6xl font-black tracking-tighter uppercase leading-none mb-1">
+                        <h1 className="text-6xl font-black tracking-tighter uppercase leading-none mb-3">
                             SE BUSCA
                         </h1>
                         <p className="text-lg font-semibold uppercase tracking-[0.15em] opacity-90">Ayúdanos a encontrarlo</p>
