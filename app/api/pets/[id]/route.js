@@ -30,6 +30,7 @@ export async function GET(request, { params }) {
             await db.run(`
                 INSERT INTO pet_owners (pet_id, user_id, role)
                 VALUES ($1, $2, 'owner')
+                ON CONFLICT (pet_id, user_id) DO NOTHING
             `, [id, session.user.user_id]);
             ownership = { role: 'owner' };
         }
