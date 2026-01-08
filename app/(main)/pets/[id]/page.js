@@ -518,7 +518,7 @@ export default function PetProfilePage() {
                                         <div key={owner.user_id} className="relative group/avatar">
                                             <div className="w-12 h-12 rounded-full border-2 border-background-dark overflow-hidden relative shadow-lg">
                                                 <img
-                                                    src={owner.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(owner.first_name || 'User')}&background=random`}
+                                                    src={owner.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(owner.first_name || 'User')}&background=random`}
                                                     alt={owner.first_name}
                                                     className="w-full h-full object-cover"
                                                 />
