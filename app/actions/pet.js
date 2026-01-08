@@ -250,6 +250,7 @@ export async function toggleLostPetStatus(petId, isLost, location = null, radius
 
         revalidatePath(`/pets/${petId}`);
         revalidatePath('/dashboard');
+        revalidatePath('/alertas');
 
         return { success: true, status: newStatus };
     } catch (error) {
