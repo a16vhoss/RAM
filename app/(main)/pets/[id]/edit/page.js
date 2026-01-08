@@ -20,10 +20,20 @@ export default async function EditPetPage({ params }) {
         console.log('[EditPetPage] Redirecting: Pet not found');
         redirect("/dashboard");
     }
-    if (pet.user_id !== session.user.user_id) {
-        console.log('[EditPetPage] Redirecting: Unauthorized');
+    // Verify ownership via pet_owners table (Family Mode)
+    const [ownership] = await db.getAll(`
+        SELECT role FROM pet_owners 
+        WHERE pet_id = $1 AND user_id = $2
+    `, [petId, session.user.user_id]);
+
+    if (!ownership) {
+        console.log('[EditPetPage] Redirecting: Unauthorized (Not in pet_owners)');
         redirect("/dashboard");
     }
 
-    return <EditPetClient params={resolvedParams} pet={pet} />;
+    // Fetch all owners
+    const { getPetOwners } = await import("@/app/actions/family");
+    const { owners } = await getPetOwners(petId);
+
+    return <EditPetClient params={resolvedParams} pet={pet} owners={owners} currentUserId={session.user.user_id} />;
 }
