@@ -27,6 +27,7 @@ export default function PetProfilePage() {
     const [activeTab, setActiveTab] = useState('overview'); // overview, medical
     const [isMedicalModalOpen, setIsMedicalModalOpen] = useState(false);
     const [isReportLostModalOpen, setIsReportLostModalOpen] = useState(false);
+    const [editRecord, setEditRecord] = useState(null);
 
     async function fetchMedicalRecords() {
         const recordsRes = await getMedicalRecords(params.id);
@@ -415,7 +416,16 @@ export default function PetProfilePage() {
                                                 <span className="text-primary">{getRecordIcon(record.record_type)}</span>
                                                 <h4 className="font-bold text-white text-lg">{record.record_type}</h4>
                                             </div>
-                                            <span className="text-xs font-semibold text-slate-400 bg-white/5 px-2 py-1 rounded-md">{formatDateShort(record.date)}</span>
+                                            <div className="flex items-center gap-2">
+                                                <button
+                                                    onClick={() => { setEditRecord(record); setIsMedicalModalOpen(true); }}
+                                                    className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors"
+                                                    title="Editar registro"
+                                                >
+                                                    <FaEdit size={14} />
+                                                </button>
+                                                <span className="text-xs font-semibold text-slate-400 bg-white/5 px-2 py-1 rounded-md">{formatDateShort(record.date)}</span>
+                                            </div>
                                         </div>
                                         <p className="text-slate-300 text-sm">{record.description}</p>
                                         <div className="flex items-center gap-2 mt-2 pt-2 border-t border-white/5">
@@ -476,8 +486,9 @@ export default function PetProfilePage() {
             <MedicalRecordModal
                 petId={pet.pet_id}
                 isOpen={isMedicalModalOpen}
-                onClose={() => setIsMedicalModalOpen(false)}
+                onClose={() => { setIsMedicalModalOpen(false); setEditRecord(null); }}
                 onRecordAdded={fetchMedicalRecords}
+                editRecord={editRecord}
             />
 
             <ReportLostModal

@@ -61,3 +61,69 @@ export async function addMedicalRecord(formData) {
         return { error: `Server error: ${error.message}` };
     }
 }
+
+export async function updateMedicalRecord(formData) {
+    try {
+        const session = await getSession();
+        if (!session) return { error: 'Unauthorized' };
+
+        const recordId = formData.get('record_id');
+        const petId = formData.get('pet_id');
+        const type = formData.get('type');
+        const description = formData.get('description');
+        const date = formData.get('date');
+        const vetName = formData.get('vet_name');
+
+        // Get attachments from JSON string
+        const attachmentsJson = formData.get('attachments_json');
+        let attachments = [];
+
+        if (attachmentsJson) {
+            try {
+                attachments = JSON.parse(attachmentsJson);
+            } catch (e) {
+                console.error('Failed to parse attachments JSON:', e);
+            }
+        }
+
+        if (!recordId || !petId || !type || !date) {
+            return { error: 'Missing required fields' };
+        }
+
+        await db.query(
+            `UPDATE medical_records 
+             SET record_type = $1, description = $2, date = $3, vet_name = $4, attachments = $5
+             WHERE record_id = $6 AND pet_id = $7`,
+            [type, description || '', date, vetName || '', JSON.stringify(attachments), recordId, petId]
+        );
+
+        revalidatePath(`/pets/${petId}`);
+        return { success: true };
+    } catch (error) {
+        console.error('updateMedicalRecord error:', error);
+        return { error: `Server error: ${error.message}` };
+    }
+}
+
+export async function deleteMedicalRecord(recordId, petId) {
+    try {
+        const session = await getSession();
+        if (!session) return { error: 'Unauthorized' };
+
+        if (!recordId || !petId) {
+            return { error: 'Missing record_id or pet_id' };
+        }
+
+        await db.query(
+            'DELETE FROM medical_records WHERE record_id = $1 AND pet_id = $2',
+            [recordId, petId]
+        );
+
+        revalidatePath(`/pets/${petId}`);
+        return { success: true };
+    } catch (error) {
+        console.error('deleteMedicalRecord error:', error);
+        return { error: `Server error: ${error.message}` };
+    }
+}
+
