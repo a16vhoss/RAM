@@ -31,10 +31,10 @@ export default async function DashboardPage() {
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
                             <div className="relative group cursor-pointer">
-                                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-colors relative">
+                                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-colors relative bg-slate-700">
                                     <Image
                                         src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.first_name || 'User')}&background=random`}
-                                        alt="Profile"
+                                        alt=""
                                         fill
                                         className="object-cover"
                                         sizes="48px"
