@@ -25,7 +25,7 @@ async function runMigration() {
     });
 
     try {
-        const sqlPath = path.join(__dirname, '03_add_medical_attachments.sql');
+        const sqlPath = path.join(__dirname, '04_create_medical_records_table.sql');
         const sql = fs.readFileSync(sqlPath, 'utf8');
         console.log('Running migration...');
         await pool.query(sql);
