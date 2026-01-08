@@ -45,8 +45,8 @@ async function PosterContent({ id }) {
                         <p className="text-xl font-bold uppercase tracking-widest">Ayúdanos a encontrarlo</p>
                     </div>
 
-                    {/* Hero Image */}
-                    <div className="w-full h-[500px] bg-gray-200 relative overflow-hidden print:h-[450px]">
+                    {/* Hero Image - Reduced for print */}
+                    <div className="w-full h-[500px] bg-gray-200 relative overflow-hidden print:h-[280px]">
                         <img
                             src={pet.pet_photo || "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80"}
                             alt={pet.pet_name}
@@ -54,11 +54,11 @@ async function PosterContent({ id }) {
                         />
                     </div>
 
-                    {/* Main Info */}
-                    <div className="flex-1 p-10 flex flex-col items-center text-center gap-6">
+                    {/* Main Info - Compact for print */}
+                    <div className="flex-1 p-10 print:p-4 flex flex-col items-center text-center gap-6 print:gap-3">
                         <div>
-                            <h2 className="text-6xl font-black text-slate-900 mb-2 uppercase">{pet.pet_name}</h2>
-                            <div className="flex gap-4 justify-center text-2xl font-bold text-slate-600 uppercase">
+                            <h2 className="text-6xl print:text-4xl font-black text-slate-900 mb-2 print:mb-1 uppercase">{pet.pet_name}</h2>
+                            <div className="flex gap-4 print:gap-2 justify-center text-2xl print:text-lg font-bold text-slate-600 uppercase">
                                 <span>{pet.species}</span>
                                 <span>•</span>
                                 <span>{pet.breed}</span>
@@ -67,32 +67,32 @@ async function PosterContent({ id }) {
                             </div>
                         </div>
 
-                        {/* Vitals */}
-                        <div className="w-full grid grid-cols-2 gap-6 text-left bg-slate-50 p-6 rounded-2xl border border-slate-200 print:bg-slate-50 print:border-slate-300">
+                        {/* Vitals - Compact for print */}
+                        <div className="w-full grid grid-cols-2 gap-6 print:gap-2 text-left bg-slate-50 p-6 print:p-3 rounded-2xl print:rounded-lg border border-slate-200 print:bg-slate-50 print:border-slate-300">
                             <div>
-                                <p className="text-sm text-slate-500 uppercase font-bold tracking-wider">Color / Señas</p>
-                                <p className="text-xl font-bold text-slate-800">{pet.color}</p>
+                                <p className="text-sm print:text-xs text-slate-500 uppercase font-bold tracking-wider">Color / Señas</p>
+                                <p className="text-xl print:text-base font-bold text-slate-800">{pet.color}</p>
                             </div>
                             <div>
-                                <p className="text-sm text-slate-500 uppercase font-bold tracking-wider">Última vez visto</p>
-                                <p className="text-xl font-bold text-slate-800">{pet.last_location || pet.city || 'No especificado'}</p>
+                                <p className="text-sm print:text-xs text-slate-500 uppercase font-bold tracking-wider">Última vez visto</p>
+                                <p className="text-xl print:text-base font-bold text-slate-800">{pet.last_location || pet.city || 'No especificado'}</p>
                             </div>
                             <div className="col-span-2">
-                                <p className="text-sm text-slate-500 uppercase font-bold tracking-wider">Notas Adicionales</p>
-                                <p className="text-lg text-slate-800 leading-snug">{pet.medical_notes || 'Pone nervioso con extraños, por favor no perseguir.'}</p>
+                                <p className="text-sm print:text-xs text-slate-500 uppercase font-bold tracking-wider">Notas Adicionales</p>
+                                <p className="text-lg print:text-sm text-slate-800 leading-snug">{pet.medical_notes || 'Pone nervioso con extraños, por favor no perseguir.'}</p>
                             </div>
                         </div>
 
-                        {/* Contact & QR */}
-                        <div className="flex w-full items-center justify-between gap-8 mt-4">
+                        {/* Contact & QR - Compact for print */}
+                        <div className="flex w-full items-center justify-between gap-8 print:gap-4 mt-4 print:mt-2">
                             <div className="flex-1 text-left">
-                                <p className="text-sm text-red-600 font-bold uppercase mb-1">Si lo has visto, llama urgente:</p>
-                                <p className="text-5xl font-black text-slate-900 tracking-tight">{pet.phone || 'Sin teléfono'}</p>
-                                <p className="text-xl font-medium text-slate-600 mt-2">{pet.first_name} {pet.last_name}</p>
+                                <p className="text-sm print:text-xs text-red-600 font-bold uppercase mb-1">Si lo has visto, llama urgente:</p>
+                                <p className="text-5xl print:text-3xl font-black text-slate-900 tracking-tight">{pet.phone || 'Sin teléfono'}</p>
+                                <p className="text-xl print:text-base font-medium text-slate-600 mt-2 print:mt-1">{pet.first_name} {pet.last_name}</p>
                             </div>
 
-                            <div className="flex flex-col items-center gap-2 bg-white p-4 border-4 border-slate-900 rounded-xl">
-                                <div className="w-32 h-32 relative">
+                            <div className="flex flex-col items-center gap-2 print:gap-1 bg-white p-4 print:p-2 border-4 print:border-2 border-slate-900 rounded-xl print:rounded-lg">
+                                <div className="w-32 h-32 print:w-20 print:h-20 relative">
                                     {/* Use Client Component for QR to avoid SSR issues */}
                                     <PosterQRCode url={profileUrl} />
                                 </div>

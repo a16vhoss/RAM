@@ -10,7 +10,7 @@ export default function BottomNav() {
     const isActive = (path) => pathname === path || (path === '/dashboard' && pathname === '/');
 
     return (
-        <nav className="fixed bottom-6 left-5 right-5 h-[72px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-white/10 flex justify-around items-center z-50 mx-auto max-w-[560px] rounded-[32px] shadow-2xl shadow-black/20 md:hidden">
+        <nav className="fixed bottom-6 left-5 right-5 h-[72px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-white/10 flex justify-around items-center z-50 mx-auto max-w-[560px] rounded-[32px] shadow-2xl shadow-black/20 md:hidden print:hidden">
             <Link
                 href="/dashboard"
                 className={`flex flex-col items-center justify-center w-12 h-full transition-colors ${isActive('/dashboard') ? 'text-primary' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'}`}

@@ -19,7 +19,7 @@ export default function Sidebar() {
     ];
 
     return (
-        <aside className="fixed top-0 left-0 w-64 h-full bg-slate-900 border-r border-white/5 hidden md:flex flex-col z-50">
+        <aside className="fixed top-0 left-0 w-64 h-full bg-slate-900 border-r border-white/5 hidden md:flex flex-col z-50 print:hidden">
             {/* Logo Area */}
             <div className="p-8 pb-4">
                 <Link href="/dashboard" className="flex items-center gap-3 mb-8 group">
