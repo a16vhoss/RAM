@@ -5,6 +5,7 @@ import { FaPlus, FaBell, FaIdCard, FaStethoscope, FaSyringe, FaExclamationTriang
 import { redirect } from 'next/navigation';
 import DashboardSearch from './DashboardSearch';
 import NotificationsBell from '@/app/components/NotificationsBell';
+import JoinFamilyButton from '@/app/components/JoinFamilyButton';
 
 export default async function DashboardPage() {
     const session = await getSession();
@@ -144,7 +145,7 @@ export default async function DashboardPage() {
                             <p className="text-white font-bold text-sm leading-snug">La hidratación es clave. Cambia el agua de Max 3 veces al día.</p>
                         </div>
                         <div className="relative z-10 w-20 h-20 rounded-full border-4 border-white/20 overflow-hidden shadow-xl flex-shrink-0 group-hover:scale-105 transition-transform">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8C8auowYV8uJJuZgzvEXrnh8b4hBUpQJb3yn_J4u6ZVhM_loZU7UemBwnuxwFW12hyCE1iKnIbHu1bRVgxENNo5Ia7MyepghWmOabsDyY5NigXOVzQI2G9_eFTsU9X0FaR9JWyDwfHcBiXy3YmWc4hh7Ox-u7mp0FRNOFXQ78nqggVGVX6nRqRdYQljAnsETQQfUJrjphHqHZxgQmibIsQ5mkIy_aElAF3FgPx-BGDTtELL5XMnzg8Gvv8zaKNpmt3YOaNPOH9CTU" alt="Tip" className="w-full h-full object-cover" />
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8C8auowYV8uJJuZgzvEXrnh8b4hBUpQJb3yn_J4u6ZVhM_loZU7UemBwnuxwFW12hyCE1iKnIbHu1bRVgxENNo5Ia7MyepghWmOabsDyY5NigXOVzQI2G9_eFTsU9X0FaR9JWyDwfHcBiXy3YmWc4hh7Ox-u7mp0FRNOFXQ78nqggVGVX6nRqRdYQljAnsETQQfUJrJphHqHZxgQmibIsQ5mkIy_aElAF3FgPx-BGDTtELL5XMnzg8Gvv8zaKNpmt3YOaNPOH9CTU" alt="Tip" className="w-full h-full object-cover" />
                         </div>
                     </div>
                 </section>
@@ -153,9 +154,12 @@ export default async function DashboardPage() {
                 <section className="flex flex-col gap-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
                     <div className="flex justify-between items-center px-5">
                         <h2 className="text-lg font-bold text-text-main dark:text-white">Tus Mascotas</h2>
-                        <Link href="/pets/new" className="w-8 h-8 rounded-full bg-surface-dark hover:bg-primary transition-colors flex items-center justify-center text-white border border-white/10">
-                            <FaPlus size={12} />
-                        </Link>
+                        <div className="flex items-center gap-3">
+                            <JoinFamilyButton />
+                            <Link href="/pets/new" className="w-8 h-8 rounded-full bg-surface-dark hover:bg-primary transition-colors flex items-center justify-center text-white border border-white/10" title="Nueva Mascota">
+                                <FaPlus size={12} />
+                            </Link>
+                        </div>
                     </div>
 
                     <div className="no-scrollbar flex overflow-x-auto gap-4 px-5 pb-4 snap-x snap-mandatory">

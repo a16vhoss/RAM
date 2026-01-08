@@ -45,60 +45,95 @@ export async function getPetOwners(petId) {
 }
 
 /**
- * Invite a user to be a co-owner by email
+ * Create a new invite code for a pet
  */
-export async function inviteUser(petId, email) {
+export async function createInvite(petId) {
     const session = await getSession();
     if (!session) return { error: 'Unauthorized' };
 
     try {
         const currentUserId = session.user.user_id;
 
-        // Verify current user is an owner
+        // Verify ownership
         const [isOwner] = await db.getAll(`
             SELECT 1 FROM pet_owners WHERE pet_id = $1 AND user_id = $2
         `, [petId, currentUserId]);
 
         if (!isOwner) {
-            return { success: false, error: 'No tienes permiso para invitar co-propietarios.' };
+            return { success: false, error: 'No tienes permiso para crear invitaciones.' };
         }
 
-        // Find user by email
-        // We need to query auth.users or public.users. Public users is safer/easier if updated.
-        const [targetUser] = await db.getAll(`
-            SELECT user_id FROM users WHERE email = $1
-        `, [email]);
+        // Generate a random 6-character code (uppercase alphanumeric)
+        const code = Math.random().toString(36).substring(2, 8).toUpperCase();
 
-        if (!targetUser) {
-            return { success: false, error: 'Usuario no encontrado. Asegúrate de que ya esté registrado en la app.' };
+        // Expiration: 24 hours from now
+        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
+        // Store in DB
+        // We use pet_id as TEXT because migration made it so, but best to double check schema?
+        // In 03_add_family_mode.sql we referenced public.pets(pet_id) which is TEXT.
+        // But pet_invites referenced public.pets(pet_id) as TEXT too in 04 script.
+        await db.run(`
+            INSERT INTO pet_invites (pet_id, code, created_by, expires_at)
+            VALUES ($1, $2, $3, $4)
+        `, [petId, code, currentUserId, expiresAt]);
+
+        revalidatePath(`/pets/${petId}/edit`);
+        return { success: true, code, expiresAt };
+
+    } catch (error) {
+        console.error('Error creating invite:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+/**
+ * Join a family using an invite code
+ */
+export async function joinFamily(code) {
+    const session = await getSession();
+    if (!session) return { error: 'Unauthorized' };
+
+    try {
+        const userId = session.user.user_id;
+        const normalizedCode = code.toUpperCase().trim();
+
+        // Validate Code
+        const [invite] = await db.getAll(`
+            SELECT * FROM pet_invites 
+            WHERE code = $1 
+            AND expires_at > NOW()
+        `, [normalizedCode]);
+
+        if (!invite) {
+            return { success: false, error: 'Código inválido o expirado.' };
         }
 
-        if (targetUser.user_id === currentUserId) {
-            return { success: false, error: 'Ya eres propietario de esta mascota.' };
-        }
+        const petId = invite.pet_id;
 
         // Check if already an owner
         const [alreadyOwner] = await db.getAll(`
             SELECT 1 FROM pet_owners WHERE pet_id = $1 AND user_id = $2
-        `, [petId, targetUser.user_id]);
+        `, [petId, userId]);
 
         if (alreadyOwner) {
-            return { success: false, error: 'Este usuario ya es co-propietario.' };
+            return { success: false, error: 'Ya eres miembro de esta familia.' };
         }
 
         // Add to pet_owners
         await db.run(`
             INSERT INTO pet_owners (pet_id, user_id, role)
             VALUES ($1, $2, 'owner')
-        `, [petId, targetUser.user_id]);
+        `, [petId, userId]);
 
-        revalidatePath(`/pets/${petId}`);
-        revalidatePath(`/pets/${petId}/edit`);
+        // Optional: Delete invite after use? 
+        // Plan said "multi-use but expires in 24h". So keep it.
 
-        return { success: true, message: 'Co-propietario añadido exitosamente.' };
+        revalidatePath('/dashboard');
+        return { success: true, message: '¡Te has unido a la familia exitosamente!' };
 
     } catch (error) {
-        console.error('Error inviting user:', error);
+        console.error('Error joining family:', error);
         return { success: false, error: error.message };
     }
 }
@@ -122,7 +157,7 @@ export async function removeUser(petId, targetUserId) {
             return { success: false, error: 'No tienes permiso para gestionar propietarios.' };
         }
 
-        // Prevent removing oneself if it's the last owner?
+        // Prevent removing oneself if it's the last owner
         // Optional logic, but good for safety.
         const owners = await db.getAll(`SELECT user_id FROM pet_owners WHERE pet_id = $1`, [petId]);
 
@@ -141,6 +176,27 @@ export async function removeUser(petId, targetUserId) {
 
     } catch (error) {
         console.error('Error removing user:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+/**
+ * Get active invite code for a pet (if exists)
+ */
+export async function getActiveInvite(petId) {
+    const session = await getSession();
+    if (!session) return { error: 'Unauthorized' };
+
+    try {
+        const [invite] = await db.getAll(`
+            SELECT code, expires_at FROM pet_invites 
+            WHERE pet_id = $1 AND expires_at > NOW()
+            ORDER BY created_at DESC
+            LIMIT 1
+        `, [petId]);
+
+        return { success: true, invite };
+    } catch (error) {
         return { success: false, error: error.message };
     }
 }
