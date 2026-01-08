@@ -37,7 +37,7 @@ async function PosterContent({ id }) {
         return (
             <div className="min-h-screen bg-gray-100 flex justify-center items-start lg:py-10 print:bg-white print:p-0 print:m-0 print:block">
                 {/* A4 Container - Fixed height for print */}
-                <div className="bg-white shadow-2xl w-full max-w-[210mm] min-h-[297mm] relative flex flex-col print:shadow-none print:w-full print:h-[100vh] print:max-w-none print:overflow-hidden print:justify-evenly">
+                <div id="poster-container" className="bg-white shadow-2xl w-full max-w-[210mm] min-h-[297mm] relative flex flex-col print:shadow-none print:w-full print:h-[100vh] print:max-w-none print:overflow-hidden print:justify-evenly">
 
                     {/* Header */}
                     <div className="bg-red-600 text-white text-center py-6 print:bg-red-600 print:-webkit-print-color-adjust-exact">
