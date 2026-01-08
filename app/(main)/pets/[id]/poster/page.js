@@ -42,10 +42,10 @@ async function PosterContent({ id }) {
                 >
                     {/* HEADER */}
                     <div className="bg-red-600 text-white py-5 px-6 text-center shrink-0">
-                        <h1 className="text-6xl font-black tracking-tight uppercase leading-none mb-1">
+                        <h1 className="text-6xl font-black tracking-tighter uppercase leading-none mb-1">
                             SE BUSCA
                         </h1>
-                        <p className="text-lg font-semibold uppercase tracking-widest opacity-90">Ayúdanos a encontrarlo</p>
+                        <p className="text-lg font-semibold uppercase tracking-[0.15em] opacity-90">Ayúdanos a encontrarlo</p>
                     </div>
 
                     {/* PHOTO */}
@@ -87,15 +87,15 @@ async function PosterContent({ id }) {
                     </div>
 
                     {/* FOOTER */}
-                    <div className="bg-gray-900 text-white p-4 shrink-0 flex items-center justify-between">
+                    <div className="bg-gray-900 text-white p-5 shrink-0 flex items-center justify-between">
                         <div className="overflow-hidden">
-                            <p className="text-red-400 font-bold uppercase text-xs mb-0.5">
+                            <p className="text-red-400 font-bold uppercase text-sm tracking-widest mb-1">
                                 ¡Llama Urgente!
                             </p>
-                            <p className="text-4xl font-black leading-none tracking-tight">
+                            <p className="text-4xl font-black leading-none tracking-normal">
                                 {pet.phone || '000-000-0000'}
                             </p>
-                            <p className="text-base text-gray-400 mt-0.5">
+                            <p className="text-lg text-gray-400 mt-1 tracking-wide">
                                 {pet.first_name} {pet.last_name}
                             </p>
                         </div>
