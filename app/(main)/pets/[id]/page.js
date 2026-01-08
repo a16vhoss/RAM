@@ -29,6 +29,7 @@ export default function PetProfilePage() {
     const [isMedicalModalOpen, setIsMedicalModalOpen] = useState(false);
     const [isReportLostModalOpen, setIsReportLostModalOpen] = useState(false);
     const [editRecord, setEditRecord] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     async function fetchMedicalRecords() {
         const recordsRes = await getMedicalRecords(params.id);
@@ -64,11 +65,12 @@ export default function PetProfilePage() {
                         setIsReportLostModalOpen(true);
                     }
                 } else {
-                    router.push('/dashboard');
+                    const err = await res.json();
+                    setErrorMessage(`Error ${res.status}: ${err.error || 'Unknown error'}`);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
-                router.push('/dashboard');
+                setErrorMessage('Error de conexión: ' + error.message);
             } finally {
                 setLoading(false);
             }
@@ -156,6 +158,23 @@ export default function PetProfilePage() {
         if (t.includes('desparasit')) return <FaPills size={16} />;
         return <FaStethoscope size={16} />;
     };
+
+    if (errorMessage) {
+        return (
+            <div className="min-h-screen bg-background-dark flex items-center justify-center p-6 text-center">
+                <div className="bg-red-500/10 border border-red-500/30 p-8 rounded-3xl max-w-md">
+                    <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500">
+                        ⚠️
+                    </div>
+                    <h2 className="text-xl font-bold text-white mb-2">Error al cargar mascota</h2>
+                    <p className="text-red-200 mb-6 font-mono text-sm break-all">{errorMessage}</p>
+                    <Link href="/dashboard" className="px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl text-white font-bold transition-colors">
+                        Volver al Inicio
+                    </Link>
+                </div>
+            </div>
+        );
+    }
 
     if (loading) {
         return (
