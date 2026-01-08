@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import QRCode from 'qrcode';
-import { FaPaw, FaSyringe, FaNotesMedical, FaWeight, FaRulerVertical, FaBirthdayCake, FaPalette, FaMars, FaVenus, FaMicrochip, FaMapMarkerAlt, FaFileMedical, FaTrash, FaPlus, FaTimes, FaUsers, FaArrowLeft, FaCheckCircle, FaShieldAlt, FaIdCard, FaFileAlt, FaChevronRight, FaArrowRight, FaStethoscope, FaPills, FaEdit, FaPaperclip } from 'react-icons/fa';
+import { FaPaw, FaSyringe, FaNotesMedical, FaWeight, FaRulerVertical, FaBirthdayCake, FaPalette, FaMars, FaVenus, FaMicrochip, FaMapMarkerAlt, FaFileMedical, FaTrash, FaPlus, FaTimes, FaUsers, FaArrowLeft, FaCheckCircle, FaShieldAlt, FaIdCard, FaFileAlt, FaChevronRight, FaArrowRight, FaStethoscope, FaPills, FaEdit, FaPaperclip, FaVenusMars } from 'react-icons/fa';
 import ReportLostModal from '@/app/components/ReportLostModal';
 import { deletePet, toggleLostPetStatus } from '@/app/actions/pet';
 import { getMedicalRecords } from '@/app/actions/medical';
