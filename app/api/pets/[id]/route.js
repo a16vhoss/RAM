@@ -18,7 +18,23 @@ export async function GET(request, { params }) {
             return NextResponse.json({ error: 'Pet not found' }, { status: 404 });
         }
 
-        const isOwner = pet.user_id === session.user.user_id;
+        // Check ownership via pet_owners (Family Mode)
+        let [ownership] = await db.getAll(`
+            SELECT role FROM pet_owners WHERE pet_id = $1 AND user_id = $2
+        `, [id, session.user.user_id]);
+
+        // Self-Repair: If not in pet_owners but user is the legacy creator (pet.user_id), fix it.
+        // This handles pets created before the createPet update or during migration gaps.
+        if (!ownership && pet.user_id === session.user.user_id) {
+            console.log(`[Auto-Repair] Adding legacy owner ${session.user.user_id} to pet_owners for pet ${id}`);
+            await db.run(`
+                INSERT INTO pet_owners (pet_id, user_id, role)
+                VALUES ($1, $2, 'owner')
+            `, [id, session.user.user_id]);
+            ownership = { role: 'owner' };
+        }
+
+        const isOwner = !!ownership;
 
         // Access Control Logic
         // 1. Owner can see everything

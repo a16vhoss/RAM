@@ -102,6 +102,12 @@ export async function createPet(formData) {
             medicalNotes || null, allergies || null, photoUrl, 'Activo'
         ]);
 
+        // Add to pet_owners (Family Mode)
+        await db.run(`
+            INSERT INTO pet_owners (pet_id, user_id, role)
+            VALUES ($1, $2, 'owner')
+        `, [petId, userId]);
+
         // Auto-generate Document (Acta)
         // Auto-generate Documents
         const regNum = `RAM-${new Date().getFullYear().toString().slice(-1)}-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
