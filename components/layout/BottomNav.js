@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaHome, FaSearch, FaPlusCircle, FaNewspaper, FaUser, FaExclamationTriangle } from 'react-icons/fa';
+import { FaHome, FaSearch, FaPlusCircle, FaUsers, FaUser } from 'react-icons/fa';
 
 export default function BottomNav() {
     const pathname = usePathname();
@@ -37,11 +37,11 @@ export default function BottomNav() {
             </div>
 
             <Link
-                href="/blog"
-                className={`flex flex-col items-center justify-center w-12 h-full transition-colors ${isActive('/blog') ? 'text-primary' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'}`}
+                href="/communities"
+                className={`flex flex-col items-center justify-center w-12 h-full transition-colors ${pathname.startsWith('/communities') ? 'text-primary' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'}`}
             >
-                <FaNewspaper size={22} className="mb-0.5" />
-                <span className="text-[10px] font-bold">Blog</span>
+                <FaUsers size={22} className="mb-0.5" />
+                <span className="text-[10px] font-bold">Social</span>
             </Link>
 
             <Link

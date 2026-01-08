@@ -126,7 +126,17 @@ export async function createPet(formData) {
             VALUES ($1, $2, $3, $4, $5, NOW())
         `, [docId2, petId, userId, 'Credencial de Identificación', regNum]);
 
+        // Auto-join user to communities based on pet species/breed
+        try {
+            const { autoJoinUserToCommunities } = await import('@/app/actions/community');
+            await autoJoinUserToCommunities(userId);
+        } catch (communityError) {
+            console.error('Auto-join communities failed (non-blocking):', communityError);
+            // Don't fail pet creation if community join fails
+        }
+
         revalidatePath('/dashboard');
+        revalidatePath('/communities');
         return { success: true, petId };
 
     } catch (error) {
