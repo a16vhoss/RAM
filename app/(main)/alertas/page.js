@@ -7,6 +7,9 @@ export const metadata = {
     description: 'Ayuda a encontrar mascotas perdidas en tu comunidad. Directorio oficial de búsqueda del Registro Animal Municipal.',
 };
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function LostPetsPage({ searchParams }) {
     const params = await searchParams;
     const city = params?.city || '';
