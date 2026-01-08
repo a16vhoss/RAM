@@ -16,13 +16,13 @@ export default async function LostPetsPage({ searchParams }) {
     const { data: pets, cities } = await getLostPets({ city, species, query });
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#0b1115] text-slate-900 dark:text-white pb-20">
+        <div className="min-h-screen w-full bg-background-light dark:bg-background-dark text-slate-900 dark:text-white pb-20">
             {/* Header / Hero */}
-            <div className="relative bg-[#111a21] py-16 px-4 overflow-hidden">
+            <div className="relative bg-[#111a21] py-16 px-4 w-full">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-red-500/10 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3 pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
 
-                <div className="relative w-full max-w-[2000px] mx-auto text-center z-10">
+                <div className="relative w-full px-4 md:px-12 text-center z-10">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-500 font-bold text-xs uppercase tracking-widest mb-4">
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -40,7 +40,7 @@ export default async function LostPetsPage({ searchParams }) {
             </div>
 
             {/* Filters Section */}
-            <div className="w-full max-w-[2000px] mx-auto px-4 md:px-8 -mt-8 relative z-20">
+            <div className="w-full px-4 md:px-12 -mt-8 relative z-20">
                 <form className="bg-white dark:bg-[#162028] p-4 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 flex flex-col md:flex-row gap-4 items-center">
                     <div className="flex-1 w-full relative">
                         <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -82,7 +82,7 @@ export default async function LostPetsPage({ searchParams }) {
             </div>
 
             {/* Grid Section */}
-            <div className="w-full max-w-[2000px] mx-auto px-4 md:px-8 py-12">
+            <div className="w-full px-4 md:px-12 py-12">
                 {pets && pets.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
                         {pets.map((pet) => (
