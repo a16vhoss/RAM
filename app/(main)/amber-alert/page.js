@@ -25,7 +25,7 @@ export default async function AmberAlertPage() {
                     </Link>
                     <h1 className="text-2xl font-bold flex items-center gap-2">
                         <FaExclamationTriangle className="text-amber-500" />
-                        Centro de Alerta Amber
+                        Centro de Alerta RAM
                     </h1>
                 </div>
 

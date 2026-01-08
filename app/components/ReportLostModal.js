@@ -54,7 +54,7 @@ export default function ReportLostModal({ isOpen, onClose, onConfirm, petName })
                         </div>
                         <div>
                             <h3 className="text-white font-bold text-lg">Reportar Extravío</h3>
-                            <p className="text-red-400 text-xs font-semibold uppercase tracking-wider">Alerta Amber</p>
+                            <p className="text-red-400 text-xs font-semibold uppercase tracking-wider">Alerta RAM</p>
                         </div>
                     </div>
                     <button onClick={onClose} className="text-white/50 hover:text-white transition-colors">
@@ -134,7 +134,7 @@ export default function ReportLostModal({ isOpen, onClose, onConfirm, petName })
                                 disabled={submitting}
                                 className="w-full py-4 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white font-bold rounded-xl shadow-xl shadow-red-600/20 flex items-center justify-center gap-2 transition-all transform active:scale-[0.98]"
                             >
-                                {submitting ? 'Enviando Alerta...' : <><FaBroadcastTower /> ACTIVAR ALERTA AMBER</>}
+                                {submitting ? 'Enviando Alerta...' : <><FaBroadcastTower /> ACTIVAR ALERTA RAM</>}
                             </button>
                         </div>
                     )}

@@ -136,7 +136,7 @@ export default async function DashboardPage() {
                                 <FaExclamationTriangle className="text-white text-xl" />
                             </div>
                             <div className="relative z-10">
-                                <p className="text-white font-bold text-lg leading-tight">Alerta Amber</p>
+                                <p className="text-white font-bold text-lg leading-tight">Alerta RAM</p>
                                 <p className="text-amber-100 text-xs mt-1 font-medium">Reportar extravío</p>
                             </div>
                         </Link>

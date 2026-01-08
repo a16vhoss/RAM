@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { FaSearch, FaMapMarkerAlt, FaPaw, FaShieldAlt, FaExclamationTriangle } from 'react-icons/fa';
 
 export const metadata = {
-    title: 'Alerta Amber | Mascotas Perdidas - RAM',
+    title: 'Alerta RAM | Mascotas Perdidas - RAM',
     description: 'Ayuda a encontrar mascotas perdidas en tu comunidad. Directorio oficial de búsqueda del Registro Animal Municipal.',
 };
 
@@ -31,7 +31,7 @@ export default async function LostPetsPage({ searchParams }) {
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                         </span>
-                        Alerta Amber Activa
+                        Alerta RAM Activa
                     </div>
                     <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
                         Ayúdalos a volver a <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">casa</span>

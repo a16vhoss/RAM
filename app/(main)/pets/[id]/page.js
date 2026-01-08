@@ -116,7 +116,7 @@ export default function PetProfilePage() {
         const res = await toggleLostPetStatus(pet.pet_id, true, data.location, data.radius, data.message);
         if (res.success) {
             setPet({ ...pet, status: res.status });
-            alert('🚨 ALERTA AMBER ACTIVADA: Se ha notificado a los vecinos cercanos.');
+            alert('🚨 ALERTA RAM ACTIVADA: Se ha notificado a los vecinos cercanos.');
         } else {
             alert('Error al activar alerta: ' + res.error);
         }

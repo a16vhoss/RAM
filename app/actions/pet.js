@@ -224,7 +224,7 @@ export async function toggleLostPetStatus(petId, isLost, location = null, radius
                     VALUES ($1, $2, $3, $4, $5)
                 `, [
                     user.user_id,
-                    '🚨 ALERTA AMBER: Mascota Perdida Cerca',
+                    '🚨 ALERTA RAM: Mascota Perdida Cerca',
                     message || 'Se ha reportado una mascota perdida en tu zona. ¡Ayúdanos a encontrarla!',
                     'amber_alert',
                     petId
