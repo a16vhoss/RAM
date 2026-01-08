@@ -74,3 +74,16 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Print Styles for Poster */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
