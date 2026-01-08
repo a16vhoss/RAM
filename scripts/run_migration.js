@@ -25,7 +25,8 @@ async function runMigration() {
     });
 
     try {
-        const sqlPath = path.join(__dirname, '04_add_pet_invites.sql');
+        const MIGRATION_FILE = '05_fix_pet_owners_fk.sql';
+        const sqlPath = path.join(__dirname, MIGRATION_FILE);
         const sql = fs.readFileSync(sqlPath, 'utf8');
         console.log('Running migration...');
         await pool.query(sql);
