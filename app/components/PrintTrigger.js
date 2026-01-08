@@ -18,34 +18,41 @@ export default function PrintTrigger() {
                 return;
             }
 
-            // Force specific dimensions for capture
+            // Capture at natural size with high resolution
             const canvas = await html2canvas(element, {
                 scale: 2,
                 useCORS: true,
                 logging: false,
-                width: 794,
-                height: 1123,
-                windowWidth: 794,
-                windowHeight: 1123,
-                backgroundColor: '#ffffff'
+                backgroundColor: '#ffffff',
+                scrollX: 0,
+                scrollY: 0
             });
 
             const imgData = canvas.toDataURL('image/png', 1.0);
 
-            // Create PDF with exact A4 dimensions
-            const pdf = new jsPDF({
-                orientation: 'portrait',
-                unit: 'mm',
-                format: 'a4'
-            });
+            // Create A4 PDF
+            const pdf = new jsPDF('p', 'mm', 'a4');
 
-            // Add image to fill the entire A4 page
-            pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
+            // Calculate scaling to fit A4 while maintaining aspect ratio
+            const pdfWidth = 210;
+            const pdfHeight = 297;
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+
+            const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+            const scaledWidth = imgWidth * ratio;
+            const scaledHeight = imgHeight * ratio;
+
+            // Center the image on the page
+            const xOffset = (pdfWidth - scaledWidth) / 2;
+            const yOffset = (pdfHeight - scaledHeight) / 2;
+
+            pdf.addImage(imgData, 'PNG', xOffset, yOffset, scaledWidth, scaledHeight);
             pdf.save('Cartel_Busqueda_RAM.pdf');
 
         } catch (err) {
             console.error('PDF Error:', err);
-            alert('Error al generar PDF. Intenta de nuevo.');
+            alert('Error al generar PDF.');
         } finally {
             setLoading(false);
         }
@@ -56,7 +63,7 @@ export default function PrintTrigger() {
             onClick={handleDownload}
             disabled={loading}
             data-html2canvas-ignore="true"
-            className="fixed bottom-8 right-8 bg-slate-900 text-white px-6 py-4 rounded-full shadow-2xl font-bold flex items-center gap-3 hover:scale-105 transition-transform print:hidden z-50 hover:bg-black disabled:opacity-75 disabled:cursor-wait"
+            className="fixed bottom-8 right-8 bg-slate-900 text-white px-6 py-4 rounded-full shadow-2xl font-bold flex items-center gap-3 hover:scale-105 transition-transform print:hidden z-50 hover:bg-black disabled:opacity-75"
         >
             <FaDownload className="text-xl" />
             {loading ? 'Generando...' : 'Descargar Cartel'}
