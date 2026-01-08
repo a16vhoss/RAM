@@ -173,7 +173,7 @@ function SettingsView({ user, onBack }) {
 
             <div className="p-5 max-w-5xl mx-auto space-y-6">
 
-                {/* Premium Card */}
+                {/* Premium Card - Disabled temporarily
                 <section>
                     <div className="bg-gradient-to-br from-primary via-blue-600 to-blue-700 rounded-2xl p-6 text-white shadow-lg shadow-primary/20 relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3"></div>
@@ -198,6 +198,7 @@ function SettingsView({ user, onBack }) {
                         </Link>
                     </div>
                 </section>
+                */}
 
                 <section>
                     <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 px-1">Cuenta</h3>
