@@ -339,7 +339,7 @@ export async function getLostPets({ city = '', species = '', query = '' } = {}) 
         let sql = `
             SELECT p.*, u.first_name, u.last_name, u.phone, u.city 
             FROM pets p
-            JOIN users u ON p.user_id = u.user_id
+            LEFT JOIN users u ON p.user_id = u.user_id
             WHERE p.status = 'lost'
         `;
         const params = [];
