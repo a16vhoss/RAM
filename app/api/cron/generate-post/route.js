@@ -23,27 +23,52 @@ export async function GET(request) {
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-        // 2. Topic Rotation
-        const topics = [
-            'Cuidados básicos para cachorros',
-            'Nutrición canina: Lo que sí y lo que no',
-            'Entendiendo el lenguaje corporal de tu gato',
-            'Importancia de la vacunación',
-            'Tips para viajar con mascotas',
-            'Adopción responsable: Qué considerar',
-            'Juegos mentales para perros',
-            'Higiene dental en mascotas',
-            'Cómo presentar una nueva mascota en casa',
-            'Golpe de calor: Prevención y síntomas'
-        ];
+        // 2. Topic/Context Selection
+        const { searchParams } = new URL(request.url);
+        const targetSpecies = searchParams.get('species');
+        const targetBreed = searchParams.get('breed');
 
-        // Pick a random topic
-        const selectedTopic = topics[Math.floor(Math.random() * topics.length)];
+        let selectedTopic;
+        let contextPrompt = "";
+
+        if (targetSpecies) {
+            // Targeted generation
+            const speciesTopics = [
+                `Cuidados específicos para ${targetSpecies}`,
+                `Alimentación ideal para ${targetSpecies}`,
+                `Juegos y entretenimiento para ${targetSpecies}`,
+                `Salud preventiva en ${targetSpecies}`,
+                `Entendiendo a tu ${targetSpecies}`
+            ];
+            selectedTopic = speciesTopics[Math.floor(Math.random() * speciesTopics.length)];
+            if (targetBreed) {
+                selectedTopic += ` (Enfoque: ${targetBreed})`;
+            }
+            contextPrompt = `IMPORTANTE: El artículo DEBE estar enfocado específicamente en ${targetSpecies}${targetBreed ? ` de raza ${targetBreed}` : ''}. Asegúrate de incluir "${targetSpecies}" en los tags.`;
+        } else {
+            // Random generation (fallback)
+            const topics = [
+                'Cuidados básicos para cachorros',
+                'Nutrición canina: Lo que sí y lo que no',
+                'Entendiendo el lenguaje corporal de tu gato',
+                'Importancia de la vacunación',
+                'Tips para viajar con mascotas',
+                'Adopción responsable: Qué considerar',
+                'Juegos mentales para perros',
+                'Higiene dental en mascotas',
+                'Cómo presentar una nueva mascota en casa',
+                'Golpe de calor: Prevención y síntomas'
+            ];
+            selectedTopic = topics[Math.floor(Math.random() * topics.length)];
+        }
 
         // 3. Generate Content with Gemini
         const prompt = `
             Actúa como un experto veterinario y blogger de RAM (Registro Animal Mundial).
             Escribe un artículo de blog corto (300-400 palabras) sobre el tema: "${selectedTopic}".
+            ${contextPrompt}
+            
+            Requisitos:
             
             Requisitos:
             - Tono: Amigable, profesional, empático.
