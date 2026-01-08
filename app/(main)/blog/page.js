@@ -81,7 +81,7 @@ export default async function BlogPage() {
                 <section className="mb-12 animate-fade-in">
                     <div className="flex items-center gap-2 mb-6">
                         <span className="text-2xl">✨</span>
-                        <h2 className="text-2xl font-bold">Recomendado para ti</h2>
+                        <h2 className="text-2xl font-bold text-text-main dark:text-white">Recomendado para ti</h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {recommendedPosts.map(post => (
@@ -93,7 +93,7 @@ export default async function BlogPage() {
 
             {/* All Posts Section */}
             <section>
-                <h2 className="text-xl font-bold mb-6 text-text-secondary">
+                <h2 className="text-xl font-bold mb-6 text-text-secondary dark:text-gray-300">
                     {recommendedPosts.length > 0 ? "Más artículos recientes" : "Publicaciones recientes"}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
