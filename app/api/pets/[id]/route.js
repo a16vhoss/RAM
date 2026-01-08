@@ -61,7 +61,7 @@ export async function GET(request, { params }) {
             responsePet.documents = documents;
 
             const owners = await db.getAll(`
-                SELECT u.user_id, u.first_name, u.photo, po.role
+                SELECT u.user_id, u.first_name, po.role
                 FROM pet_owners po
                 JOIN users u ON po.user_id = u.user_id
                 WHERE po.pet_id = $1
