@@ -36,8 +36,8 @@ async function PosterContent({ id }) {
 
         return (
             <div className="min-h-screen bg-gray-100 flex justify-center items-start lg:py-10 print:bg-white print:p-0 print:m-0">
-                {/* A4 Container */}
-                <div className="bg-white shadow-2xl w-full max-w-[210mm] min-h-[297mm] relative flex flex-col print:shadow-none print:w-full print:min-h-0 print:max-w-none">
+                {/* A4 Container - Full page for print */}
+                <div className="bg-white shadow-2xl w-full max-w-[210mm] min-h-[297mm] relative flex flex-col print:shadow-none print:w-[100vw] print:h-[100vh] print:max-w-none">
 
                     {/* Header */}
                     <div className="bg-red-600 text-white text-center py-6 print:bg-red-600 print:-webkit-print-color-adjust-exact">
@@ -45,8 +45,8 @@ async function PosterContent({ id }) {
                         <p className="text-xl font-bold uppercase tracking-widest">Ayúdanos a encontrarlo</p>
                     </div>
 
-                    {/* Hero Image - Reduced for print */}
-                    <div className="w-full h-[500px] bg-gray-200 relative overflow-hidden print:h-[280px]">
+                    {/* Hero Image - Fills space for print */}
+                    <div className="w-full h-[500px] bg-gray-200 relative overflow-hidden print:h-[40vh] print:flex-shrink-0">
                         <img
                             src={pet.pet_photo || "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80"}
                             alt={pet.pet_name}
@@ -54,11 +54,11 @@ async function PosterContent({ id }) {
                         />
                     </div>
 
-                    {/* Main Info - Compact for print */}
-                    <div className="flex-1 p-10 print:p-4 flex flex-col items-center text-center gap-6 print:gap-3">
+                    {/* Main Info - Expand for print */}
+                    <div className="flex-1 p-10 print:p-6 flex flex-col items-center text-center gap-6 print:gap-4">
                         <div>
-                            <h2 className="text-6xl print:text-4xl font-black text-slate-900 mb-2 print:mb-1 uppercase">{pet.pet_name}</h2>
-                            <div className="flex gap-4 print:gap-2 justify-center text-2xl print:text-lg font-bold text-slate-600 uppercase">
+                            <h2 className="text-6xl print:text-5xl font-black text-slate-900 mb-2 print:mb-1 uppercase">{pet.pet_name}</h2>
+                            <div className="flex gap-4 print:gap-3 justify-center text-2xl print:text-xl font-bold text-slate-600 uppercase">
                                 <span>{pet.species}</span>
                                 <span>•</span>
                                 <span>{pet.breed}</span>
@@ -83,16 +83,16 @@ async function PosterContent({ id }) {
                             </div>
                         </div>
 
-                        {/* Contact & QR - Compact for print */}
-                        <div className="flex w-full items-center justify-between gap-8 print:gap-4 mt-4 print:mt-2">
+                        {/* Contact & QR - Sized for print */}
+                        <div className="flex w-full items-center justify-between gap-8 print:gap-6 mt-4 print:mt-3">
                             <div className="flex-1 text-left">
-                                <p className="text-sm print:text-xs text-red-600 font-bold uppercase mb-1">Si lo has visto, llama urgente:</p>
-                                <p className="text-5xl print:text-3xl font-black text-slate-900 tracking-tight">{pet.phone || 'Sin teléfono'}</p>
-                                <p className="text-xl print:text-base font-medium text-slate-600 mt-2 print:mt-1">{pet.first_name} {pet.last_name}</p>
+                                <p className="text-sm print:text-sm text-red-600 font-bold uppercase mb-1">Si lo has visto, llama urgente:</p>
+                                <p className="text-5xl print:text-4xl font-black text-slate-900 tracking-tight">{pet.phone || 'Sin teléfono'}</p>
+                                <p className="text-xl print:text-lg font-medium text-slate-600 mt-2 print:mt-1">{pet.first_name} {pet.last_name}</p>
                             </div>
 
-                            <div className="flex flex-col items-center gap-2 print:gap-1 bg-white p-4 print:p-2 border-4 print:border-2 border-slate-900 rounded-xl print:rounded-lg">
-                                <div className="w-32 h-32 print:w-20 print:h-20 relative">
+                            <div className="flex flex-col items-center gap-2 print:gap-1 bg-white p-4 print:p-3 border-4 print:border-3 border-slate-900 rounded-xl print:rounded-lg">
+                                <div className="w-32 h-32 print:w-24 print:h-24 relative">
                                     {/* Use Client Component for QR to avoid SSR issues */}
                                     <PosterQRCode url={profileUrl} />
                                 </div>
