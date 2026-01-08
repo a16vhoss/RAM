@@ -26,25 +26,32 @@ export default function MedicalRecordModal({ petId, isOpen, onClose, onRecordAdd
 
     async function handleSubmit(formData) {
         setSubmitting(true);
-        // Append petId manually since it's passed as prop
-        formData.append('pet_id', petId);
-        formData.append('type', recordType);
+        try {
+            // Append petId manually since it's passed as prop
+            formData.append('pet_id', petId);
+            formData.append('type', recordType);
 
-        // Append files
-        selectedFiles.forEach(file => {
-            formData.append('files', file);
-        });
+            // Append files
+            selectedFiles.forEach(file => {
+                formData.append('files', file);
+            });
 
-        const res = await addMedicalRecord(formData);
+            const res = await addMedicalRecord(formData);
 
-        setSubmitting(false);
+            setSubmitting(false);
 
-        if (res.success) {
-            onRecordAdded && onRecordAdded(); // Callback to refresh parent list
-            router.refresh(); // Refresh Data Cache
-            onClose();
-        } else {
-            alert('Error al guardar: ' + res.error);
+            if (res.success) {
+                setSelectedFiles([]); // Clear files
+                onRecordAdded && onRecordAdded(); // Callback to refresh parent list
+                router.refresh(); // Refresh Data Cache
+                onClose();
+            } else {
+                alert('Error al guardar: ' + (res.error || 'Error desconocido'));
+            }
+        } catch (err) {
+            console.error('Submit error:', err);
+            setSubmitting(false);
+            alert('Error de conexión. Por favor intenta de nuevo.');
         }
     }
 
