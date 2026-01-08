@@ -10,7 +10,7 @@ import { deletePet, toggleLostPetStatus } from '@/app/actions/pet';
 import { getMedicalRecords } from '@/app/actions/medical';
 import DocumentViewerModal from '@/app/(main)/documents/DocumentViewerModal';
 import MedicalRecordModal from '../MedicalRecordModal';
-// import CoOwnerInvite from '@/app/components/CoOwnerInvite';
+import CoOwnerInvite from '@/app/components/CoOwnerInvite';
 
 export default function PetProfilePage() {
     const params = useParams();
@@ -502,7 +502,7 @@ export default function PetProfilePage() {
                         <div className="flex justify-between items-center mb-4 px-1">
                             <h3 className="text-lg font-bold text-white">Familia</h3>
                             <button
-                                onClick={() => router.push(`/pets/${pet.pet_id}/edit`)}
+                                onClick={() => setShowFamilyModal(true)}
                                 className="text-xs font-bold text-primary hover:text-white transition-colors"
                             >
                                 Gestionar
@@ -562,7 +562,7 @@ export default function PetProfilePage() {
             <DocumentViewerModal document={selectedDoc} onClose={() => setSelectedDoc(null)} />
 
             {/* Family Management Modal */}
-            {/* {showFamilyModal && (
+            {showFamilyModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
                     <div className="bg-white text-slate-900 w-full max-w-lg rounded-2xl shadow-2xl relative overflow-hidden animate-slide-up">
                         <div className="flex justify-between items-center p-4 border-b border-slate-100 bg-slate-50">
@@ -587,7 +587,7 @@ export default function PetProfilePage() {
                         </div>
                     </div>
                 </div>
-            )} */}
+            )}
 
             <MedicalRecordModal
                 petId={pet.pet_id}
