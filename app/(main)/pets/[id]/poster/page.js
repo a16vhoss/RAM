@@ -50,7 +50,7 @@ async function PosterContent({ id }) {
                         <img
                             src={pet.pet_photo || "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80"}
                             alt={pet.pet_name}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover print:object-contain print:bg-white"
                         />
                     </div>
 
@@ -101,8 +101,8 @@ async function PosterContent({ id }) {
                         </div>
                     </div>
 
-                    {/* Footer */}
-                    <div className="border-t-4 border-dashed border-gray-300 p-6 flex justify-between items-center bg-slate-50 print:bg-transparent">
+                    {/* Footer - Hidden when printing */}
+                    <div className="border-t-4 border-dashed border-gray-300 p-6 flex justify-between items-center bg-slate-50 print:hidden">
                         <p className="text-sm text-slate-400 font-medium">Generado por RAM (Registro Animal Municipal)</p>
                         <div className="flex gap-1 text-slate-900 font-bold text-sm items-center">
                             <span className="bg-slate-200 px-2 py-1 rounded text-xs">ram-app.com</span>
