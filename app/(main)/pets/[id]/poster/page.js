@@ -97,24 +97,24 @@ async function PosterContent({ id }) {
                     </div>
 
                     {/* 4. FOOTER - CONTACT */}
-                    <div className="bg-slate-900 text-white p-8 shrink-0 flex items-center justify-between">
-                        <div>
+                    <div className="bg-slate-900 text-white p-6 shrink-0 flex items-center justify-between gap-4 overflow-hidden">
+                        <div className="min-w-0 flex-1">
                             <p className="text-red-400 font-bold uppercase tracking-widest text-sm mb-1 animate-pulse">
                                 ¡Reportar Avistamiento!
                             </p>
-                            <p className="text-[4rem] font-black leading-none tracking-tight text-white tabular-nums">
+                            <p className="text-[3.5rem] font-black leading-none tracking-tight text-white tabular-nums truncate">
                                 {pet.phone || '000-000-0000'}
                             </p>
-                            <p className="text-xl text-slate-400 font-medium mt-1">
+                            <p className="text-xl text-slate-400 font-medium mt-1 truncate">
                                 {pet.first_name} {pet.last_name}
                             </p>
                         </div>
 
-                        <div className="bg-white p-3 rounded-xl shrink-0 flex flex-col items-center gap-1">
-                            <div className="w-24 h-24 relative">
+                        <div className="bg-white p-2 rounded-xl shrink-0 flex flex-col items-center gap-1 w-24">
+                            <div className="w-20 h-20 relative">
                                 <PosterQRCode url={profileUrl} />
                             </div>
-                            <span className="text-[0.65rem] font-black uppercase text-slate-900 tracking-wider">Escanear</span>
+                            <span className="text-[0.6rem] font-black uppercase text-slate-900 tracking-wider">Escanear</span>
                         </div>
                     </div>
 
