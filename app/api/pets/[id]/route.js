@@ -43,7 +43,11 @@ export async function GET(request, { params }) {
         // 3. Other status: Limited visibility (Found notification, etc)
 
         // Create response object
-        const responsePet = { ...pet, isOwner };
+        const responsePet = {
+            ...pet,
+            isOwner,
+            currentUserId: session.user.user_id
+        };
 
         if (!isOwner) {
             // Redact sensitive info for non-owners

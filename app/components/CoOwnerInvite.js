@@ -47,6 +47,7 @@ export default function CoOwnerInvite({ petId, owners = [], currentUserId }) {
 
         if (result.success) {
             setMessage(result.message);
+            if (onUpdate) onUpdate();
         } else {
             setError(result.error);
         }

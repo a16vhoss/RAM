@@ -4,16 +4,13 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import QRCode from 'qrcode';
-import {
-    FaArrowLeft, FaCheckCircle, FaShieldAlt, FaMicrochip, FaPaw, FaWeight,
-    FaVenusMars, FaBirthdayCake, FaIdCard, FaTrash, FaFileAlt, FaChevronRight, FaArrowRight,
-    FaPlus, FaNotesMedical, FaSyringe, FaStethoscope, FaPills, FaEdit, FaPaperclip
-} from 'react-icons/fa';
+import { FaPaw, FaSyringe, FaNotesMedical, FaWeight, FaRulerVertical, FaBirthdayCake, FaPalette, FaMars, FaVenus, FaMicrochip, FaMapMarkerAlt, FaFileMedical, FaTrash, FaPlus, FaTimes, FaUsers, FaArrowLeft, FaCheckCircle, FaShieldAlt, FaIdCard, FaFileAlt, FaChevronRight, FaArrowRight, FaStethoscope, FaPills, FaEdit, FaPaperclip } from 'react-icons/fa';
 import ReportLostModal from '@/app/components/ReportLostModal';
 import { deletePet, toggleLostPetStatus } from '@/app/actions/pet';
 import { getMedicalRecords } from '@/app/actions/medical';
 import DocumentViewerModal from '@/app/(main)/documents/DocumentViewerModal';
 import MedicalRecordModal from '../MedicalRecordModal';
+import CoOwnerInvite from '@/app/components/CoOwnerInvite';
 
 export default function PetProfilePage() {
     const params = useParams();
@@ -28,6 +25,7 @@ export default function PetProfilePage() {
     const [activeTab, setActiveTab] = useState('overview'); // overview, medical
     const [isMedicalModalOpen, setIsMedicalModalOpen] = useState(false);
     const [isReportLostModalOpen, setIsReportLostModalOpen] = useState(false);
+    const [showFamilyModal, setShowFamilyModal] = useState(false); // New State
     const [editRecord, setEditRecord] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
 
@@ -504,7 +502,7 @@ export default function PetProfilePage() {
                         <div className="flex justify-between items-center mb-4 px-1">
                             <h3 className="text-lg font-bold text-white">Familia</h3>
                             <button
-                                onClick={() => router.push(`/pets/${pet.pet_id}/edit`)}
+                                onClick={() => setShowFamilyModal(true)}
                                 className="text-xs font-bold text-primary hover:text-white transition-colors"
                             >
                                 Gestionar
@@ -562,6 +560,34 @@ export default function PetProfilePage() {
 
             {/* Modal */}
             <DocumentViewerModal document={selectedDoc} onClose={() => setSelectedDoc(null)} />
+
+            {/* Family Management Modal */}
+            {showFamilyModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
+                    <div className="bg-white text-slate-900 w-full max-w-lg rounded-2xl shadow-2xl relative overflow-hidden animate-slide-up">
+                        <div className="flex justify-between items-center p-4 border-b border-slate-100 bg-slate-50">
+                            <h3 className="font-bold text-lg flex items-center gap-2">
+                                <FaUsers className="text-blue-500" /> Gestionar Familia
+                            </h3>
+                            <button
+                                onClick={() => setShowFamilyModal(false)}
+                                className="p-2 rounded-full hover:bg-slate-200 text-slate-500 transition-colors"
+                            >
+                                <FaTimes />
+                            </button>
+                        </div>
+
+                        <div className="p-0 max-h-[80vh] overflow-y-auto">
+                            <CoOwnerInvite
+                                petId={pet.pet_id}
+                                owners={pet.owners || []}
+                                currentUserId={pet.currentUserId}
+                                onUpdate={fetchData} // Refresh data when changes happen
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <MedicalRecordModal
                 petId={pet.pet_id}
