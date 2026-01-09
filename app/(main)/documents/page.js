@@ -45,11 +45,22 @@ export default async function DocumentsPage() {
         console.log(`[DEBUG] Doc ${i}: pet=${doc.pet_name}, sex="${doc.sex}", owner=${doc.owner_first_name} ${doc.owner_last_name}, email=${doc.owner_email}`);
     });
 
+    // Serialize documents to ensure Dates are strings and avoid client-side issues
+    const serializedDocuments = documents.map(doc => ({
+        ...doc,
+        birth_date: doc.birth_date ? new Date(doc.birth_date).toISOString() : null,
+        created_at: doc.created_at ? new Date(doc.created_at).toISOString() : null,
+        expires_at: doc.expires_at ? new Date(doc.expires_at).toISOString() : null,
+        issued_at: doc.issued_at ? new Date(doc.issued_at).toISOString() : null,
+        // Ensure critical fields are robust strings
+        owner_location: doc.owner_location || doc.owner_city || 'No especificado',
+    }));
+
     return (
         <DocumentsClient
             session={session}
             pets={pets}
-            documents={documents}
+            documents={serializedDocuments}
         />
     );
 }
