@@ -39,6 +39,12 @@ export default async function DocumentsPage() {
         ORDER BY d.issued_at DESC
     `, [session.user.user_id]);
 
+    // DEBUG: Log documents data to Vercel logs
+    console.log('[DEBUG] Documents fetched for user:', session.user.user_id);
+    documents.forEach((doc, i) => {
+        console.log(`[DEBUG] Doc ${i}: pet=${doc.pet_name}, sex="${doc.sex}", owner=${doc.owner_first_name} ${doc.owner_last_name}, email=${doc.owner_email}`);
+    });
+
     return (
         <DocumentsClient
             session={session}
