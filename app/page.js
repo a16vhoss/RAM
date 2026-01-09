@@ -71,8 +71,8 @@ export default async function LandingPage() {
             </section>
 
             {/* Features Section */}
-            <section className="py-20 px-6 bg-slate-800/50">
-                <div className="max-w-6xl mx-auto">
+            <section className="py-20 w-full bg-slate-800/50">
+                <div className="w-full px-6 md:px-16 lg:px-24">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">¿Qué ofrecemos?</h2>
                         <p className="text-slate-400 max-w-xl mx-auto">Todo lo que necesitas para mantener a tu mascota segura e identificada</p>
@@ -102,8 +102,8 @@ export default async function LandingPage() {
             </section>
 
             {/* How It Works */}
-            <section className="py-20 px-6">
-                <div className="max-w-6xl mx-auto">
+            <section className="py-20 w-full">
+                <div className="w-full px-6 md:px-16 lg:px-24">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">¿Cómo funciona?</h2>
                         <p className="text-slate-400 max-w-xl mx-auto">En solo 3 pasos tendrás a tu mascota registrada</p>
