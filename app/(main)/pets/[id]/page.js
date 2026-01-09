@@ -199,7 +199,8 @@ export default function PetProfilePage() {
     const formatDateShort = (dateString) => {
         if (!dateString) return '';
         const date = new Date(dateString);
-        return date.toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
+        // Use UTC timezone to prevent off-by-one error due to local timezone offset
+        return date.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', timeZone: 'UTC' });
     };
 
     return (
