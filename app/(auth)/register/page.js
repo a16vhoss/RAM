@@ -236,66 +236,8 @@ export default function RegisterPage() {
                                 <div className="mb-8">
                                     <h1 className="text-3xl font-bold leading-tight mb-2 text-slate-900 dark:text-white">¡Casi listos! {formData.firstName}</h1>
                                     <p className="text-slate-500 dark:text-[#9dacb8] text-base font-normal leading-relaxed">
-                                        Personaliza tu experiencia seleccionando tu rol y ubicación.
+                                        Completa tu ubicación para finalizar el registro.
                                     </p>
-                                </div>
-
-                                {/* Role Selection */}
-                                <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3">SELECCIONA TU ROL</label>
-                                <div className="grid grid-cols-2 gap-4 mb-6">
-                                    <div
-                                        onClick={() => setRole('tutor')}
-                                        className={`relative p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${role === 'tutor'
-                                            ? 'bg-blue-50 dark:bg-[#1c262e] border-[#2791e7] shadow-lg shadow-blue-500/10 scale-[1.02]'
-                                            : 'bg-white dark:bg-[#1c262e] border-transparent hover:border-slate-200 dark:hover:border-slate-700 shadow-sm'
-                                            }`}
-                                    >
-                                        {role === 'tutor' && (
-                                            <div className="absolute top-3 right-3 bg-[#2791e7] rounded-full p-1 shadow-sm">
-                                                <FaCheck size={10} color="white" />
-                                            </div>
-                                        )}
-                                        <div className={`w-12 h-12 rounded-xl mb-3 flex items-center justify-center transition-colors ${role === 'tutor' ? 'bg-[#2791e7]/20 text-[#2791e7]' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}>
-                                            <FaUser size={20} />
-                                        </div>
-                                        <p className="font-bold text-slate-900 dark:text-white">Tutor</p>
-                                        <p className="text-xs text-slate-500 font-medium">Dueño de mascota</p>
-                                    </div>
-
-                                    <div
-                                        onClick={() => setRole('provider')}
-                                        className={`relative p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${role === 'provider'
-                                            ? 'bg-blue-50 dark:bg-[#1c262e] border-[#2791e7] shadow-lg shadow-blue-500/10 scale-[1.02]'
-                                            : 'bg-white dark:bg-[#1c262e] border-transparent hover:border-slate-200 dark:hover:border-slate-700 shadow-sm'
-                                            }`}
-                                    >
-                                        {role === 'provider' && (
-                                            <div className="absolute top-3 right-3 bg-[#2791e7] rounded-full p-1 shadow-sm">
-                                                <FaCheck size={10} color="white" />
-                                            </div>
-                                        )}
-                                        <div className={`w-12 h-12 rounded-xl mb-3 flex items-center justify-center transition-colors ${role === 'provider' ? 'bg-[#2791e7]/20 text-[#2791e7]' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}>
-                                            <FaStore size={20} />
-                                        </div>
-                                        <p className="font-bold text-slate-900 dark:text-white">Proveedor</p>
-                                        <p className="text-xs text-slate-500 font-medium">Veterinario / Tienda</p>
-                                    </div>
-                                </div>
-
-                                {/* Provider Business Name */}
-                                <div className={`transition-all duration-300 overflow-hidden ${role === 'provider' ? 'max-h-28 opacity-100 mb-6' : 'max-h-0 opacity-0'}`}>
-                                    <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-[#2791e7] focus-within:border-transparent transition-all shadow-sm">
-                                        <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">Nombre del Negocio</label>
-                                        <input
-                                            name="businessName"
-                                            value={formData.businessName}
-                                            onChange={handleChange}
-                                            required={role === 'provider'}
-                                            className="w-full bg-transparent border-none p-0 text-slate-900 dark:text-white placeholder-slate-300 focus:ring-0 text-base font-semibold"
-                                            placeholder="Ej. Veterinaria Huellitas"
-                                        />
-                                        <FaStore className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
-                                    </div>
                                 </div>
 
                                 {/* Location */}
