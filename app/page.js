@@ -15,7 +15,7 @@ export default async function LandingPage() {
         <div className="min-h-screen bg-slate-900 text-white overflow-x-hidden">
             {/* Navigation */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-white/5">
-                <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                <div className="w-full px-6 md:px-12 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
                             <FaPaw className="text-white text-lg" />
@@ -42,7 +42,7 @@ export default async function LandingPage() {
                 <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[150px] pointer-events-none"></div>
                 <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-                <div className="max-w-4xl mx-auto text-center relative z-10">
+                <div className="w-full text-center relative z-10">
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/10 border border-blue-500/20 rounded-full text-blue-400 text-sm font-medium mb-8">
                         <FaShieldAlt />
                         Registro oficial para mascotas
@@ -72,7 +72,7 @@ export default async function LandingPage() {
 
             {/* Features Section */}
             <section className="py-20 w-full bg-slate-800/50">
-                <div className="w-full px-6 md:px-16 lg:px-24">
+                <div className="w-full px-6 md:px-12">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">¿Qué ofrecemos?</h2>
                         <p className="text-slate-400 max-w-xl mx-auto">Todo lo que necesitas para mantener a tu mascota segura e identificada</p>
@@ -103,7 +103,7 @@ export default async function LandingPage() {
 
             {/* How It Works */}
             <section className="py-20 w-full">
-                <div className="w-full px-6 md:px-16 lg:px-24">
+                <div className="w-full px-6 md:px-12">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">¿Cómo funciona?</h2>
                         <p className="text-slate-400 max-w-xl mx-auto">En solo 3 pasos tendrás a tu mascota registrada</p>
@@ -145,7 +145,7 @@ export default async function LandingPage() {
 
             {/* Footer */}
             <footer className="py-12 px-6 bg-slate-900 border-t border-white/5">
-                <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="w-full flex flex-col md:flex-row items-center justify-between gap-6">
                     <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
                             <FaPaw className="text-white text-sm" />
