@@ -12,7 +12,8 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Email and password required' }, { status: 400 });
         }
 
-        const user = await db.getOne('SELECT * FROM users WHERE email = $1', [email]);
+        const normalizedEmail = email.toLowerCase();
+        const user = await db.getOne('SELECT * FROM users WHERE email = $1', [normalizedEmail]);
 
         if (!user) {
             return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });

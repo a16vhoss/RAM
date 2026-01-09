@@ -22,8 +22,10 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Faltan campos obligatorios' }, { status: 400 });
         }
 
+        const normalizedEmail = email.toLowerCase();
+
         // Check if exists
-        const check = await db.getOne('SELECT user_id FROM users WHERE email = $1', [email]);
+        const check = await db.getOne('SELECT user_id FROM users WHERE email = $1', [normalizedEmail]);
         if (check) {
             return NextResponse.json({ error: 'Email already exists' }, { status: 409 });
         }
@@ -35,11 +37,11 @@ export async function POST(request) {
         await db.run(`
       INSERT INTO users (user_id, email, password_hash, first_name, last_name, role, phone, city, state)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-    `, [userId, email, hashedPassword, finalFirstName, finalLastName, userRole, phone || null, city || null, state || null]);
+    `, [userId, normalizedEmail, hashedPassword, finalFirstName, finalLastName, userRole, phone || null, city || null, state || null]);
 
         const user = {
             user_id: userId,
-            email,
+            email: normalizedEmail,
             first_name: finalFirstName,
             last_name: finalLastName,
             role: userRole,
