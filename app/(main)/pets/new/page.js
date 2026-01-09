@@ -141,7 +141,7 @@ export default function NewPetPage() {
                                         name="petName"
                                         value={formData.petName}
                                         onChange={handleChange}
-                                        className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                        className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base text-slate-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                         placeholder="Ej. Max, Luna, Thor"
                                     />
                                 </div>
@@ -180,7 +180,7 @@ export default function NewPetPage() {
                                             name="breed"
                                             value={formData.breed}
                                             onChange={handleChange}
-                                            className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                            className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base text-slate-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                             placeholder="Buscar raza..."
                                         />
                                         <FaSearch className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -194,7 +194,7 @@ export default function NewPetPage() {
                                         name="city"
                                         value={formData.city}
                                         onChange={handleChange}
-                                        className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                        className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base text-slate-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                         placeholder="Ej. Guadalajara, CDMX"
                                     />
                                 </div>
@@ -207,7 +207,7 @@ export default function NewPetPage() {
                                             name="fatherBreed"
                                             value={formData.fatherBreed}
                                             onChange={handleChange}
-                                            className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                            className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base text-slate-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                             placeholder="Opcional"
                                         />
                                     </div>
@@ -217,7 +217,7 @@ export default function NewPetPage() {
                                             name="motherBreed"
                                             value={formData.motherBreed}
                                             onChange={handleChange}
-                                            className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                            className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base text-slate-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                             placeholder="Opcional"
                                         />
                                     </div>
@@ -255,7 +255,7 @@ export default function NewPetPage() {
                                     value={formData.color}
                                     onChange={handleChange}
                                     placeholder="Ej. Café, Blanco, Negro"
-                                    className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                    className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base text-slate-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                 />
                             </div>
 
@@ -267,7 +267,7 @@ export default function NewPetPage() {
                                         name="birthDate"
                                         value={formData.birthDate}
                                         onChange={handleChange}
-                                        className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                        className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base text-slate-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                     />
                                 </div>
                                 <div>
@@ -278,7 +278,7 @@ export default function NewPetPage() {
                                         name="weight"
                                         value={formData.weight}
                                         onChange={handleChange}
-                                        className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                        className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base text-slate-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                     />
                                 </div>
                             </div>
@@ -307,7 +307,7 @@ export default function NewPetPage() {
                                     value={formData.allergies}
                                     onChange={handleChange}
                                     rows={2}
-                                    className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                    className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-base text-slate-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                     placeholder="Opcional"
                                 ></textarea>
                             </div>
@@ -320,7 +320,7 @@ export default function NewPetPage() {
                                     value={formData.medicalNotes}
                                     onChange={handleChange}
                                     rows={2}
-                                    className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                    className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-base text-slate-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                     placeholder="Opcional"
                                 ></textarea>
                             </div>

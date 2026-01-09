@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation';
 
 export async function logoutUser() {
     await logout();
-    redirect('/login');
+    redirect('/');
 }
 
 
