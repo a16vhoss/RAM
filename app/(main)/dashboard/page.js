@@ -171,7 +171,7 @@ export default async function DashboardPage() {
                                     className="snap-center group min-w-[160px] h-[220px] rounded-3xl overflow-hidden relative shadow-lg hover:shadow-glow transition-all hover:-translate-y-1"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
-                                        {pet.pet_photo ? (
+                                        {pet.pet_photo && !pet.pet_photo.includes('/api/placeholder') ? (
                                             <Image
                                                 src={pet.pet_photo}
                                                 alt={pet.pet_name}

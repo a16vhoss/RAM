@@ -261,7 +261,7 @@ export default function PetProfilePage() {
                         <div className="px-4 pt-6 flex flex-col items-center animate-fade-in">
                             <div className="relative w-full aspect-[4/5] max-h-[420px] rounded-3xl overflow-hidden shadow-2xl">
                                 <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent opacity-80 z-10"></div>
-                                {pet.pet_photo ? (
+                                {pet.pet_photo && !pet.pet_photo.includes('/api/placeholder') ? (
                                     <img
                                         src={pet.pet_photo}
                                         alt={pet.pet_name}
