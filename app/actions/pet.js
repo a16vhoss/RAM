@@ -164,8 +164,8 @@ export async function deletePet(petId) {
     }
 
     try {
-        // Verify ownership
-        const [pet] = await db.getAll('SELECT user_id FROM pets WHERE pet_id = $1', [petId]);
+        // Verify ownership and get details for community sync
+        const [pet] = await db.getAll('SELECT user_id, species, breed FROM pets WHERE pet_id = $1', [petId]);
 
         if (!pet) {
             return { success: false, error: 'Pet not found' };
@@ -178,8 +178,55 @@ export async function deletePet(petId) {
         // Delete associated documents first
         await db.run('DELETE FROM documents WHERE pet_id = $1', [petId]);
 
+        // Delete associated records in pet_owners
+        await db.run('DELETE FROM pet_owners WHERE pet_id = $1', [petId]);
+
         // Delete pet
         await db.run('DELETE FROM pets WHERE pet_id = $1', [petId]);
+
+        // --- Community Sync Logic ---
+        // Check if user has any other pets of this species
+        if (pet.species) {
+            const [remainingSpecies] = await db.getAll(`
+                SELECT 1 FROM pets p
+                JOIN pet_owners po ON p.pet_id = po.pet_id
+                WHERE po.user_id = $1 AND p.species = $2
+                LIMIT 1
+            `, [session.user.user_id, pet.species]);
+
+            if (!remainingSpecies) {
+                // User has no more pets of this species, remove from Species Community
+                await db.run(`
+                    DELETE FROM community_members 
+                    WHERE user_id = $1 AND community_id IN (
+                        SELECT community_id FROM communities WHERE type = 'species' AND species = $2
+                    )
+                `, [session.user.user_id, pet.species]);
+                console.log(`Auto-left user from ${pet.species} community`);
+            }
+        }
+
+        // Check if user has any other pets of this breed
+        if (pet.breed) {
+            const [remainingBreed] = await db.getAll(`
+                SELECT 1 FROM pets p
+                JOIN pet_owners po ON p.pet_id = po.pet_id
+                WHERE po.user_id = $1 AND p.breed = $2
+                LIMIT 1
+            `, [session.user.user_id, pet.breed]);
+
+            if (!remainingBreed) {
+                // User has no more pets of this breed, remove from Breed Community
+                await db.run(`
+                    DELETE FROM community_members 
+                    WHERE user_id = $1 AND community_id IN (
+                        SELECT community_id FROM communities WHERE type = 'breed' AND breed = $2
+                    )
+                `, [session.user.user_id, pet.breed]);
+                console.log(`Auto-left user from ${pet.breed} community`);
+            }
+        }
+        // -----------------------------
 
         revalidatePath('/dashboard');
         revalidatePath(`/pets/${petId}`);
