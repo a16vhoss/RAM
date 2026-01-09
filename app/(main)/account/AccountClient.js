@@ -8,6 +8,7 @@ import {
     FaLock, FaBell, FaShieldAlt, FaCrown, FaSignOutAlt
 } from 'react-icons/fa';
 import LogoutButton from '@/components/auth/LogoutButton';
+import SpeciesIcon from '@/app/components/SpeciesIcon';
 
 export default function AccountClient({ user, pets = [], documents = [] }) {
     const [view, setView] = useState('profile'); // 'profile' | 'settings'
@@ -96,13 +97,11 @@ function ProfileView({ user, pets, documents, onOpenSettings }) {
                                     onClick={() => router.push(`/pets/${pet.pet_id}`)}
                                     className="bg-surface-dark/50 border border-white/5 rounded-2xl p-4 flex items-center gap-4 hover:bg-white/5 transition-colors cursor-pointer group"
                                 >
-                                    <div className="w-16 h-16 rounded-xl bg-gray-700 overflow-hidden shrink-0">
-                                        {pet.pet_photo ? (
+                                    <div className="w-16 h-16 rounded-xl bg-gray-700 overflow-hidden shrink-0 flex items-center justify-center">
+                                        {pet.pet_photo && !pet.pet_photo.includes('/api/placeholder') ? (
                                             <img src={pet.pet_photo} alt={pet.pet_name} className="w-full h-full object-cover" />
                                         ) : (
-                                            <div className="w-full h-full flex items-center justify-center text-gray-500">
-                                                <FaPaw />
-                                            </div>
+                                            <SpeciesIcon species={pet.species} className="text-gray-500" size={32} />
                                         )}
                                     </div>
                                     <div className="flex-1">
