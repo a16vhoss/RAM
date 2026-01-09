@@ -6,11 +6,14 @@ import { v4 as uuidv4 } from 'uuid';
 export const maxDuration = 60; // Allow 60 seconds for execution (OpenAI can be slow)
 
 export async function GET(request) {
-    // 1. Security Check (Basic for now, can be enhanced with CRON_SECRET)
-    // const authHeader = request.headers.get('authorization');
-    // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    //     return new Response('Unauthorized', { status: 401 });
-    // }
+    // Security Check: Verify cron secret if set
+    const cronSecret = process.env.CRON_SECRET;
+    if (cronSecret) {
+        const authHeader = request.headers.get('authorization');
+        if (authHeader !== `Bearer ${cronSecret}`) {
+            return new Response('Unauthorized', { status: 401 });
+        }
+    }
 
     // Check for API Key
     const apiKey = process.env.GEMINI_API_KEY; // Changed env var name

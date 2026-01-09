@@ -6,6 +6,15 @@ import { v4 as uuidv4 } from 'uuid';
 export const maxDuration = 30;
 
 export async function GET(request) {
+    // Security Check: Verify cron secret if set
+    const cronSecret = process.env.CRON_SECRET;
+    if (cronSecret) {
+        const authHeader = request.headers.get('authorization');
+        if (authHeader !== `Bearer ${cronSecret}`) {
+            return new Response('Unauthorized', { status: 401 });
+        }
+    }
+
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
         return createMockTip();
