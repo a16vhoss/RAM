@@ -66,7 +66,7 @@ export default async function DashboardPage() {
                                 <FaIdCard className="text-white text-xl" />
                             </div>
                             <div className="relative z-10">
-                                <p className="text-white font-bold text-lg leading-tight">Registro RUAC</p>
+                                <p className="text-white font-bold text-lg leading-tight">Registro RAM</p>
                                 <p className="text-blue-200 text-xs mt-1 font-medium">Identificación oficial</p>
                             </div>
                         </Link>
