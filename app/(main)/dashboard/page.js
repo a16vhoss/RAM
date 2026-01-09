@@ -1,7 +1,7 @@
 import { getSession } from '@/lib/auth';
 import db from '@/lib/db';
 import Link from 'next/link';
-import { FaPlus, FaBell, FaIdCard, FaStethoscope, FaSyringe, FaExclamationTriangle, FaSearch } from 'react-icons/fa';
+import { FaPlus, FaBell, FaIdCard, FaStethoscope, FaSyringe, FaExclamationTriangle, FaSearch, FaLightbulb } from 'react-icons/fa';
 import { redirect } from 'next/navigation';
 import DashboardSearch from './DashboardSearch';
 import NotificationsBell from '@/app/components/NotificationsBell';
@@ -23,6 +23,12 @@ export default async function DashboardPage() {
         JOIN pet_owners ON pets.pet_id = pet_owners.pet_id 
         WHERE pet_owners.user_id = $1
     `, [user.user_id]);
+
+    // Fetch Daily Tip
+    const dailyTip = await db.getOne(`
+        SELECT content FROM daily_tips WHERE display_date = CURRENT_DATE
+    `);
+    const tipContent = dailyTip?.content || "La hidratación es clave. Cambia el agua de tu mascota 3 veces al día.";
 
     return (
         <div className="min-h-screen bg-background-light dark:bg-background-dark pb-28 overflow-x-hidden">
@@ -122,14 +128,14 @@ export default async function DashboardPage() {
                 <section className="px-5 animate-fade-in" style={{ animationDelay: '0.3s' }}>
                     <div className="relative w-full rounded-3xl overflow-hidden h-32 flex items-center justify-between p-6 bg-surface-dark border border-white/5 shadow-lg group">
                         <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-500 opacity-90 transition-opacity group-hover:opacity-100"></div>
-                        <div className="relative z-10 max-w-[65%]">
+                        <div className="relative z-10 max-w-[70%]">
                             <span className="inline-block px-2 py-1 rounded-md bg-white/20 backdrop-blur-sm text-[10px] font-bold text-white mb-2 uppercase tracking-wide border border-white/10">
                                 Tip del día
                             </span>
-                            <p className="text-white font-bold text-sm leading-snug">La hidratación es clave. Cambia el agua de Max 3 veces al día.</p>
+                            <p className="text-white font-bold text-sm leading-snug">{tipContent}</p>
                         </div>
-                        <div className="relative z-10 w-20 h-20 rounded-full border-4 border-white/20 overflow-hidden shadow-xl flex-shrink-0 group-hover:scale-105 transition-transform">
-                            <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8C8auowYV8uJJuZgzvEXrnh8b4hBUpQJb3yn_J4u6ZVhM_loZU7UemBwnuxwFW12hyCE1iKnIbHu1bRVgxENNo5Ia7MyepghWmOabsDyY5NigXOVzQI2G9_eFTsU9X0FaR9JWyDwfHcBiXy3YmWc4hh7Ox-u7mp0FRNOFXQ78nqggVGVX6nRqRdYQljAnsETQQfUJrJphHqHZxgQmibIsQ5mkIy_aElAF3FgPx-BGDTtELL5XMnzg8Gvv8zaKNpmt3YOaNPOH9CTU" alt="Tip" fill className="object-cover" sizes="80px" />
+                        <div className="relative z-10 w-16 h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform group-hover:rotate-12">
+                            <FaLightbulb size={32} className="text-yellow-300 drop-shadow-lg" />
                         </div>
                     </div>
                 </section>
