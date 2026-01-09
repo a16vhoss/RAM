@@ -94,12 +94,12 @@ export async function createPet(formData) {
             INSERT INTO pets (
                 pet_id, user_id, pet_name, species, breed, color, sex, 
                 birth_date, weight, microchip_number, spayed_neutered, 
-                medical_notes, allergies, pet_photo, status
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+                medical_notes, allergies, pet_photo, status, city
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
         `, [
             petId, userId, petName, species, breed, color, sex,
             birthDate || null, weight || null, microchipNumber || null, isSpayed ? 1 : 0,
-            medicalNotes || null, allergies || null, photoUrl, 'Activo'
+            medicalNotes || null, allergies || null, photoUrl, 'Activo', formData.get('city') || null
         ]);
 
         // Add to pet_owners (Family Mode)
@@ -325,18 +325,20 @@ export async function updatePet(petId, formData) {
             photoUrl = publicUrl;
         }
 
+        const city = formData.get('city');
+
         // Update Pet
         await db.run(`
             UPDATE pets SET
                 pet_name = $1, species = $2, breed = $3, color = $4, sex = $5, 
                 birth_date = $6, weight = $7, microchip_number = $8, 
                 spayed_neutered = $9, medical_notes = $10, allergies = $11, 
-                pet_photo = $12
-            WHERE pet_id = $13
+                pet_photo = $12, city = $13
+            WHERE pet_id = $14
         `, [
             petName, species, breed, color, sex,
             birthDate || null, weight || null, microchipNumber || null, isSpayed ? 1 : 0,
-            medicalNotes || null, allergies || null, photoUrl,
+            medicalNotes || null, allergies || null, photoUrl, city || null,
             petId
         ]);
 

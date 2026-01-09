@@ -133,13 +133,13 @@ function ActaTemplate({ doc, qrUrl }) {
                         </div>
                         <div>
                             <span className="text-xs text-slate-400">Fecha de Nacimiento</span>
-                            <p className="font-semibold">{formatDate(doc.date_of_birth)}</p>
+                            <p className="font-semibold">{formatDate(doc.birth_date)}</p>
                         </div>
                         <div>
                             <span className="text-xs text-slate-400">Sexo</span>
                             <p className="font-semibold">
-                                <span className={`inline-block px-2 py-0.5 rounded text-xs ${doc.sex?.toLowerCase() === 'macho' || doc.sex?.toLowerCase() === 'm' ? 'bg-blue-100 text-blue-700' : 'bg-pink-100 text-pink-700'}`}>
-                                    {doc.sex?.toLowerCase() === 'macho' || doc.sex?.toLowerCase() === 'm' ? 'M (Macho)' : 'H (Hembra)'}
+                                <span className={`inline-block px-2 py-0.5 rounded text-xs ${doc.sex === 'Macho' ? 'bg-blue-100 text-blue-700' : 'bg-pink-100 text-pink-700'}`}>
+                                    {doc.sex === 'Macho' ? 'M (Macho)' : 'H (Hembra)'}
                                 </span>
                             </p>
                         </div>
@@ -161,7 +161,7 @@ function ActaTemplate({ doc, qrUrl }) {
                         </div>
                         <div>
                             <span className="text-xs text-slate-400">Microchip</span>
-                            <p className="font-mono text-xs">{doc.microchip_id || 'No registrado'}</p>
+                            <p className="font-mono text-xs">{doc.microchip_number || 'No registrado'}</p>
                         </div>
                     </div>
                 </div>

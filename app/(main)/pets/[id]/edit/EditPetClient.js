@@ -23,7 +23,8 @@ export default function EditPetPage({ params, pet, owners, currentUserId }) {
         microchipNumber: pet.microchip_number || '',
         isSpayed: pet.spayed_neutered === 1,
         allergies: pet.allergies || '',
-        medicalNotes: pet.medical_notes || ''
+        medicalNotes: pet.medical_notes || '',
+        city: pet.city || ''
     });
 
     const [photoFile, setPhotoFile] = useState(null);
@@ -153,6 +154,16 @@ export default function EditPetPage({ params, pet, owners, currentUserId }) {
                                             onChange={handleChange}
                                             className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
                                             placeholder="Raza"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Lugar de Origen</label>
+                                        <input
+                                            name="city"
+                                            value={formData.city}
+                                            onChange={handleChange}
+                                            className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                            placeholder="Ej. Guadalajara, CDMX"
                                         />
                                     </div>
                                 </div>

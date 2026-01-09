@@ -9,7 +9,7 @@ export default function NewPetPage() {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         petName: '', species: 'Perro', breed: '', color: '',
-        sex: 'Macho', birthDate: '', weight: '',
+        sex: 'Macho', birthDate: '', weight: '', city: '',
         microchipNumber: '', isSpayed: false,
         allergies: '', medicalNotes: ''
     });
@@ -184,6 +184,18 @@ export default function NewPetPage() {
                                         />
                                         <FaSearch className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" />
                                     </div>
+                                </div>
+
+                                {/* City / Birthplace */}
+                                <div>
+                                    <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Lugar de Origen (Ciudad)</label>
+                                    <input
+                                        name="city"
+                                        value={formData.city}
+                                        onChange={handleChange}
+                                        className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                        placeholder="Ej. Guadalajara, CDMX"
+                                    />
                                 </div>
                             </div>
                         </div>
