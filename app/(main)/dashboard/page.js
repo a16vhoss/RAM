@@ -1,7 +1,7 @@
 import { getSession } from '@/lib/auth';
 import db from '@/lib/db';
 import Link from 'next/link';
-import { FaPlus, FaBell, FaIdCard, FaStethoscope, FaSyringe, FaExclamationTriangle, FaSearch, FaLightbulb } from 'react-icons/fa';
+import { FaPlus, FaBell, FaIdCard, FaStethoscope, FaSyringe, FaExclamationTriangle, FaSearch, FaLightbulb, FaNewspaper } from 'react-icons/fa';
 import { redirect } from 'next/navigation';
 import DashboardSearch from './DashboardSearch';
 import NotificationsBell from '@/app/components/NotificationsBell';
@@ -119,6 +119,20 @@ export default async function DashboardPage() {
                             <div className="relative z-10">
                                 <p className="text-white font-bold text-lg leading-tight">Alerta RAM</p>
                                 <p className="text-amber-100 text-xs mt-1 font-medium">Reportar extravío</p>
+                            </div>
+                        </Link>
+
+                        {/* Blog */}
+                        <Link href="/blog" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-violet-600 to-purple-600 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
+                            <div className="absolute top-0 right-0 p-3 opacity-20 transform translate-x-2 -translate-y-2 group-hover:rotate-12 transition-transform">
+                                <FaNewspaper size={90} className="text-white" />
+                            </div>
+                            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
+                                <FaNewspaper className="text-white text-xl" />
+                            </div>
+                            <div className="relative z-10">
+                                <p className="text-white font-bold text-lg leading-tight">Blog</p>
+                                <p className="text-purple-100 text-xs mt-1 font-medium">Tips y Noticias</p>
                             </div>
                         </Link>
                     </div>
