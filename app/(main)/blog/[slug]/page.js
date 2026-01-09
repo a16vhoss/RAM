@@ -19,7 +19,7 @@ export default async function BlogPostPage({ params }) {
     return (
         <article className="min-h-screen bg-white dark:bg-slate-900 pb-20">
             {/* Hero Section */}
-            <div className="relative h-80 md:h-[400px] w-full">
+            <div className="relative h-80 md:h-screen w-full">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: `url(${post.image_url || 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=2000'})` }}
