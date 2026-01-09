@@ -3,6 +3,10 @@ import db from '@/lib/db';
 import { redirect } from 'next/navigation';
 import DocumentsClient from './DocumentsClient';
 
+// Force dynamic rendering - no caching
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function DocumentsPage() {
     const session = await getSession();
     if (!session) redirect('/login');

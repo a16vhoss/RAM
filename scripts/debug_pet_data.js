@@ -18,11 +18,20 @@ async function debugData() {
     try {
         // Get the most recent pet named "Bolt"
         const petResult = await pool.query(`
-            SELECT pet_id, pet_name, sex, species, breed, color, birth_date, city, father_breed, mother_breed, user_id
-            FROM pets 
-            WHERE pet_name ILIKE '%Bolt%'
-            ORDER BY created_at DESC
-            LIMIT 1
+            SELECT 
+                d.unique_registration_number,
+                d.document_type,
+                p.pet_id, p.pet_name, p.sex, p.birth_date, p.breed, p.color, p.city,
+                p.father_breed, p.mother_breed,
+                u.first_name, u.last_name, u.email, u.phone, u.city as user_city,
+                u.detected_zone
+            FROM documents d
+            JOIN pets p ON d.pet_id = p.pet_id
+            JOIN users u ON p.user_id = u.user_id
+            WHERE d.unique_registration_number LIKE '%0266640%'
+            OR p.pet_name ILIKE '%Bolt%'
+            ORDER BY d.issued_at DESC
+            LIMIT 5
         `);
 
         console.log('\n=== PET DATA ===');
