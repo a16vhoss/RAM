@@ -8,6 +8,7 @@ import NotificationsBell from '@/app/components/NotificationsBell';
 import JoinFamilyButton from '@/app/components/JoinFamilyButton';
 
 import Image from 'next/image';
+import SpeciesIcon from '@/app/components/SpeciesIcon';
 
 export default async function DashboardPage() {
     const session = await getSession();
@@ -169,14 +170,18 @@ export default async function DashboardPage() {
                                     key={pet.pet_id}
                                     className="snap-center group min-w-[160px] h-[220px] rounded-3xl overflow-hidden relative shadow-lg hover:shadow-glow transition-all hover:-translate-y-1"
                                 >
-                                    <div className="absolute inset-0">
-                                        <Image
-                                            src={pet.pet_photo || "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80"}
-                                            alt={pet.pet_name}
-                                            fill
-                                            className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                            sizes="160px"
-                                        />
+                                    <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+                                        {pet.pet_photo ? (
+                                            <Image
+                                                src={pet.pet_photo}
+                                                alt={pet.pet_name}
+                                                fill
+                                                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                                sizes="160px"
+                                            />
+                                        ) : (
+                                            <SpeciesIcon species={pet.species} className="text-white/20 group-hover:text-white/40 transition-colors" size={80} />
+                                        )}
                                     </div>
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
 

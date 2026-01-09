@@ -11,6 +11,7 @@ import { getMedicalRecords } from '@/app/actions/medical';
 import DocumentViewerModal from '@/app/(main)/documents/DocumentViewerModal';
 import MedicalRecordModal from '../MedicalRecordModal';
 import CoOwnerInvite from '@/app/components/CoOwnerInvite';
+import SpeciesIcon from '@/app/components/SpeciesIcon';
 
 export default function PetProfilePage() {
     const params = useParams();
@@ -260,11 +261,17 @@ export default function PetProfilePage() {
                         <div className="px-4 pt-6 flex flex-col items-center animate-fade-in">
                             <div className="relative w-full aspect-[4/5] max-h-[420px] rounded-3xl overflow-hidden shadow-2xl">
                                 <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent opacity-80 z-10"></div>
-                                <img
-                                    src={pet.pet_photo || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=1000'}
-                                    alt={pet.pet_name}
-                                    className="w-full h-full object-cover transform scale-100 transition-transform duration-700 hover:scale-105"
-                                />
+                                {pet.pet_photo ? (
+                                    <img
+                                        src={pet.pet_photo}
+                                        alt={pet.pet_name}
+                                        className="w-full h-full object-cover transform scale-100 transition-transform duration-700 hover:scale-105"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-slate-800 flex items-center justify-center">
+                                        <SpeciesIcon species={pet.species} size={150} className="text-white/20" />
+                                    </div>
+                                )}
                                 <div className="absolute bottom-0 left-0 w-full p-6 z-20 flex flex-col gap-1 mb-2">
                                     <div className="flex items-center gap-2 mb-2">
                                         <span className="px-3 py-1 rounded-full bg-primary/90 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider shadow-lg">
