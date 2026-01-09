@@ -24,7 +24,9 @@ export default function EditPetPage({ params, pet, owners, currentUserId }) {
         isSpayed: pet.spayed_neutered === 1,
         allergies: pet.allergies || '',
         medicalNotes: pet.medical_notes || '',
-        city: pet.city || ''
+        city: pet.city || '',
+        fatherBreed: pet.father_breed || '',
+        motherBreed: pet.mother_breed || ''
     });
 
     const [photoFile, setPhotoFile] = useState(null);
@@ -156,7 +158,29 @@ export default function EditPetPage({ params, pet, owners, currentUserId }) {
                                             placeholder="Raza"
                                         />
                                     </div>
-                                    <div>
+                                    <div className="md:col-span-2 grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Raza Padre</label>
+                                            <input
+                                                name="fatherBreed"
+                                                value={formData.fatherBreed}
+                                                onChange={handleChange}
+                                                className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                                placeholder="Opcional"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Raza Madre</label>
+                                            <input
+                                                name="motherBreed"
+                                                value={formData.motherBreed}
+                                                onChange={handleChange}
+                                                className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                                placeholder="Opcional"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="md:col-span-2">
                                         <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Lugar de Origen</label>
                                         <input
                                             name="city"
@@ -266,16 +290,6 @@ export default function EditPetPage({ params, pet, owners, currentUserId }) {
                                     Identificación y Salud
                                 </h3>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Microchip</label>
-                                    <input
-                                        name="microchipNumber"
-                                        value={formData.microchipNumber}
-                                        onChange={handleChange}
-                                        className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-primary"
-                                        placeholder="Número de chip"
-                                    />
-                                </div>
 
                                 <div className="grid md:grid-cols-2 gap-4">
                                     <div>

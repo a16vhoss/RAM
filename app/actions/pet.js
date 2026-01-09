@@ -89,17 +89,22 @@ export async function createPet(formData) {
         const petId = uuidv4();
         const userId = session.user.user_id;
 
+        const fatherBreed = formData.get('fatherBreed');
+        const motherBreed = formData.get('motherBreed');
+
         // Insert Pet
         await db.run(`
             INSERT INTO pets (
                 pet_id, user_id, pet_name, species, breed, color, sex, 
-                birth_date, weight, microchip_number, spayed_neutered, 
-                medical_notes, allergies, pet_photo, status, city
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+                birth_date, weight, spayed_neutered, 
+                medical_notes, allergies, pet_photo, status, city,
+                father_breed, mother_breed
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
         `, [
             petId, userId, petName, species, breed, color, sex,
-            birthDate || null, weight || null, microchipNumber || null, isSpayed ? 1 : 0,
-            medicalNotes || null, allergies || null, photoUrl, 'Activo', formData.get('city') || null
+            birthDate || null, weight || null, isSpayed ? 1 : 0,
+            medicalNotes || null, allergies || null, photoUrl, 'Activo', formData.get('city') || null,
+            fatherBreed || null, motherBreed || null
         ]);
 
         // Add to pet_owners (Family Mode)
@@ -326,19 +331,23 @@ export async function updatePet(petId, formData) {
         }
 
         const city = formData.get('city');
+        const fatherBreed = formData.get('fatherBreed');
+        const motherBreed = formData.get('motherBreed');
 
         // Update Pet
         await db.run(`
             UPDATE pets SET
                 pet_name = $1, species = $2, breed = $3, color = $4, sex = $5, 
-                birth_date = $6, weight = $7, microchip_number = $8, 
-                spayed_neutered = $9, medical_notes = $10, allergies = $11, 
-                pet_photo = $12, city = $13
-            WHERE pet_id = $14
+                birth_date = $6, weight = $7, 
+                spayed_neutered = $8, medical_notes = $9, allergies = $10, 
+                pet_photo = $11, city = $12,
+                father_breed = $13, mother_breed = $14
+            WHERE pet_id = $15
         `, [
             petName, species, breed, color, sex,
-            birthDate || null, weight || null, microchipNumber || null, isSpayed ? 1 : 0,
+            birthDate || null, weight || null, isSpayed ? 1 : 0,
             medicalNotes || null, allergies || null, photoUrl, city || null,
+            fatherBreed || null, motherBreed || null,
             petId
         ]);
 

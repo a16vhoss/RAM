@@ -20,6 +20,8 @@ export default async function DocumentsPage() {
             p.medical_notes,
             p.microchip_number,
             p.city as pet_city,
+            p.father_breed,
+            p.mother_breed,
             u.first_name as owner_first_name,
             u.last_name as owner_last_name,
             u.email as owner_email,

@@ -33,7 +33,7 @@ async function runMigration() {
     });
 
     try {
-        const MIGRATION_FILE = '06_add_city_to_pets.sql';
+        const MIGRATION_FILE = '07_add_parent_breeds.sql';
         const sqlPath = path.join(__dirname, MIGRATION_FILE);
         const sql = fs.readFileSync(sqlPath, 'utf8');
         console.log('Running migration...');

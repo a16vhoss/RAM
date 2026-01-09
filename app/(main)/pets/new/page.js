@@ -10,7 +10,8 @@ export default function NewPetPage() {
     const [formData, setFormData] = useState({
         petName: '', species: 'Perro', breed: '', color: '',
         sex: 'Macho', birthDate: '', weight: '', city: '',
-        microchipNumber: '', isSpayed: false,
+        fatherBreed: '', motherBreed: '',
+        isSpayed: false,
         allergies: '', medicalNotes: ''
     });
     const [photoFile, setPhotoFile] = useState(null);
@@ -197,6 +198,30 @@ export default function NewPetPage() {
                                         placeholder="Ej. Guadalajara, CDMX"
                                     />
                                 </div>
+
+                                {/* Parent Breeds (Genealogy) */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Raza Padre</label>
+                                        <input
+                                            name="fatherBreed"
+                                            value={formData.fatherBreed}
+                                            onChange={handleChange}
+                                            className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                            placeholder="Opcional"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-text-secondary mb-2 ml-1">Raza Madre</label>
+                                        <input
+                                            name="motherBreed"
+                                            value={formData.motherBreed}
+                                            onChange={handleChange}
+                                            className="w-full bg-surface dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl px-4 py-4 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                                            placeholder="Opcional"
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )}
@@ -273,26 +298,6 @@ export default function NewPetPage() {
 
                     {step === 3 && (
                         <div className="animate-fade-in-up space-y-6 pt-4">
-                            {/* Microchip */}
-                            <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className="flex items-center gap-2">
-                                        <FaQrcode className="text-primary" />
-                                        <label className="text-sm font-bold text-text-main">Datos Oficiales</label>
-                                    </div>
-                                    <span className="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-md font-medium">Recomendado</span>
-                                </div>
-                                <div className="relative">
-                                    <label className="text-xs text-text-secondary mb-1 block ml-1">Número de Microchip</label>
-                                    <input
-                                        name="microchipNumber"
-                                        value={formData.microchipNumber}
-                                        onChange={handleChange}
-                                        className="w-full bg-surface dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                                        placeholder="Escanea o escribe el número"
-                                    />
-                                </div>
-                            </div>
 
                             {/* Allergies */}
                             <div>
