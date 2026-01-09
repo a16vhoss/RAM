@@ -19,7 +19,7 @@ export default async function BlogPostPage({ params }) {
     return (
         <article className="min-h-screen bg-white dark:bg-slate-900 pb-20">
             {/* Hero Section */}
-            <div className="relative h-[400px] w-full">
+            <div className="relative h-80 md:h-[400px] w-full">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: `url(${post.image_url || 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=2000'})` }}
@@ -63,8 +63,8 @@ export default async function BlogPostPage({ params }) {
             </div>
 
             {/* Content Body */}
-            <div className="max-w-3xl mx-auto px-6 -mt-10 relative z-10">
-                <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-8 md:p-12 border border-slate-100 dark:border-white/5">
+            <div className="max-w-3xl mx-auto px-4 md:px-6 -mt-8 md:-mt-10 relative z-10">
+                <div className="bg-white dark:bg-slate-800 rounded-2xl md:rounded-3xl shadow-xl p-6 md:p-12 border border-slate-100 dark:border-white/5">
                     <div className="prose prose-lg dark:prose-invert prose-headings:font-bold prose-a:text-blue-600 max-w-none">
                         <ReactMarkdown>{post.content}</ReactMarkdown>
                     </div>
@@ -82,7 +82,7 @@ export default async function BlogPostPage({ params }) {
                 </div>
 
                 {/* CTA */}
-                <div className="mt-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-8 md:p-10 text-center text-white shadow-2xl relative overflow-hidden group">
+                <div className="mt-8 md:mt-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl md:rounded-3xl p-6 md:p-10 text-center text-white shadow-2xl relative overflow-hidden group">
                     <div className="absolute top-0 right-0 p-12 opacity-10 transform translate-x-12 -translate-y-6 group-hover:scale-110 transition-transform duration-700">
                         <FaUserMd size={140} />
                     </div>
