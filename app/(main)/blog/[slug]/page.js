@@ -63,7 +63,7 @@ export default async function BlogPostPage({ params }) {
             </div>
 
             {/* Content Body */}
-            <div className="max-w-3xl mx-auto px-4 md:px-6 -mt-8 md:-mt-10 relative z-10">
+            <div className="max-w-6xl mx-auto px-4 md:px-6 -mt-8 md:-mt-10 relative z-10">
                 <div className="bg-white dark:bg-slate-800 rounded-2xl md:rounded-3xl shadow-xl p-6 md:p-12 border border-slate-100 dark:border-white/5">
                     <div className="prose prose-lg dark:prose-invert prose-headings:font-bold prose-a:text-blue-600 max-w-none">
                         <ReactMarkdown>{post.content}</ReactMarkdown>
