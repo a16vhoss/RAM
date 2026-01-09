@@ -18,7 +18,6 @@ export default async function DocumentsPage() {
             p.sex,
             p.birth_date,
             p.medical_notes,
-            p.microchip_number,
             p.city as pet_city,
             p.father_breed,
             p.mother_breed,
@@ -27,7 +26,8 @@ export default async function DocumentsPage() {
             u.email as owner_email,
             u.phone as owner_phone,
             u.city as owner_city,
-            u.location as owner_location
+            u.address as owner_address,
+            u.detected_zone as owner_location
         FROM documents d 
         JOIN pets p ON d.pet_id = p.pet_id 
         JOIN users u ON p.user_id = u.user_id
