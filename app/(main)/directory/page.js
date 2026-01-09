@@ -287,10 +287,22 @@ export default function DirectoryPage() {
 }
 
 function VetDetailsModal({ vet, onClose }) {
+    // Prevent background scrolling when modal is open
+    useEffect(() => {
+        if (vet) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [vet]);
+
     if (!vet) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm p-4 sm:items-center">
+        <div className="fixed inset-0 z-[1000] flex items-end justify-center bg-black/70 backdrop-blur-sm p-4 sm:items-center">
             <div className="bg-[#1c252e] rounded-t-3xl sm:rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl relative">
                 <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white z-10 p-2 bg-black/50 rounded-full">
                     <FaTimes size={20} />
