@@ -1,6 +1,20 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
 
+// Curated array of high-quality pet images from Unsplash (direct URLs that work)
+const PET_IMAGES = [
+    'https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=1024&h=600&q=80', // Golden retriever
+    'https://images.unsplash.com/photo-1601758228041-f3b2795255db?auto=format&fit=crop&w=1024&h=600&q=80', // Dog walking
+    'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1024&h=600&q=80', // Two dogs playing
+    'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=1024&h=600&q=80', // Golden retriever portrait
+    'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=1024&h=600&q=80', // French bulldog
+    'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=1024&h=600&q=80', // Corgi
+    'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=1024&h=600&q=80', // Cat looking
+    'https://images.unsplash.com/photo-1511044568932-338cba0ad803?auto=format&fit=crop&w=1024&h=600&q=80', // Happy dog
+    'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=1024&h=600&q=80', // Dalmatian
+    'https://images.unsplash.com/photo-1477884213360-7e9d7dcc1e48?auto=format&fit=crop&w=1024&h=600&q=80', // Dog in nature
+];
+
 export async function GET(request) {
     // Note: No auth for migration endpoints (one-time use)
 
@@ -23,24 +37,8 @@ export async function GET(request) {
         let updatedCount = 0;
 
         for (const post of allPosts) {
-            // Use Unsplash Source for reliable, high-quality pet images
-            // Extract main tag for search query
-            const tags = (post.tags || 'pets').toLowerCase();
-            let searchQuery = 'pet,animal';
-
-            if (tags.includes('perro') || tags.includes('dog') || tags.includes('canino')) {
-                searchQuery = 'dog,puppy';
-            } else if (tags.includes('gato') || tags.includes('cat') || tags.includes('felino')) {
-                searchQuery = 'cat,kitten';
-            } else if (tags.includes('ave') || tags.includes('bird')) {
-                searchQuery = 'bird,parrot';
-            } else if (tags.includes('roedor') || tags.includes('hamster')) {
-                searchQuery = 'hamster,rabbit';
-            }
-
-            // Create unique image URL using Unsplash Source with unique sig
-            const uniqueSig = post.post_id.substring(0, 8) + updatedCount;
-            const imageUrl = `https://source.unsplash.com/1024x600/?${searchQuery}&sig=${uniqueSig}`;
+            // Pick a unique image from our curated list (cycling through)
+            const imageUrl = PET_IMAGES[updatedCount % PET_IMAGES.length];
 
             // Update the post with new image
             await db.run(
@@ -48,9 +46,6 @@ export async function GET(request) {
                 [imageUrl, post.post_id]
             );
             updatedCount++;
-
-            // Small delay between requests
-            await new Promise(resolve => setTimeout(resolve, 100));
         }
 
         return NextResponse.json({
