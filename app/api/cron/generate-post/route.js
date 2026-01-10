@@ -95,16 +95,23 @@ export async function GET(request) {
         const postData = JSON.parse(jsonString);
 
 
-        // 4. Image Generation (AI)
-        // Since standard Gemini API keys don't always support Imagen, we use a robust fallback to Pollinations.ai 
-        // which acts as a free, specialized AI image generator. 
-        // We create a specific prompt for the image based on the article title.
-        const imagePrompt = `Realist cinematic photography of ${postData.title}, ${postData.tags.split(',')[0]}, pet care context, warm lighting, 8k resolution`;
-        const encodedPrompt = encodeURIComponent(imagePrompt);
+        // 4. Image Generation - Use Unsplash Source for reliable, high-quality images
+        const tags = (postData.tags || 'pets').toLowerCase();
+        let searchQuery = 'pet,animal';
 
-        // Use timestamp + random to ensure 100% unique images (no duplicates)
-        const uniqueSeed = Date.now() + Math.floor(Math.random() * 100000);
-        const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=600&seed=${uniqueSeed}&nologo=true`;
+        if (tags.includes('perro') || tags.includes('dog') || tags.includes('canino') || tags.includes('cachorro')) {
+            searchQuery = 'dog,puppy';
+        } else if (tags.includes('gato') || tags.includes('cat') || tags.includes('felino')) {
+            searchQuery = 'cat,kitten';
+        } else if (tags.includes('ave') || tags.includes('bird')) {
+            searchQuery = 'bird,parrot';
+        } else if (tags.includes('roedor') || tags.includes('hamster')) {
+            searchQuery = 'hamster,rabbit';
+        }
+
+        // Create unique image URL using Unsplash Source with timestamp sig
+        const uniqueSig = Date.now();
+        const imageUrl = `https://source.unsplash.com/1024x600/?${searchQuery}&sig=${uniqueSig}`;
 
         // 5. Save to Database
         const postId = uuidv4();

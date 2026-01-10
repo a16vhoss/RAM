@@ -23,15 +23,23 @@ export async function GET(request) {
         let updatedCount = 0;
 
         for (const post of postsWithoutImages) {
-            // Generate unique image using Pollinations.ai
-            // Use post_id hash + timestamp for 100% unique seeds
-            const imagePrompt = `Realistic cinematic photography of ${post.title}, ${(post.tags || 'pets').split(',')[0]}, pet care context, warm lighting, 8k resolution`;
-            const encodedPrompt = encodeURIComponent(imagePrompt);
+            // Use Unsplash Source for reliable, high-quality pet images
+            const tags = (post.tags || 'pets').toLowerCase();
+            let searchQuery = 'pet,animal';
 
-            // Create unique seed from post_id characters + timestamp
-            const postIdHash = post.post_id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-            const uniqueSeed = postIdHash + Date.now();
-            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=600&seed=${uniqueSeed}&nologo=true`;
+            if (tags.includes('perro') || tags.includes('dog') || tags.includes('canino')) {
+                searchQuery = 'dog,puppy';
+            } else if (tags.includes('gato') || tags.includes('cat') || tags.includes('felino')) {
+                searchQuery = 'cat,kitten';
+            } else if (tags.includes('ave') || tags.includes('bird')) {
+                searchQuery = 'bird,parrot';
+            } else if (tags.includes('roedor') || tags.includes('hamster')) {
+                searchQuery = 'hamster,rabbit';
+            }
+
+            // Create unique image URL using Unsplash Source with unique sig
+            const uniqueSig = post.post_id.substring(0, 8) + updatedCount;
+            const imageUrl = `https://source.unsplash.com/1024x600/?${searchQuery}&sig=${uniqueSig}`;
 
             // Update the post
             await db.run(
