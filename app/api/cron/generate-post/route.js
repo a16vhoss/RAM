@@ -102,9 +102,9 @@ export async function GET(request) {
         const imagePrompt = `Realist cinematic photography of ${postData.title}, ${postData.tags.split(',')[0]}, pet care context, warm lighting, 8k resolution`;
         const encodedPrompt = encodeURIComponent(imagePrompt);
 
-        // Use a random seed to ensure uniqueness even for similar prompts
-        const randomSeed = Math.floor(Math.random() * 1000);
-        const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=600&seed=${randomSeed}&nologo=true`;
+        // Use timestamp + random to ensure 100% unique images (no duplicates)
+        const uniqueSeed = Date.now() + Math.floor(Math.random() * 100000);
+        const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=600&seed=${uniqueSeed}&nologo=true`;
 
         // 5. Save to Database
         const postId = uuidv4();
