@@ -95,23 +95,48 @@ export async function GET(request) {
         const postData = JSON.parse(jsonString);
 
 
-        // 4. Image Generation - Use Unsplash Source for reliable, high-quality images
-        const tags = (postData.tags || 'pets').toLowerCase();
-        let searchQuery = 'pet,animal';
+        // 4. Image Generation - Use Gemini 2.0 Flash with image generation
+        let imageUrl = null;
 
-        if (tags.includes('perro') || tags.includes('dog') || tags.includes('canino') || tags.includes('cachorro')) {
-            searchQuery = 'dog,puppy';
-        } else if (tags.includes('gato') || tags.includes('cat') || tags.includes('felino')) {
-            searchQuery = 'cat,kitten';
-        } else if (tags.includes('ave') || tags.includes('bird')) {
-            searchQuery = 'bird,parrot';
-        } else if (tags.includes('roedor') || tags.includes('hamster')) {
-            searchQuery = 'hamster,rabbit';
+        try {
+            // Try Gemini 2.0 image generation
+            const imageModel = genAI.getGenerativeModel({
+                model: "gemini-2.0-flash-exp-image-generation",
+                generationConfig: { responseModalities: ["image", "text"] }
+            });
+
+            const imagePrompt = `Generate a beautiful, realistic, high-quality photograph for a blog article titled: "${postData.title}". 
+            The image should show happy, healthy pets (preferably dogs or cats) in a warm, inviting setting. 
+            Professional photography style, soft lighting, vibrant colors. No text overlays.`;
+
+            const imageResult = await imageModel.generateContent(imagePrompt);
+            const imageResponse = await imageResult.response;
+
+            // Extract image from response
+            const imageParts = imageResponse.candidates?.[0]?.content?.parts || [];
+            const imagePart = imageParts.find(part => part.inlineData?.mimeType?.startsWith('image/'));
+
+            if (imagePart?.inlineData?.data) {
+                // Upload to Supabase Storage
+                const { uploadImageToStorage } = await import('@/lib/supabase');
+                const filename = `blog/${postData.slug}-${Date.now()}.png`;
+                imageUrl = await uploadImageToStorage(imagePart.inlineData.data, filename);
+            }
+        } catch (imgError) {
+            console.error('Gemini image generation failed, using fallback:', imgError.message);
         }
 
-        // Create unique image URL using Unsplash Source with timestamp sig
-        const uniqueSig = Date.now();
-        const imageUrl = `https://source.unsplash.com/1024x600/?${searchQuery}&sig=${uniqueSig}`;
+        // Fallback to curated Unsplash if Gemini fails
+        if (!imageUrl) {
+            const fallbackImages = [
+                'https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=1024&h=600&q=80',
+                'https://images.unsplash.com/photo-1601758228041-f3b2795255db?auto=format&fit=crop&w=1024&h=600&q=80',
+                'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1024&h=600&q=80',
+                'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=1024&h=600&q=80',
+                'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=1024&h=600&q=80',
+            ];
+            imageUrl = fallbackImages[Math.floor(Math.random() * fallbackImages.length)];
+        }
 
         // 5. Save to Database
         const postId = uuidv4();
