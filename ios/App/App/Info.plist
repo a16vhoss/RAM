@@ -47,5 +47,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>RAM necesita acceso a la cámara para tomar fotos de tu mascota para su perfil.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>RAM necesita guardar fotos en tu galería.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>RAM necesita acceso a tus fotos para subir la imagen de perfil de tu mascota.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>RAM usa tu ubicación para reportar mascotas extraviadas cercanas o encontrar veterinarios.</string>
 </dict>
 </plist>

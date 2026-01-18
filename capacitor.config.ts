@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.ram',
+  appId: 'app.registroanimal.movil',
   appName: 'RAM',
   webDir: 'out'
 };
