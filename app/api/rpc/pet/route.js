@@ -283,7 +283,7 @@ async function handleGetPet(data, session) {
     // Get Documents
     let documents = [];
     if (isOwner) {
-        documents = await db.getAll('SELECT * FROM documents WHERE pet_id = $1 ORDER BY created_at DESC', [petId]);
+        documents = await db.getAll('SELECT * FROM documents WHERE pet_id = $1 ORDER BY issued_at DESC', [petId]);
     }
 
     return NextResponse.json({
