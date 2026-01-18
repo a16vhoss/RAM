@@ -29,7 +29,7 @@ export async function POST(request) {
         data = json.data;
     }
 
-    if (!session?.user && action !== 'getLostPets') {
+    if (!session?.user && action !== 'getLostPets' && action !== 'getPet') {
         return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -49,6 +49,9 @@ export async function POST(request) {
             }
             case 'getLostPets': {
                 return await handleGetLostPets(data);
+            }
+            case 'getPet': {
+                return await handleGetPet(data, session);
             }
             default:
                 return NextResponse.json({ success: false, error: 'Invalid action' }, { status: 400 });
@@ -237,4 +240,61 @@ async function handleGetLostPets(data) {
     const cities = await db.getAll(`SELECT DISTINCT u.city FROM pets p JOIN users u ON p.user_id = u.user_id WHERE p.status = 'lost' AND u.city IS NOT NULL`);
 
     return NextResponse.json({ success: true, data: lostPets, cities: cities.map(c => c.city).filter(Boolean) });
+}
+
+async function handleGetPet(data, session) {
+    const { petId } = data;
+    if (!petId) return NextResponse.json({ success: false, error: 'Pet ID required' });
+
+    const userId = session?.user?.user_id;
+
+    // Get Pet
+    const [pet] = await db.getAll('SELECT * FROM pets WHERE pet_id = $1', [petId]);
+    if (!pet) return NextResponse.json({ success: false, error: 'Pet not found' });
+
+    // Check ownership
+    let isOwner = false;
+    let role = null;
+
+    // Check if user is in pet_owners
+    if (userId) {
+        const [ownerRecord] = await db.getAll('SELECT role FROM pet_owners WHERE pet_id = $1 AND user_id = $2', [petId, userId]);
+        if (ownerRecord) {
+            isOwner = true;
+            role = ownerRecord.role;
+        } else if (pet.user_id === userId) {
+            // Fallback for legacy pets not in pet_owners
+            isOwner = true;
+            role = 'owner';
+        }
+    }
+
+    // Get Owners
+    let owners = [];
+    if (isOwner) {
+        owners = await db.getAll(`
+            SELECT u.user_id, u.first_name, u.email, u.photo, po.role 
+            FROM pet_owners po 
+            JOIN users u ON po.user_id = u.user_id 
+            WHERE po.pet_id = $1
+        `, [petId]);
+    }
+
+    // Get Documents
+    let documents = [];
+    if (isOwner) {
+        documents = await db.getAll('SELECT * FROM documents WHERE pet_id = $1 ORDER BY created_at DESC', [petId]);
+    }
+
+    return NextResponse.json({
+        success: true,
+        data: {
+            ...pet,
+            isOwner,
+            role,
+            owners,
+            documents,
+            currentUserId: userId
+        }
+    });
 }

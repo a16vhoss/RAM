@@ -58,3 +58,7 @@ export async function getLostPets({ city = '', species = '', query = '' } = {}) 
     return rpc('getLostPets', { city, species, query });
 }
 
+export async function getPet(petId) {
+    return rpc('getPet', { petId });
+}
+

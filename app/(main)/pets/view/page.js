@@ -6,7 +6,7 @@ import Link from 'next/link';
 import QRCode from 'qrcode';
 import { FaPaw, FaSyringe, FaNotesMedical, FaWeight, FaRulerVertical, FaBirthdayCake, FaPalette, FaMars, FaVenus, FaMicrochip, FaMapMarkerAlt, FaFileMedical, FaTrash, FaPlus, FaTimes, FaUsers, FaArrowLeft, FaCheckCircle, FaShieldAlt, FaIdCard, FaFileAlt, FaChevronRight, FaArrowRight, FaStethoscope, FaPills, FaEdit, FaPaperclip, FaVenusMars } from 'react-icons/fa';
 import ReportLostModal from '@/app/components/ReportLostModal';
-import { deletePet, toggleLostPetStatus } from '@/app/actions/pet';
+import { deletePet, toggleLostPetStatus, getPet } from '@/app/actions/pet';
 import { getMedicalRecords } from '@/app/actions/medical';
 import DocumentViewerModal from '@/app/(main)/documents/DocumentViewerModal';
 import MedicalRecordModal from '../MedicalRecordModal';
@@ -55,11 +55,10 @@ function PetViewContent() {
         }
 
         try {
-            const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
-            const res = await fetch(`${API_BASE}/api/pets/${petId}`);
+            const res = await getPet(petId);
 
-            if (res.ok) {
-                const data = await res.json();
+            if (res.success) {
+                const data = res.data;
                 setPet(data);
 
                 await fetchMedicalRecords();
@@ -76,8 +75,7 @@ function PetViewContent() {
                     setIsReportLostModalOpen(true);
                 }
             } else {
-                const err = await res.json();
-                setErrorMessage(`Error ${res.status}: ${err.error || 'Unknown error'}`);
+                setErrorMessage(`Error: ${res.error || 'Unknown error'}`);
             }
         } catch (error) {
             console.error('Error fetching data:', error);
