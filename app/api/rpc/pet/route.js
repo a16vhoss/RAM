@@ -273,7 +273,7 @@ async function handleGetPet(data, session) {
     let owners = [];
     if (isOwner) {
         owners = await db.getAll(`
-            SELECT u.user_id, u.first_name, u.email, u.photo, po.role 
+            SELECT u.user_id, u.first_name, u.email, po.role 
             FROM pet_owners po 
             JOIN users u ON po.user_id = u.user_id 
             WHERE po.pet_id = $1
