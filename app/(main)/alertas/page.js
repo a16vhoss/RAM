@@ -1,22 +1,63 @@
+'use client';
+
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { getLostPets } from '@/app/actions/pet';
 import Link from 'next/link';
 import { FaSearch, FaMapMarkerAlt, FaPaw, FaShieldAlt, FaExclamationTriangle } from 'react-icons/fa';
 
-export const metadata = {
-    title: 'Alerta RAM | Mascotas Perdidas - RAM',
-    description: 'Ayuda a encontrar mascotas perdidas en tu comunidad. Directorio oficial de búsqueda del Registro Animal Municipal.',
-};
+export default function LostPetsPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-background-dark">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            </div>
+        }>
+            <LostPetsContent />
+        </Suspense>
+    );
+}
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+function LostPetsContent() {
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const city = searchParams.get('city') || '';
+    const species = searchParams.get('species') || '';
+    const query = searchParams.get('query') || '';
 
-export default async function LostPetsPage({ searchParams }) {
-    const params = await searchParams;
-    const city = params?.city || '';
-    const species = params?.species || '';
-    const query = params?.query || '';
+    const [pets, setPets] = useState([]);
+    const [cities, setCities] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const { data: pets, cities } = await getLostPets({ city, species, query });
+    // Form states
+    const [formCity, setFormCity] = useState(city);
+    const [formSpecies, setFormSpecies] = useState(species);
+    const [formQuery, setFormQuery] = useState(query);
+
+    useEffect(() => {
+        async function fetchData() {
+            setLoading(true);
+            try {
+                const { data, cities: availableCities } = await getLostPets({ city, species, query });
+                setPets(data || []);
+                if (availableCities) setCities(availableCities);
+            } catch (error) {
+                console.error("Error fetching lost pets:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchData();
+    }, [city, species, query]);
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const params = new URLSearchParams();
+        if (formCity) params.set('city', formCity);
+        if (formSpecies) params.set('species', formSpecies);
+        if (formQuery) params.set('query', formQuery);
+        router.push(`/alertas?${params.toString()}`);
+    };
 
     return (
         <div className="min-h-screen w-full bg-background-light dark:bg-background-dark text-slate-900 dark:text-white pb-20">
@@ -44,22 +85,22 @@ export default async function LostPetsPage({ searchParams }) {
 
             {/* Filters Section */}
             <div className="w-full px-4 md:px-12 -mt-8 relative z-20">
-                <form className="bg-white dark:bg-[#162028] p-4 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 flex flex-col md:flex-row gap-4 items-center">
+                <form onSubmit={handleSearch} className="bg-white dark:bg-[#162028] p-4 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 flex flex-col md:flex-row gap-4 items-center">
                     <div className="flex-1 w-full relative">
                         <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
                             type="text"
-                            name="query"
+                            value={formQuery}
+                            onChange={(e) => setFormQuery(e.target.value)}
                             placeholder="Buscar por nombre o raza..."
-                            defaultValue={query}
                             className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-[#0b1115] border-none focus:ring-2 focus:ring-primary outline-none transition-all"
                         />
                     </div>
 
                     <div className="flex w-full md:w-auto gap-2">
                         <select
-                            name="city"
-                            defaultValue={city}
+                            value={formCity}
+                            onChange={(e) => setFormCity(e.target.value)}
                             className="flex-1 md:w-48 px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#0b1115] border-none focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer"
                         >
                             <option value="">Todas las Ciudades</option>
@@ -68,8 +109,8 @@ export default async function LostPetsPage({ searchParams }) {
                             ))}
                         </select>
                         <select
-                            name="species"
-                            defaultValue={species}
+                            value={formSpecies}
+                            onChange={(e) => setFormSpecies(e.target.value)}
                             className="flex-1 md:w-40 px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#0b1115] border-none focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer"
                         >
                             <option value="">Especie</option>
@@ -86,10 +127,14 @@ export default async function LostPetsPage({ searchParams }) {
 
             {/* Grid Section */}
             <div className="w-full px-4 md:px-12 py-12">
-                {pets && pets.length > 0 ? (
+                {loading ? (
+                    <div className="flex justify-center py-20">
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                    </div>
+                ) : pets && pets.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
                         {pets.map((pet) => (
-                            <Link href={`/pets/${pet.pet_id}`} key={pet.pet_id} className="group relative bg-white dark:bg-[#162028] rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                            <Link href={`/pets/view?id=${pet.pet_id}`} key={pet.pet_id} className="group relative bg-white dark:bg-[#162028] rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
                                 {/* Image Container */}
                                 <div className="relative aspect-[4/5] overflow-hidden">
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#162028] via-transparent to-transparent opacity-80 z-10"></div>

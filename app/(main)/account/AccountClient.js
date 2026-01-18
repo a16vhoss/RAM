@@ -94,7 +94,7 @@ function ProfileView({ user, pets, documents, onOpenSettings }) {
                             {pets.map(pet => (
                                 <div
                                     key={pet.pet_id}
-                                    onClick={() => router.push(`/pets/${pet.pet_id}`)}
+                                    onClick={() => router.push(`/pets/view?id=${pet.pet_id}`)}
                                     className="bg-surface-dark/50 border border-white/5 rounded-2xl p-4 flex items-center gap-4 hover:bg-white/5 transition-colors cursor-pointer group"
                                 >
                                     <div className="w-16 h-16 rounded-xl bg-gray-700 overflow-hidden shrink-0 flex items-center justify-center">

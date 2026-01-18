@@ -1,34 +1,76 @@
-import { getSession } from '@/lib/auth';
-import db from '@/lib/db';
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaPlus, FaBell, FaIdCard, FaStethoscope, FaSyringe, FaExclamationTriangle, FaSearch, FaLightbulb, FaNewspaper } from 'react-icons/fa';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import DashboardSearch from './DashboardSearch';
 import NotificationsBell from '@/app/components/NotificationsBell';
 import JoinFamilyButton from '@/app/components/JoinFamilyButton';
 
 import Image from 'next/image';
 import SpeciesIcon from '@/app/components/SpeciesIcon';
+import { API_BASE } from '@/app/actions/pet';
 
-export default async function DashboardPage() {
-    const session = await getSession();
-    if (!session) redirect('/login');
+export default function DashboardPage() {
+    const router = useRouter();
+    const [user, setUser] = useState(null);
+    const [pets, setPets] = useState([]);
+    const [dailyTip, setDailyTip] = useState("La hidratación es clave. Cambia el agua de tu mascota 3 veces al día.");
+    const [loading, setLoading] = useState(true);
 
-    const user = session.user;
+    useEffect(() => {
+        async function loadData() {
+            try {
+                // 1. Get Session
+                const sessionRes = await fetch(`${API_BASE || ''}/api/auth/session`, {
+                    credentials: 'include'
+                });
+                const { session } = await sessionRes.json();
 
-    // Fetch Pets (owned or co-owned)
-    const pets = await db.getAll(`
-        SELECT pets.* 
-        FROM pets 
-        JOIN pet_owners ON pets.pet_id = pet_owners.pet_id 
-        WHERE pet_owners.user_id = $1
-    `, [user.user_id]);
+                if (!session || !session.user) {
+                    router.push('/login');
+                    return;
+                }
 
-    // Fetch Daily Tip
-    const dailyTip = await db.getOne(`
-        SELECT content FROM daily_tips WHERE display_date = CURRENT_DATE
-    `);
-    const tipContent = dailyTip?.content || "La hidratación es clave. Cambia el agua de tu mascota 3 veces al día.";
+                setUser(session.user);
+
+                // 2. Get Dashboard Data via RPC
+                const rpcRes = await fetch(`${API_BASE || ''}/api/rpc/user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ action: 'getDashboardData', data: {} })
+                });
+
+                const rpcData = await rpcRes.json();
+
+                if (rpcData.success) {
+                    setPets(rpcData.data.pets || []);
+                    if (rpcData.data.dailyTip) {
+                        setDailyTip(rpcData.data.dailyTip);
+                    }
+                }
+
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        loadData();
+    }, [router]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-background-light dark:bg-background-dark pb-28 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+            </div>
+        );
+    }
+
+    if (!user) return null;
 
     return (
         <div className="min-h-screen bg-background-light dark:bg-background-dark pb-28 overflow-x-hidden">
@@ -146,7 +188,7 @@ export default async function DashboardPage() {
                             <span className="inline-block px-2 py-1 rounded-md bg-white/20 backdrop-blur-sm text-[10px] font-bold text-white mb-2 uppercase tracking-wide border border-white/10">
                                 Tip del día
                             </span>
-                            <p className="text-white font-bold text-sm leading-snug">{tipContent}</p>
+                            <p className="text-white font-bold text-sm leading-snug">{dailyTip}</p>
                         </div>
                         <div className="relative z-10 w-16 h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform group-hover:rotate-12">
                             <FaLightbulb size={32} className="text-yellow-300 drop-shadow-lg" />
@@ -174,7 +216,7 @@ export default async function DashboardPage() {
                         ) : (
                             pets.map(pet => (
                                 <Link
-                                    href={`/pets/${pet.pet_id}`}
+                                    href={`/pets/view?id=${pet.pet_id}`}
                                     key={pet.pet_id}
                                     className="snap-center group min-w-[160px] h-[220px] rounded-3xl overflow-hidden relative shadow-lg hover:shadow-glow transition-all hover:-translate-y-1"
                                 >

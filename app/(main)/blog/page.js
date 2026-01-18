@@ -1,35 +1,73 @@
-import db from '@/lib/db';
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getSession } from '@/lib/auth';
+import { API_BASE } from '@/app/actions/pet';
 
-export default async function BlogPage() {
-    const session = await getSession();
-    const posts = await db.getAll("SELECT * FROM blog_posts WHERE status = 'Publicado' ORDER BY published_at DESC");
+export default function BlogPage() {
+    const [posts, setPosts] = useState([]);
+    const [recommendedPosts, setRecommendedPosts] = useState([]);
+    const [otherPosts, setOtherPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    let recommendedPosts = [];
-    let otherPosts = posts;
+    useEffect(() => {
+        async function loadData() {
+            try {
+                // 1. Fetch Blog Posts
+                const blogRes = await fetch(`${API_BASE || ''}/api/rpc/blog`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'getBlogPosts', data: {} })
+                });
+                const blogData = await blogRes.json();
+                const allPosts = blogData.data || [];
+                setPosts(allPosts);
+                setOtherPosts(allPosts); // Default to all
 
-    // Personalization Logic
-    if (session?.user) {
-        // Fetch user's pet species
-        const userPets = await db.getAll("SELECT DISTINCT species FROM pets WHERE user_id = $1", [session.user.user_id]);
-        const userSpecies = userPets.map(p => p.species.toLowerCase()); // e.g., ['perro', 'gato']
+                // 2. Check Session & Personalize
+                const sessionRes = await fetch(`${API_BASE || ''}/api/auth/session`, { credentials: 'include' });
+                const { session } = await sessionRes.json();
 
-        if (userSpecies.length > 0) {
-            recommendedPosts = posts.filter(post => {
-                const tags = (post.tags || '').toLowerCase();
-                return userSpecies.some(species => tags.includes(species));
-            });
+                if (session?.user) {
+                    // Fetch user pets
+                    const rpcRes = await fetch(`${API_BASE || ''}/api/rpc/user`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ action: 'getDashboardData', data: {} })
+                    });
+                    const rpcData = await rpcRes.json();
 
-            // Filter out recommended from "others" to avoid duplicates (optional, but cleaner)
-            const recommendedIds = new Set(recommendedPosts.map(p => p.post_id));
-            otherPosts = posts.filter(p => !recommendedIds.has(p.post_id));
+                    if (rpcData.success && rpcData.data.pets) {
+                        const userSpecies = [...new Set(rpcData.data.pets.map(p => p.species.toLowerCase()))];
+
+                        if (userSpecies.length > 0) {
+                            const recs = allPosts.filter(post => {
+                                const tags = (post.tags || '').toLowerCase();
+                                return userSpecies.some(species => tags.includes(species));
+                            });
+
+                            if (recs.length > 0) {
+                                setRecommendedPosts(recs);
+                                const recIds = new Set(recs.map(p => p.post_id));
+                                setOtherPosts(allPosts.filter(p => !recIds.has(p.post_id)));
+                            }
+                        }
+                    }
+                }
+
+            } catch (error) {
+                console.error('Error loading blog data:', error);
+            } finally {
+                setLoading(false);
+            }
         }
-    }
+        loadData();
+    }, []);
 
     const PostCard = ({ post }) => (
         <Link
-            href={`/blog/${post.slug}`}
+            href={`/blog/view?slug=${post.slug}`}
             key={post.post_id}
             className="block group"
         >
@@ -67,6 +105,14 @@ export default async function BlogPage() {
             </article>
         </Link>
     );
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-background text-text-main px-4 py-8 max-w-7xl mx-auto pb-32">

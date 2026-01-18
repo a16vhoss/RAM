@@ -1,18 +1,61 @@
-import { getSession } from '@/lib/auth';
-import db from '@/lib/db';
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import { FaCalendarAlt, FaClock, FaMapMarkerAlt, FaPlus } from 'react-icons/fa';
+import { API_BASE } from '@/app/actions/pet';
 
-export default async function AppointmentsPage() {
-    const session = await getSession();
-    if (!session) redirect('/login');
+export default function AppointmentsPage() {
+    const router = useRouter();
+    const [pets, setPets] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const pets = await db.getAll('SELECT * FROM pets WHERE user_id = $1', [session.user.user_id]);
+    useEffect(() => {
+        async function loadData() {
+            try {
+                // 1. Check Session
+                const sessionRes = await fetch(`${API_BASE || ''}/api/auth/session`, { credentials: 'include' });
+                const { session } = await sessionRes.json();
+
+                if (!session || !session.user) {
+                    router.push('/login');
+                    return;
+                }
+
+                // 2. Get Pets via RPC
+                const rpcRes = await fetch(`${API_BASE || ''}/api/rpc/user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ action: 'getDashboardData', data: {} })
+                });
+
+                const rpcData = await rpcRes.json();
+
+                if (rpcData.success) {
+                    setPets(rpcData.data.pets || []);
+                }
+            } catch (error) {
+                console.error('Error loading appointments data:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadData();
+    }, [router]);
 
     // Mock appointments data
     const upcomingAppointments = [];
     const pastAppointments = [];
+
+    if (loading) {
+        return (
+            <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: '32px', height: '32px', border: '4px solid #1C77C3', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+            </div>
+        );
+    }
 
     return (
         <div style={{ padding: '20px' }}>

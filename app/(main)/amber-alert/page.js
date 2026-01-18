@@ -1,16 +1,64 @@
+'use client';
 
-import { getSession } from '@/lib/auth';
-import db from '@/lib/db';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { FaExclamationTriangle, FaArrowLeft, FaCheckCircle, FaShieldAlt } from 'react-icons/fa';
+import { API_BASE } from '@/app/actions/pet';
 
-export default async function AmberAlertPage() {
-    const session = await getSession();
-    if (!session) redirect('/login');
+export default function AmberAlertPage() {
+    const router = useRouter();
+    const [user, setUser] = useState(null);
+    const [pets, setPets] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const user = session.user;
-    const pets = await db.getAll('SELECT * FROM pets WHERE user_id = $1', [user.user_id]);
+    useEffect(() => {
+        async function loadData() {
+            try {
+                // 1. Get Session
+                const sessionRes = await fetch(`${API_BASE || ''}/api/auth/session`, { credentials: 'include' });
+                const { session } = await sessionRes.json();
+
+                if (!session || !session.user) {
+                    router.push('/login');
+                    return;
+                }
+
+                setUser(session.user);
+
+                // 2. Get Pets via RPC (using getDashboardData as it returns pets)
+                const rpcRes = await fetch(`${API_BASE || ''}/api/rpc/user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ action: 'getDashboardData', data: {} })
+                });
+
+                const rpcData = await rpcRes.json();
+
+                if (rpcData.success) {
+                    setPets(rpcData.data.pets || []);
+                }
+
+            } catch (error) {
+                console.error('Error loading amber alert data:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        loadData();
+    }, [router]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-background-dark flex items-center justify-center">
+                <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
+    if (!user) return null;
 
     return (
         <div className="min-h-screen bg-background-dark pb-28 text-white relative overflow-hidden">
@@ -76,14 +124,14 @@ export default async function AmberAlertPage() {
                                     <div className="mt-3">
                                         {pet.status === 'lost' ? (
                                             <Link
-                                                href={`/pets/${pet.pet_id}`}
+                                                href={`/pets/view?id=${pet.pet_id}`}
                                                 className="block w-full py-2 bg-red-600/20 hover:bg-red-600/30 text-red-500 rounded-xl text-center font-bold text-sm transition-colors border border-red-600/30"
                                             >
                                                 Ver Alerta Activa
                                             </Link>
                                         ) : (
                                             <Link
-                                                href={`/pets/${pet.pet_id}?report=true`}
+                                                href={`/pets/view?id=${pet.pet_id}&report=true`}
                                                 className="block w-full py-2 bg-white text-red-600 hover:bg-red-50 rounded-xl text-center font-bold text-sm transition-colors shadow-lg"
                                             >
                                                 🚨 REPORTAR EXTRAVÍO

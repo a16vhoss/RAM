@@ -143,7 +143,7 @@ export default function CommunitiesPage() {
                                     return (
                                         <Link
                                             key={community.community_id}
-                                            href={`/communities/${community.slug}`}
+                                            href={`/communities/view?slug=${community.slug}`}
                                             className="group relative overflow-hidden rounded-2xl aspect-square"
                                         >
                                             <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-90 group-hover:opacity-100 transition-opacity`}></div>
@@ -205,7 +205,7 @@ function CommunityCard({ community, showBadge = false }) {
 
     return (
         <Link
-            href={`/communities/${community.slug}`}
+            href={`/communities/view?slug=${community.slug}`}
             className="group bg-slate-800/60 backdrop-blur-md p-4 rounded-2xl flex items-center gap-4 border border-white/5 hover:bg-slate-800 transition-colors"
         >
             <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center text-primary flex-shrink-0">

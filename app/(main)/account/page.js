@@ -1,31 +1,68 @@
-import { getSession } from '@/lib/auth';
-import db from '@/lib/db';
-import { redirect } from 'next/navigation';
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import AccountClient from './AccountClient';
+import { API_BASE } from '@/app/actions/pet'; // Re-use base URL logic
 
-export default async function AccountPage() {
-    const session = await getSession();
-    if (!session) redirect('/login');
+export default function AccountPage() {
+    const router = useRouter();
+    const [user, setUser] = useState(null);
+    const [pets, setPets] = useState([]);
+    const [documents, setDocuments] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const user = session.user;
+    useEffect(() => {
+        async function loadData() {
+            try {
+                // 1. Get Session
+                const sessionRes = await fetch(`${API_BASE || ''}/api/auth/session`, {
+                    credentials: 'include'
+                });
+                const { session } = await sessionRes.json();
 
-    // Fetch user pets
-    // Fetch user pets (owned and co-owned)
-    const pets = await db.getAll(`
-        SELECT pets.* 
-        FROM pets 
-        JOIN pet_owners ON pets.pet_id = pet_owners.pet_id 
-        WHERE pet_owners.user_id = $1
-    `, [user.user_id]);
+                if (!session || !session.user) {
+                    router.push('/login');
+                    return;
+                }
 
-    // Fetch user documents summary (owned and co-owned)
-    const documents = await db.getAll(`
-        SELECT d.document_type 
-        FROM documents d 
-        JOIN pets p ON d.pet_id = p.pet_id 
-        JOIN pet_owners po ON p.pet_id = po.pet_id
-        WHERE po.user_id = $1
-    `, [user.user_id]);
+                setUser(session.user);
+
+                // 2. Get Dashboard Data via RPC
+                // We use the direct fetch to rpc endpoint we just modified
+                const rpcRes = await fetch(`${API_BASE || ''}/api/rpc/user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ action: 'getDashboardData', data: {} })
+                });
+
+                const rpcData = await rpcRes.json();
+
+                if (rpcData.success) {
+                    setPets(rpcData.data.pets || []);
+                    setDocuments(rpcData.data.documents || []);
+                }
+
+            } catch (error) {
+                console.error('Error loading account data:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        loadData();
+    }, [router]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-background-dark flex items-center justify-center">
+                <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
+    if (!user) return null; // Should redirect
 
     return (
         <AccountClient

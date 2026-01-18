@@ -5,10 +5,15 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:mobile": "sh scripts/build-mobile.sh",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "@capacitor/android": "^8.0.1",
+    "@capacitor/cli": "^8.0.1",
+    "@capacitor/core": "^8.0.1",
+    "@capacitor/ios": "^8.0.1",
     "@google/generative-ai": "^0.24.1",
     "@react-google-maps/api": "^2.20.8",
     "@stripe/stripe-js": "^8.6.0",

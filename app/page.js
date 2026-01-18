@@ -1,15 +1,31 @@
-import { getSession } from '@/lib/auth';
-import { redirect } from 'next/navigation';
+'use client';
+
+import { useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { FaPaw, FaQrcode, FaShieldAlt, FaMobileAlt, FaArrowRight, FaCheck } from 'react-icons/fa';
+import { API_BASE } from '@/app/actions/pet';
 
-export default async function LandingPage() {
-    const session = await getSession();
+export default function LandingPage() {
+    const router = useRouter();
 
-    // If user is logged in, redirect to dashboard
-    if (session) {
-        redirect('/dashboard');
-    }
+    useEffect(() => {
+        // Optional: Check session on client side if you want auto-redirect
+        // For static mobile capability, it's better to let them click Login
+        // But we can check session here if we want similar behavior
+        async function checkSession() {
+            try {
+                const res = await fetch(`${API_BASE || ''}/api/auth/session`, { credentials: 'include' });
+                const data = await res.json();
+                if (data.session) {
+                    router.push('/dashboard');
+                }
+            } catch (e) {
+                // ignore
+            }
+        }
+        checkSession();
+    }, [router]);
 
     return (
         <div className="min-h-screen bg-slate-900 text-white overflow-x-hidden">

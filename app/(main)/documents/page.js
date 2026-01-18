@@ -1,66 +1,61 @@
-import { getSession } from '@/lib/auth';
-import db from '@/lib/db';
-import { redirect } from 'next/navigation';
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import DocumentsClient from './DocumentsClient';
+import { API_BASE } from '@/app/actions/pet';
 
-// Force dynamic rendering - no caching
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export default function DocumentsPage() {
+    const router = useRouter();
+    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState({ session: null, pets: [], documents: [] });
 
-export default async function DocumentsPage() {
-    const session = await getSession();
-    if (!session) redirect('/login');
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                // 1. Get Session
+                const sessionRes = await fetch(`${API_BASE}/api/auth/session`, { credentials: 'include' });
+                const session = await sessionRes.json();
 
-    const pets = await db.getAll('SELECT * FROM pets WHERE user_id = $1', [session.user.user_id]);
-    const documents = await db.getAll(`
-        SELECT 
-            d.*, 
-            p.pet_name, 
-            p.pet_photo,
-            p.breed,
-            p.color,
-            p.sex,
-            p.birth_date,
-            p.medical_notes,
-            p.city as pet_city,
-            p.father_breed,
-            p.mother_breed,
-            u.first_name as owner_first_name,
-            u.last_name as owner_last_name,
-            u.email as owner_email,
-            u.phone as owner_phone,
-            u.city as owner_city,
-            u.address as owner_address,
-            u.detected_zone as owner_location
-        FROM documents d 
-        JOIN pets p ON d.pet_id = p.pet_id 
-        JOIN users u ON p.user_id = u.user_id
-        WHERE p.user_id = $1 
-        ORDER BY d.issued_at DESC
-    `, [session.user.user_id]);
+                if (!session?.user) {
+                    router.push('/login');
+                    return;
+                }
 
-    // DEBUG: Log documents data to Vercel logs
-    console.log('[DEBUG] Documents fetched for user:', session.user.user_id);
-    documents.forEach((doc, i) => {
-        console.log(`[DEBUG] Doc ${i}: pet=${doc.pet_name}, sex="${doc.sex}", owner=${doc.owner_first_name} ${doc.owner_last_name}, email=${doc.owner_email}`);
-    });
+                // 2. Get Documents and Pets via RPC
+                const res = await fetch(`${API_BASE}/api/rpc/user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'getDocuments' }),
+                    credentials: 'include'
+                });
 
-    // Serialize documents to ensure Dates are strings and avoid client-side issues
-    const serializedDocuments = documents.map(doc => ({
-        ...doc,
-        birth_date: doc.birth_date ? new Date(doc.birth_date).toISOString() : null,
-        created_at: doc.created_at ? new Date(doc.created_at).toISOString() : null,
-        expires_at: doc.expires_at ? new Date(doc.expires_at).toISOString() : null,
-        issued_at: doc.issued_at ? new Date(doc.issued_at).toISOString() : null,
-        // Ensure critical fields are robust strings
-        owner_location: doc.owner_location || doc.owner_city || 'No especificado',
-    }));
+                if (res.ok) {
+                    const result = await res.json();
+                    if (result.success) {
+                        setData({
+                            session,
+                            pets: result.data.pets,
+                            documents: result.data.documents
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to load documents:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadData();
+    }, [router]);
 
-    return (
-        <DocumentsClient
-            session={session}
-            pets={pets}
-            documents={serializedDocuments}
-        />
-    );
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-background-dark flex items-center justify-center">
+                <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
+    return <DocumentsClient session={data.session} pets={data.pets} documents={data.documents} />;
 }

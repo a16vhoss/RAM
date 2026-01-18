@@ -130,14 +130,14 @@ export default function ReportedPostsPage() {
                             <div className="flex-1 p-6">
                                 <div className="flex items-center justify-between mb-4">
                                     <div className="flex items-center gap-3">
-                                        <Link href={`/communities/${report.community_slug}`} className="text-xs font-bold text-primary hover:underline">
+                                        <Link href={`/communities/view?slug=${report.community_slug}`} className="text-xs font-bold text-primary hover:underline">
                                             {report.community_name}
                                         </Link>
                                         <span className="text-slate-600">•</span>
                                         <span className="text-sm text-slate-300">Autor: {report.author_name}</span>
                                     </div>
                                     <Link
-                                        href={`/communities/post/${report.post_id}`}
+                                        href={`/communities/post-view?id=${report.post_id}`}
                                         target="_blank"
                                         className="text-primary hover:text-white transition-colors text-sm flex items-center gap-2"
                                     >
