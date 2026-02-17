@@ -215,7 +215,7 @@ function PetViewContent() {
     return (
         <div className="min-h-screen bg-background-dark text-white pb-28 overflow-x-hidden relative">
             {/* Background Ambient Glows */}
-            <div className="fixed -top-[20%] -left-[10%] w-[300px] h-[300px] bg-blue-500/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+            <div className="fixed -top-[20%] -left-[10%] w-[300px] h-[300px] bg-primary/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
             <div className="fixed bottom-[10%] -right-[10%] w-[250px] h-[250px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
 
             {/* Top Navigation */}
@@ -345,7 +345,7 @@ function PetViewContent() {
                         {/* Stats Grid */}
                         <div className="px-4 animate-fade-in" style={{ animationDelay: '0.2s' }}>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                <StatCard icon={<FaPaw size={20} />} color="blue" label="Especie" value={pet.species} />
+                                <StatCard icon={<FaPaw size={20} />} color="green" label="Especie" value={pet.species} />
                                 <StatCard icon={<FaWeight size={20} />} color="orange" label="Peso" value={pet.weight ? `${pet.weight}kg` : 'N/A'} />
                                 <StatCard icon={<FaVenusMars size={20} />} color="pink" label="Sexo" value={pet.sex} />
                                 <StatCard icon={<FaBirthdayCake size={20} />} color="yellow" label="Cumpleaños" value={formatDateShort(pet.birth_date)} />
@@ -355,7 +355,7 @@ function PetViewContent() {
                         {/* Digital ID Card Section */}
                         <div className="px-4 mt-2 animate-fade-in" style={{ animationDelay: '0.3s' }}>
                             <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 group">
-                                <div className="absolute inset-0 bg-gradient-to-br from-primary to-blue-900"></div>
+                                <div className="absolute inset-0 bg-gradient-to-br from-primary to-green-900"></div>
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl translate-x-10 -translate-y-10 pointer-events-none"></div>
                                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/10 rounded-full blur-2xl -translate-x-10 translate-y-10 pointer-events-none"></div>
 
@@ -411,7 +411,7 @@ function PetViewContent() {
                                             onClick={() => setSelectedDoc({ ...doc, pet_name: pet.pet_name })}
                                             className="group bg-slate-800/60 backdrop-blur-md p-4 rounded-2xl flex items-center gap-4 border border-white/5 cursor-pointer hover:bg-slate-800 transition-colors shadow-sm"
                                         >
-                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${doc.document_type.includes('Acta') ? 'bg-orange-500/20 text-orange-400' : 'bg-blue-500/20 text-blue-400'}`}>
+                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${doc.document_type.includes('Acta') ? 'bg-orange-500/20 text-orange-400' : 'bg-green-500/20 text-green-400'}`}>
                                                 <FaFileAlt size={20} />
                                             </div>
                                             <div className="flex-1">
@@ -570,7 +570,7 @@ function PetViewContent() {
                     <div className="bg-white text-slate-900 w-full max-w-lg rounded-2xl shadow-2xl relative overflow-hidden animate-slide-up">
                         <div className="flex justify-between items-center p-4 border-b border-slate-100 bg-slate-50">
                             <h3 className="font-bold text-lg flex items-center gap-2">
-                                <FaUsers className="text-blue-500" /> Gestionar Familia
+                                <FaUsers className="text-primary" /> Gestionar Familia
                             </h3>
                             <button
                                 onClick={() => setShowFamilyModal(false)}
@@ -612,7 +612,7 @@ function PetViewContent() {
 
 function StatCard({ icon, color, label, value }) {
     const colorMap = {
-        blue: { bg: 'bg-blue-500/20', text: 'text-blue-400' },
+        blue: { bg: 'bg-green-500/20', text: 'text-green-400' },
         orange: { bg: 'bg-orange-500/20', text: 'text-orange-400' },
         pink: { bg: 'bg-pink-500/20', text: 'text-pink-400' },
         yellow: { bg: 'bg-yellow-500/20', text: 'text-yellow-400' }

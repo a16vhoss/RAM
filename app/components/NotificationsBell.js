@@ -63,7 +63,7 @@ export default function NotificationsBell() {
     const getIcon = (type) => {
         if (type === 'amber_alert') return <FaExclamationTriangle className="text-red-500" />;
         if (type === 'pet_found') return <FaCheckCircle className="text-green-500" />;
-        return <FaInfoCircle className="text-blue-400" />;
+        return <FaInfoCircle className="text-primary" />;
     };
 
     return (
@@ -98,7 +98,7 @@ export default function NotificationsBell() {
                                     onClick={() => handleMarkAsRead(note)}
                                     className={`p-4 border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer flex gap-3 ${!note.is_read ? 'bg-white/[0.02]' : ''}`}
                                 >
-                                    <div className={`mt-1 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${note.type === 'amber_alert' ? 'bg-red-500/10' : 'bg-blue-500/10'}`}>
+                                    <div className={`mt-1 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${note.type === 'amber_alert' ? 'bg-red-500/10' : 'bg-primary/10'}`}>
                                         {getIcon(note.type)}
                                     </div>
                                     <div className="flex-1">

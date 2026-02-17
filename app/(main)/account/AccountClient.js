@@ -126,7 +126,7 @@ function ProfileView({ user, pets, documents, onOpenSettings }) {
                 <section>
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                            <FaFileAlt className="text-blue-400" /> Documentos
+                            <FaFileAlt className="text-primary" /> Documentos
                         </h3>
                         <Link href="/documents" className="text-xs font-semibold text-gray-400 hover:text-white transition-colors">
                             Ver todos
@@ -174,7 +174,7 @@ function SettingsView({ user, onBack }) {
 
                 {/* Premium Card - Disabled temporarily
                 <section>
-                    <div className="bg-gradient-to-br from-primary via-blue-600 to-blue-700 rounded-2xl p-6 text-white shadow-lg shadow-primary/20 relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-primary via-green-600 to-green-700 rounded-2xl p-6 text-white shadow-lg shadow-primary/20 relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3"></div>
 
                         <div className="relative z-10 flex items-center justify-between mb-4">
@@ -204,7 +204,7 @@ function SettingsView({ user, onBack }) {
                     <div className="bg-surface-dark border border-white/5 rounded-2xl overflow-hidden divide-y divide-white/5">
                         <Link href="/account/edit" className="flex items-center justify-between p-4 hover:bg-white/5 transition-colors group">
                             <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400">
+                                <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400">
                                     <FaEdit size={14} />
                                 </div>
                                 <span className="font-medium text-gray-200">Editar Perfil</span>

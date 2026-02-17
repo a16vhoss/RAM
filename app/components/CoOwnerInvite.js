@@ -65,7 +65,7 @@ export default function CoOwnerInvite({ petId, owners = [], currentUserId }) {
     return (
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
             <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <span className="text-2xl text-blue-500"><FaUsers /></span> Familia (Co-Propietarios)
+                <span className="text-2xl text-primary"><FaUsers /></span> Familia (Co-Propietarios)
             </h3>
 
             <p className="text-slate-500 text-sm mb-6">
@@ -88,7 +88,7 @@ export default function CoOwnerInvite({ petId, owners = [], currentUserId }) {
                             <div>
                                 <p className="font-bold text-slate-900 leading-tight">
                                     {owner.first_name} {owner.last_name}
-                                    {owner.user_id === currentUserId && <span className="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full ml-2">Tú</span>}
+                                    {owner.user_id === currentUserId && <span className="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full ml-2">Tú</span>}
                                 </p>
                                 <p className="text-xs text-slate-500">{owner.email}</p>
                             </div>
@@ -124,8 +124,8 @@ export default function CoOwnerInvite({ petId, owners = [], currentUserId }) {
                         Generar Código de Invitación
                     </button>
                 ) : (
-                    <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl animate-fade-in text-center">
-                        <p className="text-xs text-blue-600 uppercase font-bold tracking-wider mb-2">Código Activo (24h)</p>
+                    <div className="bg-primary/5 border border-primary/20 p-4 rounded-xl animate-fade-in text-center">
+                        <p className="text-xs text-primary uppercase font-bold tracking-wider mb-2">Código Activo (24h)</p>
                         <div className="flex items-center justify-center gap-3 mb-3">
                             <span className="text-3xl font-mono font-black text-slate-900 tracking-widest">{activeInvite.code}</span>
                             <button

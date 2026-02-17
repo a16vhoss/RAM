@@ -68,7 +68,7 @@ function ProviderViewContent() {
 
     const getThemeForSpecialty = (spec) => {
         const s = spec.toLowerCase();
-        if (s.includes('vacuna')) return { bg: 'bg-blue-50 dark:bg-blue-500/10', text: 'text-[#2791e7]' };
+        if (s.includes('vacuna')) return { bg: 'bg-green-50 dark:bg-green-500/10', text: 'text-primary' };
         if (s.includes('cirug')) return { bg: 'bg-rose-50 dark:bg-rose-500/10', text: 'text-rose-500' };
         if (s.includes('est')) return { bg: 'bg-orange-50 dark:bg-orange-500/10', text: 'text-orange-500' };
         return { bg: 'bg-red-50 dark:bg-red-500/10', text: 'text-red-500' };
@@ -124,7 +124,7 @@ function ProviderViewContent() {
             <div className="relative px-4 -mt-24 z-10 w-full">
                 <div className="flex flex-col items-center rounded-[2rem] bg-white dark:bg-[#1c262e] p-6 shadow-xl shadow-black/5 dark:shadow-black/20 ring-1 ring-black/5 dark:ring-white/5 relative overflow-hidden">
                     {/* Decorative background blur */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-gradient-to-b from-[#2791e7]/5 to-transparent opacity-50 pointer-events-none"></div>
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-gradient-to-b from-primary/5 to-transparent opacity-50 pointer-events-none"></div>
 
                     {/* Avatar & Verified */}
                     <div className="-mt-16 mb-4 relative">
@@ -132,7 +132,7 @@ function ProviderViewContent() {
                             style={{ backgroundImage: `url('/api/placeholder?name=${provider.business_name}')` }}>
                         </div>
                         {provider.is_verified && (
-                            <div className="absolute bottom-1 right-1 flex h-8 w-8 items-center justify-center rounded-full bg-[#2791e7] text-white ring-4 ring-white dark:ring-[#1c262e] shadow-lg">
+                            <div className="absolute bottom-1 right-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white ring-4 ring-white dark:ring-[#1c262e] shadow-lg">
                                 <FaCheckCircle size={14} />
                             </div>
                         )}
@@ -154,10 +154,10 @@ function ProviderViewContent() {
                     {/* Quick Actions Bar */}
                     <div className="grid grid-cols-3 gap-3 w-full border-t border-gray-100 dark:border-white/5 pt-6">
                         <a href={`tel:${provider.phone}`} className="flex flex-col items-center gap-2 group cursor-pointer no-underline">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#2791e7]/10 text-[#2791e7] dark:bg-[#2791e7]/20 dark:text-[#2791e7] transition-colors group-hover:bg-[#2791e7] group-hover:text-white">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary transition-colors group-hover:bg-primary group-hover:text-white">
                                 <FaPhone size={20} />
                             </div>
-                            <span className="text-xs font-semibold text-gray-600 dark:text-gray-400 group-hover:text-[#2791e7] transition-colors">Llamar</span>
+                            <span className="text-xs font-semibold text-gray-600 dark:text-gray-400 group-hover:text-primary transition-colors">Llamar</span>
                         </a>
                         <button className="flex flex-col items-center gap-2 group cursor-pointer">
                             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-green-500/10 text-green-600 dark:bg-green-500/20 dark:text-green-400 transition-colors group-hover:bg-green-600 group-hover:text-white">
@@ -204,7 +204,7 @@ function ProviderViewContent() {
                 {/* About Section */}
                 <div className="p-6 rounded-[1.5rem] bg-white dark:bg-[#1c262e] shadow-sm ring-1 ring-black/5 dark:ring-white/5">
                     <div className="flex items-center gap-2 mb-3">
-                        <FaInfoCircle className="text-[#2791e7]" size={20} />
+                        <FaInfoCircle className="text-primary" size={20} />
                         <h3 className="text-base font-bold text-gray-900 dark:text-white">Sobre nosotros</h3>
                     </div>
                     <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
@@ -220,7 +220,7 @@ function ProviderViewContent() {
                             style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1567&q=80")' }}></div>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                         <div className="absolute top-4 right-4 bg-white/90 dark:bg-black/60 backdrop-blur-md p-2 rounded-full shadow-lg">
-                            <FaMapMarkerAlt className="text-[#2791e7] text-xl" />
+                            <FaMapMarkerAlt className="text-primary text-xl" />
                         </div>
                         <div className="absolute bottom-5 left-5 right-5 text-white">
                             <p className="font-bold text-base mb-0.5">{provider.address}</p>
@@ -232,7 +232,7 @@ function ProviderViewContent() {
                     <div className="p-6 rounded-[1.5rem] bg-white dark:bg-[#1c262e] shadow-sm ring-1 ring-black/5 dark:ring-white/5">
                         <div className="flex justify-between items-center mb-5">
                             <div className="flex items-center gap-2">
-                                <FaClock className="text-[#2791e7]" size={20} />
+                                <FaClock className="text-primary" size={20} />
                                 <h3 className="text-base font-bold text-gray-900 dark:text-white">Horario</h3>
                             </div>
                             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 dark:bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-400">
@@ -254,7 +254,7 @@ function ProviderViewContent() {
 
             {/* Sticky Bottom CTA */}
             <div className="fixed bottom-0 left-0 right-0 p-4 z-40 bg-gradient-to-t from-[#f6f7f8] via-[#f6f7f8]/90 to-transparent dark:from-[#111a21] dark:via-[#111a21]/90 pb-6 pt-10 pointer-events-none">
-                <button className="pointer-events-auto w-full h-14 rounded-2xl bg-[#2791e7] hover:bg-blue-600 text-white font-bold text-lg shadow-lg shadow-blue-500/40 flex items-center justify-center gap-3 transition-all transform active:scale-[0.98]">
+                <button className="pointer-events-auto w-full h-14 rounded-2xl bg-primary hover:bg-primary-hover text-white font-bold text-lg shadow-lg shadow-primary/40 flex items-center justify-center gap-3 transition-all transform active:scale-[0.98]">
                     <FaCalendarAlt />
                     Agendar Cita
                 </button>

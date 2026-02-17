@@ -33,7 +33,7 @@ export default function LandingPage() {
             <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-white/5">
                 <div className="w-full px-6 md:px-12 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
                             <FaPaw className="text-white text-lg" />
                         </div>
                         <div>
@@ -45,7 +45,7 @@ export default function LandingPage() {
                         <Link href="/login" className="text-sm text-slate-300 hover:text-white transition-colors">
                             Iniciar Sesión
                         </Link>
-                        <Link href="/register" className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-600/30">
+                        <Link href="/register" className="px-5 py-2.5 bg-primary hover:bg-primary-hover text-white font-semibold rounded-xl transition-all shadow-lg shadow-primary/30">
                             Registrarse
                         </Link>
                     </div>
@@ -55,18 +55,18 @@ export default function LandingPage() {
             {/* Hero Section */}
             <section className="relative pt-24 md:pt-32 pb-20 px-6">
                 {/* Background Effects */}
-                <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[150px] pointer-events-none"></div>
+                <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[150px] pointer-events-none"></div>
                 <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
                 <div className="w-full text-center relative z-10">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/10 border border-blue-500/20 rounded-full text-blue-400 text-sm font-medium mb-8">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-medium mb-8">
                         <FaShieldAlt />
                         Registro oficial para mascotas
                     </div>
 
                     <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
                         La identidad digital de tu
-                        <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent"> mascota</span>
+                        <span className="bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent"> mascota</span>
                     </h1>
 
                     <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10">
@@ -75,7 +75,7 @@ export default function LandingPage() {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link href="/register" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-xl shadow-blue-600/30 flex items-center justify-center gap-3 text-lg">
+                        <Link href="/register" className="px-8 py-4 bg-primary hover:bg-primary-hover text-white font-bold rounded-xl transition-all shadow-xl shadow-primary/30 flex items-center justify-center gap-3 text-lg">
                             Comenzar Ahora
                             <FaArrowRight />
                         </Link>
@@ -146,13 +146,13 @@ export default function LandingPage() {
             </section>
 
             {/* CTA Section */}
-            <section className="py-20 px-6 bg-gradient-to-br from-blue-600 to-blue-800">
+            <section className="py-20 px-6 bg-gradient-to-br from-green-600 to-green-800">
                 <div className="max-w-4xl mx-auto text-center">
                     <h2 className="text-3xl md:text-4xl font-bold mb-6">¿Listo para proteger a tu mascota?</h2>
-                    <p className="text-blue-100 text-lg mb-10 max-w-xl mx-auto">
+                    <p className="text-green-100 text-lg mb-10 max-w-xl mx-auto">
                         Únete a miles de dueños responsables que ya confían en RAM para mantener a sus mascotas seguras.
                     </p>
-                    <Link href="/register" className="inline-flex items-center gap-3 px-10 py-5 bg-white text-blue-700 font-bold rounded-xl hover:bg-blue-50 transition-all text-lg shadow-2xl">
+                    <Link href="/register" className="inline-flex items-center gap-3 px-10 py-5 bg-white text-green-700 font-bold rounded-xl hover:bg-green-50 transition-all text-lg shadow-2xl">
                         Crear Mi Cuenta Gratis
                         <FaArrowRight />
                     </Link>
@@ -163,7 +163,7 @@ export default function LandingPage() {
             <footer className="py-12 px-6 bg-slate-900 border-t border-white/5">
                 <div className="w-full flex flex-col md:flex-row items-center justify-between gap-6">
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+                        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                             <FaPaw className="text-white text-sm" />
                         </div>
                         <span className="font-bold">RAM Registro Animal Mundial</span>
@@ -179,7 +179,7 @@ export default function LandingPage() {
 
 function FeatureCard({ icon, title, description, color }) {
     const colorMap = {
-        blue: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+        blue: 'bg-green-500/10 text-green-400 border-green-500/20',
         red: 'bg-red-500/10 text-red-400 border-red-500/20',
         green: 'bg-green-500/10 text-green-400 border-green-500/20',
     };
@@ -198,7 +198,7 @@ function FeatureCard({ icon, title, description, color }) {
 function StepCard({ number, title, description }) {
     return (
         <div className="relative p-8 rounded-2xl bg-slate-800/30 border border-white/5 text-center">
-            <div className="w-12 h-12 rounded-full bg-blue-600 text-white font-bold text-xl flex items-center justify-center mx-auto mb-6">
+            <div className="w-12 h-12 rounded-full bg-primary text-white font-bold text-xl flex items-center justify-center mx-auto mb-6">
                 {number}
             </div>
             <h3 className="text-xl font-bold mb-3">{title}</h3>

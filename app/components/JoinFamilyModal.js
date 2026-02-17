@@ -49,7 +49,7 @@ export default function JoinFamilyModal({ isOpen, onClose }) {
                 </button>
 
                 <div className="text-center mb-6">
-                    <div className="mx-auto w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mb-4">
+                    <div className="mx-auto w-16 h-16 bg-primary/20 text-primary rounded-full flex items-center justify-center text-3xl mb-4">
                         <FaUsers />
                     </div>
                     <h3 className="text-2xl font-bold text-slate-900">Unirse a una Familia</h3>
@@ -66,7 +66,7 @@ export default function JoinFamilyModal({ isOpen, onClose }) {
                             onChange={(e) => setCode(e.target.value.toUpperCase())}
                             placeholder="Ej. AB12CD"
                             maxLength={8}
-                            className="w-full text-center text-3xl font-mono font-bold tracking-widest uppercase border-2 border-slate-200 rounded-xl py-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 text-slate-900"
+                            className="w-full text-center text-3xl font-mono font-bold tracking-widest uppercase border-2 border-slate-200 rounded-xl py-4 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-slate-300 text-slate-900"
                             required
                         />
                     </div>

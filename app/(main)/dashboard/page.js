@@ -107,7 +107,7 @@ export default function DashboardPage() {
 
                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         {/* RUAC */}
-                        <Link href="/documents" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
+                        <Link href="/documents" className="group relative h-40 rounded-3xl overflow-hidden bg-gradient-to-br from-green-600 to-green-800 p-5 flex flex-col justify-between shadow-lg hover:shadow-glow transition-all hover:scale-[1.02] active:scale-95">
                             <div className="absolute top-0 right-0 p-3 opacity-20 transform translate-x-2 -translate-y-2 group-hover:rotate-12 transition-transform">
                                 <FaIdCard size={90} className="text-white" />
                             </div>
@@ -116,7 +116,7 @@ export default function DashboardPage() {
                             </div>
                             <div className="relative z-10">
                                 <p className="text-white font-bold text-lg leading-tight">Registro RAM</p>
-                                <p className="text-blue-200 text-xs mt-1 font-medium">Identificación oficial</p>
+                                <p className="text-green-200 text-xs mt-1 font-medium">Identificación oficial</p>
                             </div>
                         </Link>
 

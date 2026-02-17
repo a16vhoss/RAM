@@ -70,7 +70,7 @@ export default function RegisterPage() {
 
                 <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20">
+                        <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
                             <FaCheck className="text-white text-lg" />
                         </div>
                         <span className="text-xl font-bold tracking-tight">RAM</span>
@@ -80,7 +80,7 @@ export default function RegisterPage() {
                 <div className="relative z-10 max-w-lg">
                     <h1 className="text-5xl font-bold mb-6 leading-tight">
                         La seguridad de tu mascota, <br />
-                        <span className="text-blue-400">nuestra prioridad.</span>
+                        <span className="text-primary">nuestra prioridad.</span>
                     </h1>
                     <p className="text-xl text-slate-300 mb-8">
                         Únete a miles de dueños responsables que ya gestionan el historial médico y la identidad de sus compañeros peludos con RAM.
@@ -111,7 +111,7 @@ export default function RegisterPage() {
             {/* Form Side (Right) */}
             <div className="w-full lg:w-1/2 flex items-center justify-center relative p-6">
                 {/* Background Ambient Glow Effects (Mobile/Form Side) */}
-                <div className="absolute top-[-10%] left-[-20%] w-[80%] h-[40%] bg-[#2791e7]/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+                <div className="absolute top-[-10%] left-[-20%] w-[80%] h-[40%] bg-primary/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
 
                 <div className="w-full max-w-md mx-auto relative z-10 flex flex-col h-full lg:h-auto justify-center">
 
@@ -127,7 +127,7 @@ export default function RegisterPage() {
                             </Link>
                         )}
                         <div className="flex flex-col items-center">
-                            <span className="text-[10px] font-bold tracking-widest uppercase text-[#2791e7] mb-0.5">Paso {step} de 2</span>
+                            <span className="text-[10px] font-bold tracking-widest uppercase text-primary mb-0.5">Paso {step} de 2</span>
                             <h2 className="text-lg font-bold leading-tight">Crear Cuenta</h2>
                         </div>
                         <div className="w-10"></div>
@@ -135,8 +135,8 @@ export default function RegisterPage() {
 
                     {/* Progress Indicators */}
                     <div className="flex w-full items-center justify-center gap-2 mb-8">
-                        <div className={`h-1.5 w-12 rounded-full transition-all duration-300 ${step >= 1 ? 'bg-[#2791e7] shadow-lg shadow-blue-500/30' : 'bg-slate-200 dark:bg-slate-700'}`}></div>
-                        <div className={`h-1.5 w-12 rounded-full transition-all duration-300 ${step >= 2 ? 'bg-[#2791e7] shadow-lg shadow-blue-500/30' : 'bg-slate-200 dark:bg-slate-700'}`}></div>
+                        <div className={`h-1.5 w-12 rounded-full transition-all duration-300 ${step >= 1 ? 'bg-primary shadow-lg shadow-primary/30' : 'bg-slate-200 dark:bg-slate-700'}`}></div>
+                        <div className={`h-1.5 w-12 rounded-full transition-all duration-300 ${step >= 2 ? 'bg-primary shadow-lg shadow-primary/30' : 'bg-slate-200 dark:bg-slate-700'}`}></div>
                     </div>
 
                     {error && (
@@ -152,7 +152,7 @@ export default function RegisterPage() {
                                 <div className="mb-8">
                                     <h1 className="text-4xl font-bold leading-[1.1] mb-3 tracking-tight text-slate-900 dark:text-white">
                                         ¡Hola! <br />
-                                        <span className="text-[#2791e7]">Empecemos.</span>
+                                        <span className="text-primary">Empecemos.</span>
                                     </h1>
                                     <p className="text-slate-500 dark:text-[#9dacb8] text-lg font-normal leading-relaxed">
                                         Crea tu perfil para gestionar la salud de tus mascotas.
@@ -161,7 +161,7 @@ export default function RegisterPage() {
 
                                 <div className="space-y-4">
                                     <div className="grid grid-cols-2 gap-4">
-                                        <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-[#2791e7] focus-within:border-transparent transition-all shadow-sm">
+                                        <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all shadow-sm">
                                             <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">Nombre</label>
                                             <input
                                                 name="firstName"
@@ -172,7 +172,7 @@ export default function RegisterPage() {
                                                 placeholder="Tu nombre"
                                             />
                                         </div>
-                                        <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-[#2791e7] focus-within:border-transparent transition-all shadow-sm">
+                                        <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all shadow-sm">
                                             <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">Apellidos</label>
                                             <input
                                                 name="lastName"
@@ -185,7 +185,7 @@ export default function RegisterPage() {
                                         </div>
                                     </div>
 
-                                    <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-[#2791e7] focus-within:border-transparent transition-all shadow-sm">
+                                    <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all shadow-sm">
                                         <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">Correo Electrónico</label>
                                         <input
                                             name="email"
@@ -199,7 +199,7 @@ export default function RegisterPage() {
                                         <FaEnvelope className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
                                     </div>
 
-                                    <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-[#2791e7] focus-within:border-transparent transition-all shadow-sm">
+                                    <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all shadow-sm">
                                         <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">Teléfono</label>
                                         <input
                                             name="phone"
@@ -213,7 +213,7 @@ export default function RegisterPage() {
                                         <FaPhone className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
                                     </div>
 
-                                    <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-[#2791e7] focus-within:border-transparent transition-all shadow-sm">
+                                    <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all shadow-sm">
                                         <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">Contraseña</label>
                                         <input
                                             name="password"
@@ -243,7 +243,7 @@ export default function RegisterPage() {
                                 {/* Location */}
                                 <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3">TU UBICACIÓN</label>
                                 <div className="flex flex-col gap-4">
-                                    <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-[#2791e7] focus-within:border-transparent transition-all shadow-sm">
+                                    <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all shadow-sm">
                                         <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">Ciudad</label>
                                         <input
                                             name="city"
@@ -255,7 +255,7 @@ export default function RegisterPage() {
                                         />
                                         <FaMapMarkerAlt className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
                                     </div>
-                                    <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-[#2791e7] focus-within:border-transparent transition-all shadow-sm">
+                                    <div className="bg-white dark:bg-[#1c262e] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 relative focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all shadow-sm">
                                         <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">Estado</label>
                                         <input
                                             name="state"
@@ -275,7 +275,7 @@ export default function RegisterPage() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full lg:max-w-full h-14 bg-[#2791e7] hover:bg-blue-600 text-white font-bold text-lg rounded-xl shadow-lg shadow-blue-600/30 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2"
+                                className="w-full lg:max-w-full h-14 bg-primary hover:bg-primary-hover text-white font-bold text-lg rounded-xl shadow-lg shadow-primary/30 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2"
                             >
                                 {loading ? (
                                     <span>Procesando...</span>
