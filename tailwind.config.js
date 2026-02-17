@@ -10,10 +10,10 @@ module.exports = {
         extend: {
             colors: {
                 primary: {
-                    DEFAULT: '#2791e7', // Original RAM Primary
-                    hover: '#1e70b3',
-                    light: 'rgba(39, 145, 231, 0.1)',
-                    dark: '#144a75',
+                    DEFAULT: '#22c55e', // Green 500
+                    hover: '#16a34a',   // Green 600
+                    light: 'rgba(34, 197, 94, 0.1)',
+                    dark: '#14532d',    // Green 900
                 },
                 secondary: {
                     DEFAULT: '#64748b', // Slate 500
@@ -49,8 +49,8 @@ module.exports = {
                 '3xl': '32px',
             },
             boxShadow: {
-                'glow': '0 0 20px rgba(39, 145, 231, 0.25)',
-                'glow-strong': '0 0 30px rgba(39, 145, 231, 0.4)',
+                'glow': '0 0 20px rgba(34, 197, 94, 0.25)',
+                'glow-strong': '0 0 30px rgba(34, 197, 94, 0.4)',
                 'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
             },
             animation: {
