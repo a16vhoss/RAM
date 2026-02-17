@@ -133,21 +133,21 @@ function PublicPetViewContent() {
 
                     {/* Quick Action Chips */}
                     <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
-                        <div className="bg-slate-800/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2 shrink-0">
+                        <div className="bg-green-900/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2 shrink-0">
                             <FaSyringe className="text-green-400" size={18} />
                             <div className="flex flex-col">
                                 <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider leading-none mb-0.5">Salud</span>
                                 <span className="text-xs font-semibold text-white leading-none">Vacunado</span>
                             </div>
                         </div>
-                        <div className="bg-slate-800/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2 shrink-0">
+                        <div className="bg-green-900/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2 shrink-0">
                             <FaMicrochip className="text-blue-400" size={18} />
                             <div className="flex flex-col">
                                 <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider leading-none mb-0.5">Registro</span>
                                 <span className="text-xs font-semibold text-white leading-none">Microchip</span>
                             </div>
                         </div>
-                        <div className="bg-slate-800/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2 shrink-0">
+                        <div className="bg-green-900/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2 shrink-0">
                             {pet.sex === 'Macho' ? <FaMars className="text-purple-400" size={18} /> : <FaVenus className="text-pink-400" size={18} />}
                             <div className="flex flex-col">
                                 <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider leading-none mb-0.5">Sexo</span>

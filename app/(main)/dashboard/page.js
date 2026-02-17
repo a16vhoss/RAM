@@ -75,7 +75,7 @@ export default function DashboardPage() {
     return (
         <div className="min-h-screen bg-background-light dark:bg-background-dark pb-28 overflow-x-hidden">
             {/* Header Section */}
-            <header className="sticky top-0 z-20 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 shadow-lg pt-6 pb-4 px-6 animate-slide-up">
+            <header className="sticky top-0 z-20 bg-green-950/80 backdrop-blur-xl border-b border-white/5 shadow-lg pt-6 pb-4 px-6 animate-slide-up">
                 <div className="max-w-7xl mx-auto w-full">
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex flex-col">

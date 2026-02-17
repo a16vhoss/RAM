@@ -113,7 +113,7 @@ function CredentialTemplate({ doc, qrUrl }) {
     const credentialImageUrl = `/api/og?id=${doc.pet_id}`;
 
     return (
-        <div className="relative w-full bg-slate-900">
+        <div className="relative w-full bg-green-950">
             {/* Credential Image from OG API */}
             <img
                 src={credentialImageUrl}

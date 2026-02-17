@@ -96,7 +96,7 @@ export default function AmberAlertPage() {
                         </div>
                     ) : (
                         pets.map((pet) => (
-                            <div key={pet.pet_id} className="bg-slate-800/50 border border-white/5 p-4 rounded-2xl flex items-center gap-4 hover:bg-slate-800 transition-colors">
+                            <div key={pet.pet_id} className="bg-green-900/50 border border-white/5 p-4 rounded-2xl flex items-center gap-4 hover:bg-green-900 transition-colors">
                                 <div className="w-20 h-20 rounded-xl overflow-hidden shadow-lg border border-white/10 flex-shrink-0">
                                     <img
                                         src={pet.pet_photo || "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80"}

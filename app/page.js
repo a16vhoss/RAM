@@ -28,9 +28,9 @@ export default function LandingPage() {
     }, [router]);
 
     return (
-        <div className="min-h-screen bg-slate-900 text-white overflow-x-hidden">
+        <div className="min-h-screen bg-green-950 text-white overflow-x-hidden">
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-white/5">
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-green-950/80 backdrop-blur-xl border-b border-white/5">
                 <div className="w-full px-6 md:px-12 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
@@ -87,7 +87,7 @@ export default function LandingPage() {
             </section>
 
             {/* Features Section */}
-            <section className="py-20 w-full bg-slate-800/50">
+            <section className="py-20 w-full bg-green-900/50">
                 <div className="w-full px-6 md:px-12">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">¿Qué ofrecemos?</h2>
@@ -160,7 +160,7 @@ export default function LandingPage() {
             </section>
 
             {/* Footer */}
-            <footer className="py-12 px-6 bg-slate-900 border-t border-white/5">
+            <footer className="py-12 px-6 bg-green-950 border-t border-white/5">
                 <div className="w-full flex flex-col md:flex-row items-center justify-between gap-6">
                     <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
@@ -185,7 +185,7 @@ function FeatureCard({ icon, title, description, color }) {
     };
 
     return (
-        <div className="p-8 rounded-2xl bg-slate-800/50 border border-white/5 hover:border-white/10 transition-all group">
+        <div className="p-8 rounded-2xl bg-green-900/50 border border-white/5 hover:border-white/10 transition-all group">
             <div className={`w-16 h-16 rounded-2xl ${colorMap[color]} border flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                 {icon}
             </div>
@@ -197,7 +197,7 @@ function FeatureCard({ icon, title, description, color }) {
 
 function StepCard({ number, title, description }) {
     return (
-        <div className="relative p-8 rounded-2xl bg-slate-800/30 border border-white/5 text-center">
+        <div className="relative p-8 rounded-2xl bg-green-900/30 border border-white/5 text-center">
             <div className="w-12 h-12 rounded-full bg-primary text-white font-bold text-xl flex items-center justify-center mx-auto mb-6">
                 {number}
             </div>

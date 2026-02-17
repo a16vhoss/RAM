@@ -127,7 +127,7 @@ export default function DocumentsClient({ documents = [], pets = [], session }) 
                             onClick={() => setFilterType(type)}
                             className={`flex h-9 px-5 shrink-0 items-center justify-center rounded-full font-medium text-sm transition-colors ${filterType === type
                                 ? 'bg-white text-background-dark font-semibold shadow-glow'
-                                : 'bg-surface-dark border border-slate-700 text-slate-300 hover:bg-slate-800'
+                                : 'bg-surface-dark border border-green-800 text-slate-300 hover:bg-green-900'
                                 }`}
                         >
                             {type}
@@ -143,7 +143,7 @@ export default function DocumentsClient({ documents = [], pets = [], session }) 
                     <div
                         key={doc.document_id || idx}
                         onClick={() => setSelectedDoc(doc)}
-                        className="group relative flex items-center gap-4 p-4 rounded-2xl bg-surface-dark border border-slate-800/50 hover:bg-slate-800 hover:border-slate-700 transition-all active:scale-[0.99] cursor-pointer"
+                        className="group relative flex items-center gap-4 p-4 rounded-2xl bg-surface-dark border border-green-900/50 hover:bg-green-900 hover:border-green-800 transition-all active:scale-[0.99] cursor-pointer"
                     >
                         <div className={`flex size-12 shrink-0 items-center justify-center rounded-xl bg-opacity-10 ${doc.document_type.includes('Vacuna') ? 'bg-red-500 text-red-400' :
                             doc.document_type.includes('Certificado') || doc.document_type.includes('Acta') ? 'bg-orange-500 text-orange-400' :

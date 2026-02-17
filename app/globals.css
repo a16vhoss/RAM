@@ -7,10 +7,10 @@
 :root {
   /* Legacy Variable Mapping to maintain compatibility during migration */
   --primary: #22c55e;
-  --background-dark: #0f172a;
+  --background-dark: #022c22;
   --background-light: #f6f7f8;
-  --text-main-light: #1e293b;
-  --text-main-dark: #f8fafc;
+  --text-main-light: #14532d;
+  --text-main-dark: #f0fdf4;
 }
 
 @layer base {
@@ -61,7 +61,7 @@
   }
 
   .glass-panel {
-    @apply bg-slate-900/60 backdrop-blur-xl border border-white/10;
+    @apply bg-green-950/60 backdrop-blur-xl border border-white/10;
   }
 }
 
@@ -81,7 +81,7 @@
     size: A4 portrait;
     margin: 0;
   }
-  
+
   body {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;

@@ -56,7 +56,7 @@ export default function PasswordPage() {
                         <div className="space-y-2">
                             <label className="text-sm font-bold text-gray-400 uppercase tracking-wider ml-1">Contraseña Actual</label>
                             <input
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
+                                className="w-full bg-green-900/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
                                 type="password"
                                 value={formData.currentPassword}
                                 onChange={(e) => setFormData({ ...formData, currentPassword: e.target.value })}
@@ -68,7 +68,7 @@ export default function PasswordPage() {
                         <div className="space-y-2">
                             <label className="text-sm font-bold text-gray-400 uppercase tracking-wider ml-1">Nueva Contraseña</label>
                             <input
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
+                                className="w-full bg-green-900/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
                                 type="password"
                                 value={formData.newPassword}
                                 onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
@@ -82,7 +82,7 @@ export default function PasswordPage() {
                         <div className="space-y-2">
                             <label className="text-sm font-bold text-gray-400 uppercase tracking-wider ml-1">Confirmar Nueva Contraseña</label>
                             <input
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
+                                className="w-full bg-green-900/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
                                 type="password"
                                 value={formData.confirmPassword}
                                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}

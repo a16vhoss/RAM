@@ -73,7 +73,7 @@ export default function PrivacyPage() {
                 <section className="bg-surface-dark border border-white/5 p-6 rounded-3xl mb-6 shadow-xl space-y-4">
                     <h2 className="text-xl font-bold mb-2">Visibilidad de Perfil</h2>
 
-                    <div className="flex justify-between items-center p-4 bg-black/20 rounded-xl border border-white/5">
+                    <div className="flex justify-between items-center p-4 bg-green-900/20 rounded-xl border border-white/5">
                         <div>
                             <h3 className="font-bold text-sm mb-1">Perfil Público</h3>
                             <p className="text-xs text-gray-500">Permite que otros usuarios vean tu perfil</p>
@@ -84,7 +84,7 @@ export default function PrivacyPage() {
                         </label>
                     </div>
 
-                    <div className="flex justify-between items-center p-4 bg-black/20 rounded-xl border border-white/5">
+                    <div className="flex justify-between items-center p-4 bg-green-900/20 rounded-xl border border-white/5">
                         <div>
                             <h3 className="font-bold text-sm mb-1">Mostrar Email</h3>
                             <p className="text-xs text-gray-500">Visible en información de QR de mascotas</p>

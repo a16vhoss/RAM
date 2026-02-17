@@ -119,7 +119,7 @@ export default function CoOwnerInvite({ petId, owners = [], currentUserId }) {
                     <button
                         onClick={handleCreateInvite}
                         disabled={isLoading}
-                        className="w-full bg-slate-900 text-white px-4 py-3 rounded-xl font-bold hover:bg-slate-800 transition-all active:scale-[0.98] shadow-lg shadow-slate-200 flex items-center justify-center gap-2"
+                        className="w-full bg-green-950 text-white px-4 py-3 rounded-xl font-bold hover:bg-green-900 transition-all active:scale-[0.98] shadow-lg shadow-slate-200 flex items-center justify-center gap-2"
                     >
                         Generar Código de Invitación
                     </button>

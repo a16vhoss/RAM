@@ -22,12 +22,12 @@ module.exports = {
                 },
                 background: {
                     light: '#f6f7f8',
-                    dark: '#0f172a', // Slate 900 - Richer dark
+                    dark: '#022c22', // Green 950 (Emerald-ish)
                 },
                 surface: {
                     light: '#ffffff',
-                    dark: '#1e293b', // Slate 800
-                    darker: '#0f172a', // Slate 900
+                    dark: '#14532d', // Green 900
+                    darker: '#022c22', // Green 950
                 },
                 success: '#10b981', // Emerald 500
                 error: '#ef4444',   // Red 500

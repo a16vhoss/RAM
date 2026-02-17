@@ -6,7 +6,7 @@ export default function FilePreview({ file, onRemove }) {
     const isImage = file.type.startsWith('image/');
 
     return (
-        <div className="relative group flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div className="relative group flex items-center gap-3 p-3 bg-slate-50 dark:bg-green-900 rounded-xl border border-slate-200 dark:border-slate-700">
             <div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden shrink-0">
                 {isImage ? (
                     <img

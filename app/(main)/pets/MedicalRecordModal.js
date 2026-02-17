@@ -193,7 +193,7 @@ export default function MedicalRecordModal({ petId, isOpen, onClose, onRecordAdd
             <div className="animate-fade-in w-full max-w-md bg-surface-dark border border-white/10 rounded-3xl overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto">
 
                 {/* Header */}
-                <div className="bg-slate-900/50 p-6 flex justify-between items-center border-b border-white/5">
+                <div className="bg-green-950/50 p-6 flex justify-between items-center border-b border-white/5">
                     <h3 className="text-xl font-bold text-white">
                         {isEditMode ? 'Editar Registro' : 'Nuevo Registro Médico'}
                     </h3>
@@ -230,7 +230,7 @@ export default function MedicalRecordModal({ petId, isOpen, onClose, onRecordAdd
                                 required
                                 value={formDate}
                                 onChange={(e) => setFormDate(e.target.value)}
-                                className="w-full bg-slate-800 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-primary"
+                                className="w-full bg-green-900 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-primary"
                             />
                         </div>
 
@@ -241,7 +241,7 @@ export default function MedicalRecordModal({ petId, isOpen, onClose, onRecordAdd
                                 placeholder="Ej. Dr. García / VetCare"
                                 value={formVetName}
                                 onChange={(e) => setFormVetName(e.target.value)}
-                                className="w-full bg-slate-800 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-primary placeholder-slate-500"
+                                className="w-full bg-green-900 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-primary placeholder-slate-500"
                             />
                         </div>
 
@@ -252,7 +252,7 @@ export default function MedicalRecordModal({ petId, isOpen, onClose, onRecordAdd
                                 placeholder="Ej. Rabia Refuerzo Anual o Detalles de la consulta..."
                                 value={formDescription}
                                 onChange={(e) => setFormDescription(e.target.value)}
-                                className="w-full bg-slate-800 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-primary placeholder-slate-500 resize-none"
+                                className="w-full bg-green-900 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-primary placeholder-slate-500 resize-none"
                             />
                         </div>
 
@@ -262,7 +262,7 @@ export default function MedicalRecordModal({ petId, isOpen, onClose, onRecordAdd
                                 <label className="text-xs font-bold uppercase text-slate-400">Archivos Actuales</label>
                                 <div className="flex flex-col gap-2">
                                     {existingAttachments.map((att, index) => (
-                                        <div key={index} className="flex items-center justify-between p-3 bg-slate-800 rounded-xl border border-white/10">
+                                        <div key={index} className="flex items-center justify-between p-3 bg-green-900 rounded-xl border border-white/10">
                                             <a href={att.url} target="_blank" rel="noopener noreferrer" className="text-primary text-sm truncate flex-1">
                                                 {att.name}
                                             </a>

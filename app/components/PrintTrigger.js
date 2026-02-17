@@ -63,7 +63,7 @@ export default function PrintTrigger() {
             onClick={handleDownload}
             disabled={loading}
             data-html2canvas-ignore="true"
-            className="fixed bottom-8 right-8 bg-slate-900 text-white px-6 py-4 rounded-full shadow-2xl font-bold flex items-center gap-3 hover:scale-105 transition-transform print:hidden z-50 hover:bg-black disabled:opacity-75"
+            className="fixed bottom-8 right-8 bg-green-950 text-white px-6 py-4 rounded-full shadow-2xl font-bold flex items-center gap-3 hover:scale-105 transition-transform print:hidden z-50 hover:bg-black disabled:opacity-75"
         >
             <FaDownload className="text-xl" />
             {loading ? 'Generando...' : 'Descargar Cartel'}

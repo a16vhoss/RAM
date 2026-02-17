@@ -82,7 +82,7 @@ export default function EditProfileForm() {
                         <div className="space-y-2">
                             <label className="text-sm font-bold text-gray-400 uppercase tracking-wider ml-1">Nombre</label>
                             <input
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
+                                className="w-full bg-green-900/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
                                 value={formData.firstName}
                                 onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                                 required
@@ -93,7 +93,7 @@ export default function EditProfileForm() {
                         <div className="space-y-2">
                             <label className="text-sm font-bold text-gray-400 uppercase tracking-wider ml-1">Apellido</label>
                             <input
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
+                                className="w-full bg-green-900/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600"
                                 value={formData.lastName}
                                 onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                                 required
@@ -116,7 +116,7 @@ export default function EditProfileForm() {
                     <div className="space-y-2">
                         <label className="text-sm font-bold text-gray-400 uppercase tracking-wider ml-1">Dirección</label>
                         <textarea
-                            className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600 resize-none"
+                            className="w-full bg-green-900/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-600 resize-none"
                             rows={3}
                             value={formData.address}
                             onChange={(e) => setFormData({ ...formData, address: e.target.value })}

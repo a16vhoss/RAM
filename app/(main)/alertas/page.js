@@ -176,7 +176,7 @@ function LostPetsContent() {
                     </div>
                 ) : (
                     <div className="flex flex-col items-center justify-center py-20 text-center">
-                        <div className="w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6">
+                        <div className="w-24 h-24 bg-slate-100 dark:bg-green-900 rounded-full flex items-center justify-center mb-6">
                             <FaShieldAlt className="text-slate-300 dark:text-slate-600 text-4xl" />
                         </div>
                         <h3 className="text-xl font-bold text-slate-700 dark:text-slate-300 mb-2">No hay alertas activas</h3>

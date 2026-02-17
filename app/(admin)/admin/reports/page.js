@@ -88,7 +88,7 @@ export default function ReportedPostsPage() {
             ) : (
                 <div className="grid gap-6">
                     {reports.map((report) => (
-                        <div key={report.report_id} className="bg-slate-800 border border-white/5 rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row">
+                        <div key={report.report_id} className="bg-green-900 border border-white/5 rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row">
                             {/* Report Details Sidebar */}
                             <div className="p-6 md:w-80 bg-red-500/5 border-b md:border-b-0 md:border-r border-white/5 flex flex-col gap-4">
                                 <div>

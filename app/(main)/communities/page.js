@@ -72,7 +72,7 @@ export default function CommunitiesPage() {
     return (
         <div className="min-h-screen bg-background-dark text-white pb-28">
             {/* Header */}
-            <div className="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-xl border-b border-white/5">
+            <div className="sticky top-0 z-40 bg-green-950/80 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-4xl mx-auto px-4 py-4">
                     <div className="flex items-center justify-between mb-4">
                         <h1 className="text-2xl font-bold flex items-center gap-2">
@@ -206,7 +206,7 @@ function CommunityCard({ community, showBadge = false }) {
     return (
         <Link
             href={`/communities/view?slug=${community.slug}`}
-            className="group bg-slate-800/60 backdrop-blur-md p-4 rounded-2xl flex items-center gap-4 border border-white/5 hover:bg-slate-800 transition-colors"
+            className="group bg-green-900/60 backdrop-blur-md p-4 rounded-2xl flex items-center gap-4 border border-white/5 hover:bg-green-900 transition-colors"
         >
             <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center text-primary flex-shrink-0">
                 <IconComponent size={24} />

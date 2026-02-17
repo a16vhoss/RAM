@@ -147,7 +147,7 @@ function PosterViewContent() {
                 </div>
 
                 {/* FOOTER */}
-                <div className="bg-gray-900 text-white p-5 shrink-0 flex items-center justify-between">
+                <div className="bg-green-950 text-white p-5 shrink-0 flex items-center justify-between">
                     <div className="overflow-hidden">
                         <p className="text-red-400 font-bold uppercase text-sm tracking-widest mb-1">
                             ¡Llama Urgente!

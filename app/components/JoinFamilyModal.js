@@ -86,7 +86,7 @@ export default function JoinFamilyModal({ isOpen, onClose }) {
                     <button
                         type="submit"
                         disabled={isLoading || !code}
-                        className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg shadow-slate-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-green-950 hover:bg-green-900 text-white font-bold py-4 rounded-xl shadow-lg shadow-slate-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isLoading ? 'Verificando...' : (
                             <>

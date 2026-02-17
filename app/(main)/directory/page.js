@@ -135,7 +135,7 @@ export default function DirectoryPage() {
     return (
         <div className="min-h-screen bg-background-dark text-white pb-24">
             {/* Top Navigation & Location */}
-            <header className="sticky top-0 z-40 w-full bg-slate-900/95 backdrop-blur-xl pt-4 border-b border-white/5 shadow-md animate-slide-up">
+            <header className="sticky top-0 z-40 w-full bg-green-950/95 backdrop-blur-xl pt-4 border-b border-white/5 shadow-md animate-slide-up">
                 <div className="max-w-7xl mx-auto px-5 pb-3 flex justify-between items-center">
                     <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
                         <div className="w-10 h-10 rounded-full bg-surface-dark flex items-center justify-center text-primary border border-white/10">

@@ -219,7 +219,7 @@ function PetViewContent() {
             <div className="fixed bottom-[10%] -right-[10%] w-[250px] h-[250px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
 
             {/* Top Navigation */}
-            <div className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 animate-slide-up">
+            <div className="sticky top-0 z-50 bg-green-950/80 backdrop-blur-xl border-b border-white/5 animate-slide-up">
                 <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
                     <button onClick={() => router.back()} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
                         <FaArrowLeft size={20} />
@@ -276,7 +276,7 @@ function PetViewContent() {
                                         className="w-full h-full object-cover transform scale-100 transition-transform duration-700 hover:scale-105"
                                     />
                                 ) : (
-                                    <div className="w-full h-full bg-slate-800 flex items-center justify-center">
+                                    <div className="w-full h-full bg-green-900 flex items-center justify-center">
                                         <SpeciesIcon species={pet.species} size={150} className="text-white/20" />
                                     </div>
                                 )}
@@ -304,7 +304,7 @@ function PetViewContent() {
                                                 <Link
                                                     href={`/pets/poster-view?id=${pet.pet_id}`}
                                                     target="_blank"
-                                                    className="py-2 px-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 w-max shadow-lg bg-slate-900 text-white hover:bg-black border border-white/20 backdrop-blur-md transform active:scale-95 transition-all"
+                                                    className="py-2 px-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 w-max shadow-lg bg-green-950 text-white hover:bg-black border border-white/20 backdrop-blur-md transform active:scale-95 transition-all"
                                                 >
                                                     🖨️ Generar Cartel
                                                 </Link>
@@ -326,16 +326,16 @@ function PetViewContent() {
                         {/* Status Chips */}
                         <div className="no-scrollbar flex w-full overflow-x-auto gap-3 px-4 -my-2 snap-x animate-fade-in" style={{ animationDelay: '0.1s' }}>
                             <div className="pl-1"></div>
-                            <div className="snap-center h-9 flex-shrink-0 flex items-center gap-2 rounded-full bg-slate-800/60 border border-white/5 pl-3 pr-4 border-l-4 border-l-green-500">
+                            <div className="snap-center h-9 flex-shrink-0 flex items-center gap-2 rounded-full bg-green-900/60 border border-white/5 pl-3 pr-4 border-l-4 border-l-green-500">
                                 <FaCheckCircle className="text-green-400" size={16} />
                                 <span className="text-sm font-medium">Vacunado</span>
                             </div>
-                            <div className="snap-center h-9 flex-shrink-0 flex items-center gap-2 rounded-full bg-slate-800/60 border border-white/5 pl-3 pr-4 border-l-4 border-l-primary">
+                            <div className="snap-center h-9 flex-shrink-0 flex items-center gap-2 rounded-full bg-green-900/60 border border-white/5 pl-3 pr-4 border-l-4 border-l-primary">
                                 <FaShieldAlt className="text-primary" size={16} />
                                 <span className="text-sm font-medium">Registrado</span>
                             </div>
                             {pet.microchip_number && (
-                                <div className="snap-center h-9 flex-shrink-0 flex items-center gap-2 rounded-full bg-slate-800/60 border border-white/5 pl-3 pr-4 border-l-4 border-l-purple-500">
+                                <div className="snap-center h-9 flex-shrink-0 flex items-center gap-2 rounded-full bg-green-900/60 border border-white/5 pl-3 pr-4 border-l-4 border-l-purple-500">
                                     <FaMicrochip className="text-purple-400" size={16} />
                                     <span className="text-sm font-medium">Chip Activo</span>
                                 </div>
@@ -409,7 +409,7 @@ function PetViewContent() {
                                         <div
                                             key={doc.document_id}
                                             onClick={() => setSelectedDoc({ ...doc, pet_name: pet.pet_name })}
-                                            className="group bg-slate-800/60 backdrop-blur-md p-4 rounded-2xl flex items-center gap-4 border border-white/5 cursor-pointer hover:bg-slate-800 transition-colors shadow-sm"
+                                            className="group bg-green-900/60 backdrop-blur-md p-4 rounded-2xl flex items-center gap-4 border border-white/5 cursor-pointer hover:bg-green-900 transition-colors shadow-sm"
                                         >
                                             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${doc.document_type.includes('Acta') ? 'bg-orange-500/20 text-orange-400' : 'bg-green-500/20 text-green-400'}`}>
                                                 <FaFileAlt size={20} />
@@ -448,8 +448,8 @@ function PetViewContent() {
 
                             {medicalRecords.length > 0 ? medicalRecords.map((record, index) => (
                                 <div key={record.record_id || index} className="pl-14 relative group">
-                                    <div className="absolute left-3 top-4 w-4 h-4 rounded-full bg-slate-900 border-2 border-primary z-10 box-content"></div>
-                                    <div className="bg-slate-800/60 backdrop-blur-md p-4 rounded-2xl border border-white/5 flex flex-col gap-2 hover:bg-slate-800 transition-colors shadow-sm">
+                                    <div className="absolute left-3 top-4 w-4 h-4 rounded-full bg-green-950 border-2 border-primary z-10 box-content"></div>
+                                    <div className="bg-green-900/60 backdrop-blur-md p-4 rounded-2xl border border-white/5 flex flex-col gap-2 hover:bg-green-900 transition-colors shadow-sm">
                                         <div className="flex justify-between items-start">
                                             <div className="flex items-center gap-2">
                                                 <span className="text-primary">{getRecordIcon(record.record_type)}</span>
@@ -620,7 +620,7 @@ function StatCard({ icon, color, label, value }) {
     const theme = colorMap[color] || colorMap.blue;
 
     return (
-        <div className="bg-slate-800/60 backdrop-blur-md p-4 rounded-2xl flex flex-col gap-3 border border-white/5 hover:bg-slate-800 transition-colors group">
+        <div className="bg-green-900/60 backdrop-blur-md p-4 rounded-2xl flex flex-col gap-3 border border-white/5 hover:bg-green-900 transition-colors group">
             <div className="flex justify-between items-start">
                 <div className={`p-2.5 rounded-xl ${theme.bg} ${theme.text}`}>
                     {icon}

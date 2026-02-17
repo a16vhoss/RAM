@@ -129,7 +129,7 @@ function PostViewContent() {
     return (
         <div className="min-h-screen bg-background-dark text-white pb-28">
             {/* Header */}
-            <div className="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-xl border-b border-white/5">
+            <div className="sticky top-0 z-40 bg-green-950/80 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-3xl mx-auto px-4 py-4 flex items-center gap-4">
                     <button onClick={() => router.back()} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
                         <FaArrowLeft />
@@ -145,7 +145,7 @@ function PostViewContent() {
 
             {/* Post */}
             <div className="max-w-3xl mx-auto px-4 py-6">
-                <div className="bg-slate-800/60 backdrop-blur-md rounded-2xl border border-white/5 overflow-hidden">
+                <div className="bg-green-900/60 backdrop-blur-md rounded-2xl border border-white/5 overflow-hidden">
                     {/* Post Header */}
                     <div className="p-4 flex items-center gap-3">
                         <div className="w-12 h-12 rounded-full bg-slate-700 overflow-hidden flex-shrink-0">
@@ -248,7 +248,7 @@ function CommentCard({ comment, onDelete }) {
     const timeAgo = getTimeAgo(comment.created_at);
 
     return (
-        <div className="bg-slate-800/40 rounded-xl p-4 group">
+        <div className="bg-green-900/40 rounded-xl p-4 group">
             <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-full bg-slate-700 overflow-hidden flex-shrink-0">
                     {comment.user_photo ? (

@@ -141,7 +141,7 @@ function CommunityViewContent() {
     return (
         <div className="min-h-screen bg-background-dark text-white pb-28">
             {/* Header */}
-            <div className="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-xl border-b border-white/5">
+            <div className="sticky top-0 z-40 bg-green-950/80 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-4xl mx-auto px-4 py-4">
                     <div className="flex items-center gap-4">
                         <button onClick={() => router.back()} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
@@ -182,7 +182,7 @@ function CommunityViewContent() {
                 <div className="max-w-4xl mx-auto px-4 py-4">
                     <button
                         onClick={() => setShowCreateModal(true)}
-                        className="w-full bg-slate-800/60 hover:bg-slate-800 border border-white/5 rounded-2xl p-4 text-left text-slate-400 transition-colors flex items-center gap-3"
+                        className="w-full bg-green-900/60 hover:bg-green-900 border border-white/5 rounded-2xl p-4 text-left text-slate-400 transition-colors flex items-center gap-3"
                     >
                         <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
                             <FaPlus />
@@ -243,7 +243,7 @@ function PostCard({ post, onLike, onDelete, onReport }) {
     const timeAgo = getTimeAgo(post.created_at);
 
     return (
-        <div className="bg-slate-800/60 backdrop-blur-md rounded-2xl border border-white/5 overflow-hidden">
+        <div className="bg-green-900/60 backdrop-blur-md rounded-2xl border border-white/5 overflow-hidden">
             {/* Post Header */}
             <div className="p-4 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-slate-700 overflow-hidden flex-shrink-0">
@@ -333,7 +333,7 @@ function CreatePostModal({ communityId, onClose, onCreated }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-            <div className="bg-slate-800 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
+            <div className="bg-green-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
                 <div className="flex items-center justify-between p-4 border-b border-white/10">
                     <h3 className="font-bold text-lg text-white">Nueva publicación</h3>
                     <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-400">
@@ -391,7 +391,7 @@ function ReportModal({ postId, onClose, onReport }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-            <div className="bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
+            <div className="bg-green-900 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
                 <div className="flex items-center justify-between p-4 border-b border-white/10">
                     <h3 className="font-bold text-lg text-white flex items-center gap-2">
                         <FaFlag className="text-red-400" /> Reportar publicación

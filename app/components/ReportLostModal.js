@@ -45,7 +45,7 @@ export default function ReportLostModal({ isOpen, onClose, onConfirm, petName })
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-            <div className="bg-slate-900 border border-white/10 rounded-3xl w-full max-w-md overflow-hidden relative shadow-2xl">
+            <div className="bg-green-950 border border-white/10 rounded-3xl w-full max-w-md overflow-hidden relative shadow-2xl">
                 {/* Header */}
                 <div className="p-6 bg-red-600/10 border-b border-red-500/20 flex items-center justify-between">
                     <div className="flex items-center gap-3">
